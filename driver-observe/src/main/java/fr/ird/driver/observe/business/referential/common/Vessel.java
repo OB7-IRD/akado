@@ -1,0 +1,260 @@
+package fr.ird.driver.observe.business.referential.common;
+
+import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
+
+import java.util.Date;
+import java.util.Objects;
+import java.util.function.Supplier;
+
+/**
+ * Created on 18/03/2023.
+ *
+ * @author Tony Chemit - dev@tchemit.fr
+ * @since 1.0.0
+ */
+public class Vessel extends I18nReferentialEntity {
+
+    private Integer keelCode;
+    private Date changeDate;
+    private Integer yearService;
+    private Float length;
+    private Float capacity;
+    private Integer powerCv;
+    private Integer powerKW;
+    private Float searchMaximum;
+    private String comment;
+    private String source;
+    private String iccatId;
+    private String iotcId;
+    private String nationalId;
+    private String comId;
+    private String tuviId;
+    private String imoId;
+    private String radioCallSignId;
+    private String lloydId;
+    private String cfrId;
+    private String wellRegex;
+    private Date startDate;
+    private Date endDate;
+    private Supplier<VesselSizeCategory> vesselSizeCategory = () -> null;
+    private Supplier<VesselType> vesselType = () -> null;
+    private Supplier<Country> flagCountry = () -> null;
+    private Supplier<Country> fleetCountry = () -> null;
+    private Supplier<ShipOwner> shipOwner = () -> null;
+
+    public Integer getKeelCode() {
+        return keelCode;
+    }
+
+    public void setKeelCode(Integer keelCode) {
+        this.keelCode = keelCode;
+    }
+
+    public Date getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(Date changeDate) {
+        this.changeDate = changeDate;
+    }
+
+    public Integer getYearService() {
+        return yearService;
+    }
+
+    public void setYearService(Integer yearService) {
+        this.yearService = yearService;
+    }
+
+    public Float getLength() {
+        return length;
+    }
+
+    public void setLength(Float length) {
+        this.length = length;
+    }
+
+    public Float getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Float capacity) {
+        this.capacity = capacity;
+    }
+
+    public Integer getPowerCv() {
+        return powerCv;
+    }
+
+    public void setPowerCv(Integer powerCv) {
+        this.powerCv = powerCv;
+    }
+
+    public Integer getPowerKW() {
+        return powerKW;
+    }
+
+    public void setPowerKW(Integer powerKW) {
+        this.powerKW = powerKW;
+    }
+
+    public Float getSearchMaximum() {
+        return searchMaximum;
+    }
+
+    public void setSearchMaximum(Float searchMaximum) {
+        this.searchMaximum = searchMaximum;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getIccatId() {
+        return iccatId;
+    }
+
+    public void setIccatId(String iccatId) {
+        this.iccatId = iccatId;
+    }
+
+    public String getIotcId() {
+        return iotcId;
+    }
+
+    public void setIotcId(String iotcId) {
+        this.iotcId = iotcId;
+    }
+
+    public String getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
+    }
+
+    public String getComId() {
+        return comId;
+    }
+
+    public void setComId(String comId) {
+        this.comId = comId;
+    }
+
+    public String getTuviId() {
+        return tuviId;
+    }
+
+    public void setTuviId(String tuviId) {
+        this.tuviId = tuviId;
+    }
+
+    public String getImoId() {
+        return imoId;
+    }
+
+    public void setImoId(String imoId) {
+        this.imoId = imoId;
+    }
+
+    public String getRadioCallSignId() {
+        return radioCallSignId;
+    }
+
+    public void setRadioCallSignId(String radioCallSignId) {
+        this.radioCallSignId = radioCallSignId;
+    }
+
+    public String getLloydId() {
+        return lloydId;
+    }
+
+    public void setLloydId(String lloydId) {
+        this.lloydId = lloydId;
+    }
+
+    public String getCfrId() {
+        return cfrId;
+    }
+
+    public void setCfrId(String cfrId) {
+        this.cfrId = cfrId;
+    }
+
+    public String getWellRegex() {
+        return wellRegex;
+    }
+
+    public void setWellRegex(String wellRegex) {
+        this.wellRegex = wellRegex;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public VesselSizeCategory getVesselSizeCategory() {
+        return vesselSizeCategory.get();
+    }
+
+    public void setVesselSizeCategory(Supplier<VesselSizeCategory> vesselSizeCategory) {
+        this.vesselSizeCategory = Objects.requireNonNull(vesselSizeCategory);
+    }
+
+    public VesselType getVesselType() {
+        return vesselType.get();
+    }
+
+    public void setVesselType(Supplier<VesselType> vesselType) {
+        this.vesselType = Objects.requireNonNull(vesselType);
+    }
+
+    public Country getFlagCountry() {
+        return flagCountry.get();
+    }
+
+    public void setFlagCountry(Supplier<Country> flagCountry) {
+        this.flagCountry = Objects.requireNonNull(flagCountry);
+    }
+
+    public Country getFleetCountry() {
+        return fleetCountry.get();
+    }
+
+    public void setFleetCountry(Supplier<Country> fleetCountry) {
+        this.fleetCountry = Objects.requireNonNull(fleetCountry);
+    }
+
+    public ShipOwner getShipOwner() {
+        return shipOwner.get();
+    }
+
+    public void setShipOwner(Supplier<ShipOwner> shipOwner) {
+        this.shipOwner = Objects.requireNonNull(shipOwner);
+    }
+}
