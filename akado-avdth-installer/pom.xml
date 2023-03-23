@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>akado-avdth-ui</artifactId>
+      <artifactId>akado-ui</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

@@ -13,3 +13,5 @@ git clone git@github.com:OB7-IRD/akado2.git
 ### Lancer ce pom
 
 mvn clean install
+
+[![Dependency Review](https://github.com/OB7-IRD/akado2/actions/workflows/dependency-review.yml/badge.svg?branch=develop)](https://github.com/OB7-IRD/akado2/actions/workflows/dependency-review.yml)

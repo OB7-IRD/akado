@@ -51,7 +51,7 @@
     <module>akado-core</module>
     <module>akado-driver-observe</module>
     <module>akado-driver-avdth</module>
-    <module>akado-avdth-ui</module>
+    <module>akado-ui</module>
     <module>akado-avdth-installer</module>
   </modules>
   <properties>
