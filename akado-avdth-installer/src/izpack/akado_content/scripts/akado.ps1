@@ -1,0 +1,1 @@
+﻿java -Xmx512M -Xms256M -cp "libs\*" fr.ird.akado.ui.swing.AkadoAvdthUI -D-Dfile.encoding=UTF-8

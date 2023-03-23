@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>fr.ird.ob7</groupId>
+    <artifactId>akado-poc</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>akado-avdth-common</artifactId>
+  <name>AKaDo :: AVDTH Common</name>
+  <description>Common for AKaDo AVDTH</description>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ird-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- http://mvnrepository.com/artifact/org.orbisgis/h2gis -->
+    <dependency>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2gis</artifactId>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2spatial-ext</artifactId>
+    </dependency>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+Copyright (C) 2014  Observatoire thonier, IRD
+ 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+ 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+ 
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+IzPack Shortcuts Script for AKaDo
+Author: Julien Lebranchu <julien.lebranchu@ird.fr>
+-->
+
+<shortcuts>
+    <skipIfNotSupported/>   
+    <defaultCurrentUser/>
+    <programGroup defaultName="Ob7\AKaDo"
+                location="applications"/>
+    <shortcut
+        name="AKaDo 2"
+        programGroup="yes"
+        desktop="yes"
+        applications="no"
+        startMenu="no"
+        startup="no"
+        target="$INSTALL_PATH\akado.bat"
+        commandLine=""
+        workingDirectory="$INSTALL_PATH"
+        description="Front-End for AKaDo 2 tool"
+        iconFile="$INSTALL_PATH\icons\akado.ico"
+        initialState="noShow">
+        <createForPack name="Core"/>
+    </shortcut>
+	    <shortcut
+        name="AKaDo 2 - PS"
+        programGroup="yes"
+        desktop="yes"
+        applications="no"
+        startMenu="no"
+        startup="no"
+        target="powershell"
+        commandLine="$INSTALL_PATH\akado.ps1"
+        workingDirectory="$INSTALL_PATH"
+        description="Front-End for AKaDo 2 tool"
+        iconFile="$INSTALL_PATH\icons\akado.ico"
+        initialState="noShow">
+        <createForPack name="Core"/>
+    </shortcut>
+	
+    <shortcut
+        name="Documentation"
+        programGroup="yes"
+        desktop="yes"
+        applications="no"
+        startMenu="yes"
+        startup="no"
+        target="$INSTALL_PATH\doc\AKaDo_user_guide.pdf"
+        workingDirectory=""
+        commandLine=""
+        initialState="noShow"
+        iconFile="$INSTALL_PATH\icons\akado-doc.ico"
+        iconIndex="0"
+        url="$INSTALL_PATH\doc\AKaDo_user_guide.pdf"
+        type="Link"
+        encoding="UTF-8"
+        description="AKaDo user documentation (PDF format)">
+        <createForPack name="Documentation-PDF"/>
+    </shortcut>
+
+    <shortcut
+        name="Uninstaller"
+        programGroup="yes"
+        desktop="no"
+        applications="no"
+        startMenu="no"
+        startup="no"
+        target="$INSTALL_PATH\uninstaller.bat"
+        commandLine=""
+        initialState="noShow"
+        iconFile="%SystemRoot%\system32\SHELL32.dll"
+        iconIndex="31"
+        description="AKaDo uninstaller">
+        <createForPack name="Core" />
+    </shortcut>
+
+</shortcuts>

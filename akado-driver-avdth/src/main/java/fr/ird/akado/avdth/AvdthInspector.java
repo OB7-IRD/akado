@@ -1,0 +1,579 @@
+/*
+ * Copyright (C) 2014 Observatoire thonier, IRD
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package fr.ird.akado.avdth;
+
+import fr.ird.akado.avdth.activity.PositionInEEZInspector;
+import fr.ird.akado.avdth.activity.PositionInspector;
+import fr.ird.akado.avdth.result.AVDTHMessage;
+import fr.ird.akado.avdth.result.InfoResult;
+import fr.ird.akado.avdth.result.Results;
+import fr.ird.akado.avdth.result.object.Resume;
+import fr.ird.akado.avdth.selector.FlagSelector;
+import fr.ird.akado.avdth.selector.VesselSelector;
+import fr.ird.akado.core.DataBaseInspector;
+import fr.ird.akado.core.Inspector;
+import fr.ird.akado.avdth.common.AAProperties;
+import static fr.ird.akado.avdth.common.AAProperties.KEY_DATE_FORMAT_XLS;
+import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
+import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_HARBOUR_PATH;
+import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_OCEAN_PATH;
+import static fr.ird.akado.avdth.common.AAProperties.KEY_STANDARD_DIRECTORY;
+import fr.ird.akado.avdth.common.AkadoException;
+import fr.ird.akado.avdth.common.GISHandler;
+import fr.ird.akado.core.common.AbstractResults;
+import fr.ird.akado.core.selector.TemporalSelector;
+import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
+import static fr.ird.common.ListUtils.map;
+import fr.ird.common.list.comprehesion.Func;
+import fr.ird.common.log.LogService;
+import fr.ird.common.message.Message;
+import fr.ird.driver.anapo.service.ANAPOService;
+import fr.ird.driver.anapo.common.exception.ANAPODriverException;
+import fr.ird.driver.avdth.business.Activity;
+import fr.ird.driver.avdth.business.Country;
+import fr.ird.driver.avdth.business.Sample;
+import fr.ird.driver.avdth.business.Trip;
+import fr.ird.driver.avdth.business.Vessel;
+import fr.ird.driver.avdth.business.Well;
+import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import fr.ird.driver.avdth.dao.VersionDAO;
+import fr.ird.driver.avdth.service.AvdthService;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import org.apache.commons.io.FilenameUtils;
+import org.joda.time.DateTime;
+
+/**
+ *
+ * @author Julien Lebranchu <julien.lebranchu@ird.fr>
+ * @since 2.0
+ * @date 21 mai 2014
+ */
+public class AvdthInspector extends DataBaseInspector {
+
+    private String exportDirectoryPath;
+    private static final int VERSION_AVDTH_COMPATIBILITY = 35;
+
+    /**
+     * List all trips inspectors.
+     */
+    public static final List<Inspector> ALL_TRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.trip");
+    /**
+     * List all trips (with partial landings) inspectors.
+     */
+    public static final List<Inspector> ALL_METATRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.metatrip");
+    /**
+     * List all inspectors ANAPO applied on activity.
+     */
+    public static final List<Inspector> ALL_ANAPO_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.vms");
+    /**
+     * List all inspectors applied applied on all activities.
+     */
+    public static final List<Inspector> ALL_ANAPO_VMS_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.activity");
+    /**
+     * List all activities inspectors.
+     */
+    public static final List<Inspector> ALL_ACTIVITY_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activity");
+    /**
+     * List all activities inspectors.
+     */
+    public static final List<Inspector> ALL_ACTIVITIES_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activities");
+    /**
+     * List all samples inspectors.
+     */
+    public static final List<Inspector> ALL_SAMPLE_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.sample");
+    /**
+     * List all wells inspectors.
+     */
+    public static final List<Inspector> ALL_WELL_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.well");
+
+    Resume r = new Resume();
+
+    /**
+     *
+     * @param url the URL of the database to connect to
+     * @param driver the driver class of the database
+     * @param login the login of the database to connect to
+     * @param password the password of the database to connect to
+     * @throws fr.ird.akado.avdth.common.AkadoException
+     * @throws fr.ird.driver.anapo.common.exception.ANAPODriverException
+     */
+    public AvdthInspector(String url, String driver, String login, String password) throws AkadoException, ANAPODriverException, Exception {
+        super(url, driver, login, password);
+
+        // Test l'export des resultats au fil de l'eau
+        String databasePath = url.substring(AAProperties.PROTOCOL_JDBC_ACCESS.length());
+        String pathExport = new File(databasePath).getParent();
+        String dbName = FilenameUtils.removeExtension(new File(databasePath).getName());
+        DateTime currentDateTime = DateTime.now();
+        if (!AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+            exportDirectoryPath = pathExport + File.separator + dbName + "_akado_result_" + currentDateTime.getYear() + currentDateTime.getMonthOfYear() + currentDateTime.getDayOfMonth() + "_" + currentDateTime.getHourOfDay() + currentDateTime.getMinuteOfHour();
+            if (!(new File(exportDirectoryPath)).exists()) {
+                new File(exportDirectoryPath).mkdirs();
+            }
+            LogService.getService(this.getClass()).logApplicationInfo("The results will be write in the direcory " + exportDirectoryPath);
+        }
+        LogService.getService(this.getClass()).logApplicationDebug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
+        loadProperties();
+        prepare();
+        setResults(new Results());
+        getAkadoMessages().setBundleProperties(Constant.AKADO_AVDTH_BUNDLE_PROPERTIES);
+
+        flagSelectors = new ArrayList<>();
+        vesselSelectors = new ArrayList<>();
+        try {
+            AvdthService.getService().init(url, driver, login, password);
+            if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+
+                if (AAProperties.ANAPO_DB_URL == null || "".equals(AAProperties.ANAPO_DB_URL)) {
+                    throw new ANAPODriverException("The connection to ANAPO database has failed. The database isn't set correctly.");
+                }
+                ANAPOService.getService().init(AAProperties.PROTOCOL_JDBC_ACCESS + AAProperties.ANAPO_DB_URL, driver, AAProperties.ANAPO_USER, AAProperties.ANAPO_PASSWORD);
+
+            }
+        } catch (AvdthDriverException ex) {
+            LogService.getService(AvdthInspector.class).logApplicationError(ex.toString());
+            LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            LogService.getService(AvdthInspector.class).logApplicationError(Arrays.toString(ex.getStackTrace()));
+        }
+        r.setDatabaseName(url.substring(url.lastIndexOf(File.separator) + 1));
+        if (AAProperties.TRIP_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            this.inspectors.addAll(AvdthInspector.ALL_TRIP_INSPECTORS);
+            this.inspectors.addAll(AvdthInspector.ALL_METATRIP_INSPECTORS);
+        }
+
+        if (AAProperties.ACTIVITY_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            this.inspectors.addAll(AvdthInspector.ALL_ACTIVITY_INSPECTORS);
+//            this.inspectors.addAll(AvdthInspector.ALL_ACTIVITIES_INSPECTORS);
+        }
+        if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            this.inspectors.addAll(AvdthInspector.ALL_ANAPO_INSPECTORS);
+            this.inspectors.addAll(AvdthInspector.ALL_ANAPO_VMS_INSPECTORS);
+        }
+        if (AAProperties.SAMPLE_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            this.inspectors.addAll(AvdthInspector.ALL_SAMPLE_INSPECTORS);
+        }
+        if (AAProperties.WELL_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            this.inspectors.addAll(AvdthInspector.ALL_WELL_INSPECTORS);
+        }
+    }
+
+    @Override
+    public void info() {
+//        DateTimeZone timeZone = DateTimeZone.forID("Paris/Europe");
+
+        r.setTripCount(AvdthService.getService().getTripDAO().count());
+        r.setFirstDateOfTrip(AvdthService.getService().getTripDAO().firstLandingDate());
+        r.setLastDateOfTrip(AvdthService.getService().getTripDAO().lastLandingDate());
+
+        r.setActivityCount(AvdthService.getService().getActivityDAO().count());
+        r.setFirstDateOfActivity(AvdthService.getService().getActivityDAO().firstActivityDate());
+        r.setLastDateOfActivity(AvdthService.getService().getActivityDAO().lastActivityDate());
+
+        r.setSampleCount(AvdthService.getService().getSampleDAO().count());
+        r.setWellCount(AvdthService.getService().getWellDAO().count());
+        InfoResult info = new InfoResult();
+        info.set(r);
+//
+        List<Object> infos = new ArrayList<>();
+        infos.add(AvdthService.getService().getTripDAO().count());
+        infos.add(DATE_FORMATTER.print(AvdthService.getService().getTripDAO().firstLandingDate()));
+        infos.add(DATE_FORMATTER.print(AvdthService.getService().getTripDAO().lastLandingDate()));
+        infos.add(AvdthService.getService().getActivityDAO().count());
+        infos.add(DATE_FORMATTER.print(AvdthService.getService().getActivityDAO().firstActivityDate()));
+        infos.add(DATE_FORMATTER.print(AvdthService.getService().getActivityDAO().lastActivityDate()));
+        infos.add(AvdthService.getService().getSampleDAO().count());
+        infos.add(AvdthService.getService().getWellDAO().count());
+        info.setMessageType(Message.INFO);
+        info.setMessageCode(Constant.CODE_INFO_DATABASE);
+        info.setMessageLabel(Constant.LABEL_INFO_DATABASE);
+        info.setMessageParameters((ArrayList<Object>) infos);
+        getAkadoMessages().add(info.getMessage());
+        LogService.getService(AvdthInspector.class).logApplicationInfo(r.toString());
+
+    }
+
+    /**
+     * Write all results in the excel file.
+     */
+    private void writeResultsInFile() {
+        if (AAProperties.RESULTS_OUTPUT != null && AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+            return;
+        }
+        if (!getResults().isEmpty()) {
+            getResults().exportToXLS(exportDirectoryPath);
+            getResults().clear();
+        }
+    }
+
+    private class ActivityTask extends Task {
+
+        public ActivityTask(AbstractResults r) {
+            super(r);
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
+                    LogService.getService(this.getClass()).logApplicationInfo("Vessel selection : " + AAProperties.VESSEL_SELECTED);
+                    String[] codeList = AAProperties.VESSEL_SELECTED.split("\\|");
+                    for (String code : codeList) {
+                        addVesselConstraint(Integer.valueOf(code));
+                    }
+                }
+
+                List<Activity> activities = getActivitiesToValidate();
+                for (Activity a : activities) {
+                    LogService.getService(this.getClass()).logApplicationInfo(a.getID());
+//            System.out.println(getClass().getName() + " ActivityInspector=" + a);
+                    for (Inspector i : getInspectors()) {
+                        if (ALL_ACTIVITY_INSPECTORS.contains(i)) {
+                            if (!(AAProperties.POSITION_INSPECTOR.equals(AAProperties.DISABLE_VALUE) && ((i instanceof PositionInspector) || (i instanceof PositionInEEZInspector)))) {
+                                i.set(a);
+                                results.addAll(i.execute());
+                            }
+                        }
+                    }
+                }
+                LogService.getService(this.getClass()).logApplicationInfo("Activities processing...");
+                for (Inspector i : getInspectors()) {
+                    if (ALL_ACTIVITIES_INSPECTORS.contains(i)) {
+                        i.set(activities);
+                        this.getResults().addAll(i.execute());
+                    }
+                }
+                writeResultsInFile();
+            } catch (Exception ex) {
+                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            }
+        }
+    }
+
+    private class TripTask extends Task {
+
+        public TripTask(AbstractResults r) {
+            super(r);
+        }
+
+        @Override
+        public void run() {
+            try {
+
+                List<Trip> trips = getTripsToValidate();
+                for (Trip m : trips) {
+                    LogService.getService(this.getClass()).logApplicationInfo(m.getID());
+                    for (Inspector i : getInspectors()) {
+                        if (ALL_TRIP_INSPECTORS.contains(i)) {
+                            i.set(m);
+                            this.getResults().addAll(i.execute());
+                        }
+                    }
+                }
+                LogService.getService(this.getClass()).logApplicationInfo("MetaTrip processing...");
+                for (Inspector i : getInspectors()) {
+                    if (ALL_METATRIP_INSPECTORS.contains(i)) {
+                        i.set(trips);
+                        this.getResults().addAll(i.execute());
+                    }
+                }
+                writeResultsInFile();
+            } catch (Exception ex) {
+                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            }
+        }
+    }
+
+    private class AnapoTask extends Task {
+
+        public AnapoTask(AbstractResults r) {
+            super(r);
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
+                    LogService.getService(this.getClass()).logApplicationInfo("Vessel selection : " + AAProperties.VESSEL_SELECTED);
+                    String[] codeList = AAProperties.VESSEL_SELECTED.split("\\|");
+                    for (String code : codeList) {
+                        addVesselConstraint(Integer.valueOf(code));
+                    }
+                }
+
+                LogService.getService(this.getClass()).logApplicationInfo("Anapo processing...");
+                for (Inspector i : ALL_ANAPO_INSPECTORS) {
+                    if (!(AAProperties.ANAPO_DB_URL == null || (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)))) {
+                        for (Activity activity : getActivitiesToValidate()) {
+                            i.set(activity);
+                            this.getResults().addAll(i.execute());
+                        }
+                    }
+                }
+                for (Inspector i : ALL_ANAPO_VMS_INSPECTORS) {
+                    if (!(AAProperties.ANAPO_DB_URL == null || (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)))) {
+                        i.set(getActivitiesToValidate());
+                        this.getResults().addAll(i.execute());
+                    }
+                }
+
+                writeResultsInFile();
+            } catch (Exception ex) {
+                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            }
+        }
+    }
+
+    private class WellTask extends Task {
+
+        public WellTask(AbstractResults r) {
+            super(r);
+        }
+
+        @Override
+        public void run() {
+            try {
+                for (Well e : getWellsToValidate()) {
+                    LogService.getService(this.getClass()).logApplicationInfo(e.getID());
+//            System.out.println(getClass().getName() + " Well=" + e);
+                    for (Inspector i : getInspectors()) {
+                        if (ALL_WELL_INSPECTORS.contains(i)) {
+                            i.set(e);
+                            this.getResults().addAll(i.execute());
+                        }
+                    }
+                }
+                writeResultsInFile();
+            } catch (Exception ex) {
+                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            }
+        }
+    }
+
+    private abstract class Task implements Runnable {
+
+        protected AbstractResults results;
+
+        public Task(AbstractResults r) {
+            this.results = r;
+        }
+
+        public AbstractResults getResults() {
+            return results;
+        }
+    }
+
+    private class SampleTask extends Task {
+
+        public SampleTask(AbstractResults r) {
+            super(r);
+        }
+
+        @Override
+        public void run() {
+            try {
+
+                for (Sample e : getSamplesToValidate()) {
+                    LogService.getService(this.getClass()).logApplicationInfo(e.getID());
+                    for (Inspector i : getInspectors()) {
+                        if (ALL_SAMPLE_INSPECTORS.contains(i)) {
+                            i.set(e);
+                            this.getResults().addAll(i.execute());
+
+                        }
+                    }
+                }
+                writeResultsInFile();
+            } catch (Exception ex) {
+                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void validate() throws Exception {
+        int avdthVersion = new VersionDAO().getVersionNumber();
+        if (avdthVersion != VERSION_AVDTH_COMPATIBILITY) {
+            AVDTHMessage message = new AVDTHMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, VERSION_AVDTH_COMPATIBILITY, Message.ERROR);
+            throw new AkadoException(message.getContent());
+        }
+        List tasks = new ArrayList<>();
+        if (AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            tasks.add(new TripTask(this.getResults()));
+            tasks.add(new ActivityTask(this.getResults()));
+            tasks.add(new WellTask(this.getResults()));
+            tasks.add(new SampleTask(this.getResults()));
+        }
+        tasks.add(new AnapoTask(this.getResults()));
+        ExecutorService exec = Executors.newFixedThreadPool(AAProperties.NB_PROC);
+//        long start = System.currentTimeMillis();
+        for (Object task : tasks) {
+            exec.submit((Runnable) task);
+        }
+
+        exec.shutdown();
+        exec.awaitTermination(120, TimeUnit.MINUTES);
+//        long stop = System.currentTimeMillis();
+
+//        System.out.println((stop - start) + " ms");
+        //System.out.println(getClass().getName() + " validate() done");
+//        this.getAkadoMessages().log();
+//        writeResultsInFile();
+    }
+
+    private List<Trip> getTripsToValidate() throws AvdthDriverException {
+//        System.out.println(getClass().getName() + " getTripsToValidate()");
+        return AvdthService.getService().getTripDAO().findTrips(
+                map(vesselSelectors, new Func<VesselSelector, Vessel>() {
+                    @Override
+                    public Vessel apply(VesselSelector in) {
+                        return in.get();
+                    }
+                }),
+                map(flagSelectors, new Func<FlagSelector, Country>() {
+                    @Override
+                    public Country apply(FlagSelector in) {
+                        return in.get();
+                    }
+                }),
+                temporalSelector.getStart(),
+                temporalSelector.getEnd()
+        );
+    }
+
+    private List<Sample> getSamplesToValidate() throws AvdthDriverException {
+        return AvdthService.getService().getSampleDAO().findSample(
+                map(vesselSelectors, new Func<VesselSelector, Vessel>() {
+                    @Override
+                    public Vessel apply(VesselSelector in) {
+                        return in.get();
+                    }
+                }),
+                map(flagSelectors, new Func<FlagSelector, Country>() {
+                    @Override
+                    public Country apply(FlagSelector in) {
+                        return in.get();
+                    }
+                }),
+                temporalSelector.getStart(),
+                temporalSelector.getEnd()
+        );
+    }
+
+    private List<Well> getWellsToValidate() throws AvdthDriverException {
+        return AvdthService.getService().getWellDAO().findWell(
+                map(vesselSelectors, new Func<VesselSelector, Vessel>() {
+                    @Override
+                    public Vessel apply(VesselSelector in) {
+                        return in.get();
+                    }
+                }),
+                map(flagSelectors, new Func<FlagSelector, Country>() {
+                    @Override
+                    public Country apply(FlagSelector in) {
+                        return in.get();
+                    }
+                }),
+                temporalSelector.getStart(),
+                temporalSelector.getEnd()
+        );
+    }
+
+    private List<Activity> getActivitiesToValidate() throws AvdthDriverException {
+        return AvdthService.getService().getActivityDAO().findActivities(
+                map(vesselSelectors, new Func<VesselSelector, Vessel>() {
+                    @Override
+                    public Vessel apply(VesselSelector in) {
+                        return in.get();
+                    }
+                }),
+                map(flagSelectors, new Func<FlagSelector, Country>() {
+                    @Override
+                    public Country apply(FlagSelector in) {
+                        return in.get();
+                    }
+                }),
+                temporalSelector.getStart(),
+                temporalSelector.getEnd()
+        );
+    }
+
+    private final List<FlagSelector> flagSelectors;
+
+    public void addFlagConstraint(String flag) {
+        flagSelectors.add(new FlagSelector(flag));
+    }
+
+    private final List<VesselSelector> vesselSelectors;
+
+    public void addVesselConstraint(Integer code) {
+        vesselSelectors.add(new VesselSelector(code));
+    }
+
+    private void prepare() throws Exception {
+        if (!GISHandler.getService().exists()) {
+            loadProperties();
+            GISHandler.getService().init(
+                    AAProperties.STANDARD_DIRECTORY,
+                    AAProperties.SHP_COUNTRIES_PATH,
+                    AAProperties.SHP_OCEAN_PATH,
+                    AAProperties.SHP_HARBOUR_PATH,
+                    AAProperties.SHP_EEZ_PATH
+            );
+            GISHandler.getService().create();
+        }
+    }
+
+    private void loadProperties() {
+        if (AAProperties.STANDARD_DIRECTORY == null && CONFIGURATION_PROPERTIES != null) {
+            AAProperties.STANDARD_DIRECTORY = DataBaseInspector.CONFIGURATION_PROPERTIES.getProperty(KEY_STANDARD_DIRECTORY);
+            AAProperties.SHP_COUNTRIES_PATH = CONFIGURATION_PROPERTIES.getProperty(KEY_SHP_COUNTRIES_PATH);
+            AAProperties.SHP_OCEAN_PATH = CONFIGURATION_PROPERTIES.getProperty(KEY_SHP_OCEAN_PATH);
+            AAProperties.SHP_HARBOUR_PATH = CONFIGURATION_PROPERTIES.getProperty(KEY_SHP_HARBOUR_PATH);
+            AAProperties.SHP_EEZ_PATH = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_SHP_EEZ_PATH);
+            AAProperties.DATE_FORMAT_XLS = CONFIGURATION_PROPERTIES.getProperty(KEY_DATE_FORMAT_XLS);
+
+            AAProperties.SAMPLE_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_SAMPLE_INSPECTOR);
+            AAProperties.WELL_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_WELL_INSPECTOR);
+            AAProperties.TRIP_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_WELL_INSPECTOR);
+            AAProperties.POSITION_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_POSITION_INSPECTOR);
+            AAProperties.ACTIVITY_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_ACTIVITY_INSPECTOR);
+
+            AAProperties.WARNING_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_WARNING_INSPECTOR);
+            AAProperties.ANAPO_DB_URL = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_ANAPO_DB_PATH);
+            AAProperties.ANAPO_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_ANAPO_INSPECTOR);
+            AAProperties.ANAPO_VMS_COUNTRY = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_ANAPO_VMS_COUNTRY);
+
+            AAProperties.AKADO_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_AKADO_INSPECTOR);
+        }
+    }
+
+    @Override
+    public void close() {
+        AvdthService.getService().close();
+    }
+
+    public static TemporalSelector getTemporalSelector() {
+        return temporalSelector;
+    }
+
+}

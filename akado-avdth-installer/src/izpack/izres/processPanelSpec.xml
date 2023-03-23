@@ -1,0 +1,9 @@
+<processing>
+  <logfiledir>$INSTALL_PATH</logfiledir>
+  <job name="Finalise installation">
+    <executeclass name="fr.ird.akado.installer.Config">
+    </executeclass>
+  </job>
+  <onFail previous="true" next="false" />
+  <onSuccess previous="false" next="true" />
+</processing>
