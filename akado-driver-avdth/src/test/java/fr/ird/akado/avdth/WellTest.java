@@ -16,7 +16,7 @@
  */
 package fr.ird.akado.avdth;
 
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.well.ActivityConsistent;
 import fr.ird.akado.avdth.well.WellWithoutTripInspector;

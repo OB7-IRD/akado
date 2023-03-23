@@ -16,7 +16,7 @@
  */
 package fr.ird.akado.avdth.sample;
 
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_BIG_INF_THRESHOLD;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_LITTLE_INF_THRESHOLD;
 import static fr.ird.akado.avdth.Constant.LABEL_SAMPLE_BIG_INF_THRESHOLD;

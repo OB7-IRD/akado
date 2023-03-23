@@ -16,7 +16,7 @@
  */
 package fr.ird.akado.avdth.sample;
 
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_LDLF_M10;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_LDLF_P10;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_LDLF_SPECIES_FORBIDDEN;

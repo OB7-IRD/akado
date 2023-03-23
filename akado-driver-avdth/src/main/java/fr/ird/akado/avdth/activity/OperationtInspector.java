@@ -18,7 +18,7 @@
 package fr.ird.akado.avdth.activity;
 
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY;
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT;
 import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE;

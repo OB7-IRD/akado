@@ -16,7 +16,7 @@
  */
 package fr.ird.akado.ui.swing.view.p;
 
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.ui.swing.listener.InfoListener;
 import fr.ird.akado.ui.swing.listener.InfoListeners;
 import fr.ird.akado.ui.swing.view.TaskController;

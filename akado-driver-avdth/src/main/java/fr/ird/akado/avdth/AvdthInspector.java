@@ -26,14 +26,14 @@ import fr.ird.akado.avdth.selector.FlagSelector;
 import fr.ird.akado.avdth.selector.VesselSelector;
 import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.avdth.common.AAProperties;
-import static fr.ird.akado.avdth.common.AAProperties.KEY_DATE_FORMAT_XLS;
-import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
-import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_HARBOUR_PATH;
-import static fr.ird.akado.avdth.common.AAProperties.KEY_SHP_OCEAN_PATH;
-import static fr.ird.akado.avdth.common.AAProperties.KEY_STANDARD_DIRECTORY;
-import fr.ird.akado.avdth.common.AkadoException;
-import fr.ird.akado.avdth.common.GISHandler;
+import fr.ird.akado.core.common.AAProperties;
+import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_HARBOUR_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_OCEAN_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_STANDARD_DIRECTORY;
+import fr.ird.akado.core.common.AkadoException;
+import fr.ird.akado.core.common.GISHandler;
 import fr.ird.akado.core.common.AbstractResults;
 import fr.ird.akado.core.selector.TemporalSelector;
 import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
@@ -114,7 +114,7 @@ public class AvdthInspector extends DataBaseInspector {
      * @param driver the driver class of the database
      * @param login the login of the database to connect to
      * @param password the password of the database to connect to
-     * @throws fr.ird.akado.avdth.common.AkadoException
+     * @throws AkadoException
      * @throws fr.ird.driver.anapo.common.exception.ANAPODriverException
      */
     public AvdthInspector(String url, String driver, String login, String password) throws AkadoException, ANAPODriverException, Exception {

@@ -17,7 +17,7 @@
 package fr.ird.akado.avdth;
 
 import fr.ird.akado.avdth.result.Result;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.sample.DistributionInspector;
 import fr.ird.akado.avdth.sample.well.ActivityConsistentInspector;
@@ -35,7 +35,7 @@ import fr.ird.akado.avdth.sample.WeightSampleInspector;
 import fr.ird.akado.avdth.sample.WeightingInspector;
 import static fr.ird.akado.avdth.sample.WeightingInspector.weightedWeight;
 import fr.ird.akado.avdth.sample.WellNumberConsistentInspector;
-import fr.ird.akado.avdth.common.GISHandler;
+import fr.ird.akado.core.common.GISHandler;
 import fr.ird.akado.avdth.sample.HarbourInspector;
 import fr.ird.driver.avdth.business.Sample;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;

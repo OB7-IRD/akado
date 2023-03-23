@@ -18,7 +18,7 @@ package fr.ird.akado.avdth.sample;
 
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_LENGTH_CLASS;
 import static fr.ird.akado.avdth.Constant.LABEL_SAMPLE_LENGTH_CLASS;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.SampleResult;
 import fr.ird.akado.core.Inspector;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.ird.akado.avdth.utils;
+package fr.ird.akado.core.utils;
 
 /**
  *Classe de test de calcul des distances non euclidiennes.

@@ -22,7 +22,7 @@ import fr.ird.akado.ui.swing.AkadoController;
 import fr.ird.akado.ui.swing.action.GISHandlerAction;
 import fr.ird.akado.ui.swing.action.LoadVMSDatabaseAction;
 import fr.ird.akado.ui.swing.action.OpenAVDTHDatabaseAction;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.ui.swing.listener.InfoListeners;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;

@@ -5,8 +5,8 @@
   <artifactId>akado-poc</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>AKaDo :: Poc</name>
-  <description>AKaDo Poc</description>
+  <name>AKaDo</name>
+  <description>AKaDo</description>
   <organization>
     <name>Observatoire des écosystèmes pélagiques tropicaux exploités, IRD</name>
     <url>https://www.ob7.ird.fr/</url>
@@ -49,7 +49,6 @@
     <module>driver-avdth</module>
     <module>driver-observe</module>
     <module>akado-core</module>
-    <module>akado-avdth-common</module>
     <module>akado-driver-observe</module>
     <module>akado-driver-avdth</module>
     <module>akado-avdth-ui</module>

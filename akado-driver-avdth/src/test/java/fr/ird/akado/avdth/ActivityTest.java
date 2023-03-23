@@ -17,7 +17,7 @@
 package fr.ird.akado.avdth;
 
 import fr.ird.akado.avdth.activity.EEZInspector;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.activity.FishingContextInspector;
 import fr.ird.akado.avdth.activity.OperationtInspector;
 import fr.ird.akado.avdth.activity.PositionInEEZInspector;
@@ -27,7 +27,7 @@ import fr.ird.akado.avdth.activity.WeightInspector;
 import fr.ird.akado.avdth.activity.WeightingSampleInspector;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.avdth.common.GISHandler;
+import fr.ird.akado.core.common.GISHandler;
 import fr.ird.akado.avdth.result.Result;
 import fr.ird.common.OTUtils;
 import fr.ird.common.log.LogService;

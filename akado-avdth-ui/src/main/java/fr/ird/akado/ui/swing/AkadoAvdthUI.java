@@ -18,8 +18,8 @@ package fr.ird.akado.ui.swing;
 
 import fr.ird.akado.ui.AkadoAvdthProperties;
 import fr.ird.akado.ui.Constant;
-import fr.ird.akado.avdth.common.AAProperties;
-import fr.ird.akado.avdth.common.AkadoException;
+import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.common.AkadoException;
 import fr.ird.common.log.LogService;
 import java.io.File;
 import java.io.IOException;

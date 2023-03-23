@@ -18,7 +18,7 @@ package fr.ird.akado.ui.swing.view;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.AkadoCore;
 import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.Inspector;
@@ -26,7 +26,7 @@ import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.AkadoMessages;
 import fr.ird.akado.core.common.MessageAdapter;
 import fr.ird.akado.ui.AkadoAvdthProperties;
-import fr.ird.akado.avdth.common.AkadoException;
+import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.ui.swing.view.p.InfoBar;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.log.LogService;

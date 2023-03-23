@@ -18,11 +18,10 @@
  */
 package fr.ird.akado.ui.swing.action;
 
-import fr.ird.akado.ui.AkadoAvdthProperties;
 import fr.ird.akado.ui.swing.AkadoController;
 import fr.ird.akado.ui.swing.utils.FileFilter;
 import fr.ird.akado.ui.swing.utils.MSAccessExtensionFilter;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.ui.swing.listener.InfoListeners;
 import java.awt.Component;
 import java.awt.event.ActionEvent;

@@ -16,7 +16,7 @@
  */
 package fr.ird.akado.avdth.sample;
 
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_WEIGHTING_BB_LC;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_WEIGHTING_BB_WEIGHT;
 import static fr.ird.akado.avdth.Constant.CODE_SAMPLE_WEIGHTING_SUP_100;

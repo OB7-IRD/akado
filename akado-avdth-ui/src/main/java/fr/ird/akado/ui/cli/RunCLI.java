@@ -22,7 +22,7 @@ import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.MessageAdapter;
 import fr.ird.akado.ui.AkadoAvdthProperties;
 import fr.ird.akado.ui.swing.AkadoController;
-import fr.ird.akado.avdth.common.AkadoException;
+import fr.ird.akado.core.common.AkadoException;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;

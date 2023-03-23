@@ -20,7 +20,7 @@ import static fr.ird.akado.avdth.Constant.CODE_TRIP_NO_CATCH;
 import static fr.ird.akado.avdth.Constant.CODE_TRIP_RAISING_FACTOR;
 import static fr.ird.akado.avdth.Constant.LABEL_TRIP_NO_CATCH;
 import static fr.ird.akado.avdth.Constant.LABEL_TRIP_RAISING_FACTOR;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.MetaTripResult;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.TripResult;

@@ -24,7 +24,7 @@ import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.AnapoResult;
 import fr.ird.akado.avdth.result.object.Anapo;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;

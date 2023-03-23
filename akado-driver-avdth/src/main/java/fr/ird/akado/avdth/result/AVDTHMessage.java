@@ -18,7 +18,7 @@ package fr.ird.akado.avdth.result;
 
 import static fr.ird.akado.avdth.Constant.AKADO_AVDTH_BUNDLE_PROPERTIES;
 import fr.ird.akado.core.common.AkadoMessage;
-import fr.ird.akado.avdth.common.AAProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.message.Message;
 import java.util.ArrayList;
 import java.util.Locale;
