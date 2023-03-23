@@ -6,10 +6,10 @@
     <artifactId>akado-poc</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>akado-avdth-installer</artifactId>
+  <artifactId>akado-installer</artifactId>
   <packaging>jar</packaging>
-  <name>AKaDo :: AVDTH Installer</name>
-  <description>AKaDo 4 AVDTH installer based on IzPack</description>
+  <name>AKaDo :: Installer</name>
+  <description>AKaDo 4 installer based on IzPack</description>
   <properties>
     <izpack.staging>${project.build.directory}/staging</izpack.staging>
   </properties>

@@ -52,7 +52,7 @@
     <module>akado-driver-observe</module>
     <module>akado-driver-avdth</module>
     <module>akado-ui</module>
-    <module>akado-avdth-installer</module>
+    <module>akado-installer</module>
   </modules>
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
