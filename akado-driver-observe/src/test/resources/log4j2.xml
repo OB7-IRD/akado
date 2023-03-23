@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true" status="warn">
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%highlight{%p}{FATAL=white, ERROR=bright_red, WARN=yellow bold, INFO=blue bold, DEBUG=normal, TRACE=normal}] %d{ISO8601} [%t] %40c :%4L - %m%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+
+    <Logger name="fr.ird.akado.observe" level="info" additivity="false">
+      <AppenderRef ref="console"/>
+    </Logger>
+    <Root level="warn">
+      <AppenderRef ref="console"/>
+    </Root>
+  </Loggers>
+</Configuration>
