@@ -28,7 +28,7 @@ import fr.ird.akado.avdth.result.object.Anapo;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.core.common.AAProperties.THRESHOLD_CLASS_TWO;
-import fr.ird.akado.core.utils.WGS84;
+import fr.ird.akado.core.spatial.WGS84;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.OTUtils;
 import fr.ird.common.log.LogService;

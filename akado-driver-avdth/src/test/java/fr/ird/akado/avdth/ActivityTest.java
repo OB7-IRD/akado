@@ -27,7 +27,7 @@ import fr.ird.akado.avdth.activity.WeightInspector;
 import fr.ird.akado.avdth.activity.WeightingSampleInspector;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.core.common.GISHandler;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.avdth.result.Result;
 import fr.ird.common.OTUtils;
 import fr.ird.common.log.LogService;

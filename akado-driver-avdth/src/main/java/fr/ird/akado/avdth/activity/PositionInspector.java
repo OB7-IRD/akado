@@ -25,7 +25,7 @@ import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_POSITION_WEIRD;
 import fr.ird.akado.avdth.result.ActivityResult;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.core.common.GISHandler;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.JDBCUtilities;
 import fr.ird.common.OTUtils;
 import fr.ird.common.message.Message;

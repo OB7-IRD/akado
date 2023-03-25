@@ -20,7 +20,7 @@ package fr.ird.akado.avdth.activities;
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_OPERATION_EEZ_INCONSISTENCY;
 import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_OPERATION_EEZ_INCONSISTENCY;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.core.common.GISHandler;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.avdth.result.ActivityResult;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;

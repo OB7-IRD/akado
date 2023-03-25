@@ -33,7 +33,7 @@ import static fr.ird.akado.core.common.AAProperties.KEY_SHP_HARBOUR_PATH;
 import static fr.ird.akado.core.common.AAProperties.KEY_SHP_OCEAN_PATH;
 import static fr.ird.akado.core.common.AAProperties.KEY_STANDARD_DIRECTORY;
 import fr.ird.akado.core.common.AkadoException;
-import fr.ird.akado.core.common.GISHandler;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.core.common.AbstractResults;
 import fr.ird.akado.core.selector.TemporalSelector;
 import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;

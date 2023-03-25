@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.ird.akado.core.common;
+package fr.ird.akado.core.spatial;
 
+import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.common.AkadoException;
 import fr.ird.common.JDBCUtilities;
 import fr.ird.common.log.LogService;
 import java.io.File;
