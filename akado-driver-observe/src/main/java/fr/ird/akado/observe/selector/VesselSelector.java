@@ -34,8 +34,8 @@ public class VesselSelector extends AbstractSelectionCriteria<Vessel> {
 
     private final String code;
 
-    public VesselSelector(Integer code) {
-        this.code = Objects.requireNonNull(code).toString();
+    public VesselSelector(String code) {
+        this.code = Objects.requireNonNull(code);
     }
 
     @Override

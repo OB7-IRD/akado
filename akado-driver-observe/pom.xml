@@ -51,10 +51,6 @@
       <artifactId>jxls-poi</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.orbisgis</groupId>
-      <artifactId>h2gis-ext</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
     </dependency>

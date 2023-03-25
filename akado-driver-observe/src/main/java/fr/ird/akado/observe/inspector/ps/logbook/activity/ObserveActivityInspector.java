@@ -1,7 +1,12 @@
 package fr.ird.akado.observe.inspector.ps.logbook.activity;
 
+import fr.ird.akado.core.Inspector;
 import fr.ird.akado.observe.inspector.ObserveInspector;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
+import fr.ird.driver.observe.business.data.ps.logbook.Route;
+
+import java.util.List;
 
 /**
  * Created on 20/03/2023.
@@ -10,4 +15,30 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
  * @since 1.0.0
  */
 public abstract class ObserveActivityInspector extends ObserveInspector<Activity> {
+    private Trip trip;
+    private Route route;
+
+    public static List<ObserveActivityInspector> loadInspectors() {
+        return loadInspectors(ObserveActivityInspector.class);
+    }
+
+    public static List<ObserveActivityInspector> filterInspectors(List<Inspector<?>> inspectors) {
+        return filterInspectors(ObserveActivityInspector.class, inspectors);
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
 }

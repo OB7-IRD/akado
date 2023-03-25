@@ -1,8 +1,8 @@
-
 package fr.ird.akado.observe.inspector.ps.logbook.sample;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.core.common.AbstractResults;
+import fr.ird.akado.observe.result.Results;
+
 /**
  * Created on 20/03/2023.
  *
@@ -28,7 +28,7 @@ public class LittleBigInspector extends ObserveSampleInspector {
     }
 
     @Override
-    public AbstractResults<?> execute() throws Exception {
+    public Results execute() throws Exception {
         return null;
     }
 }
