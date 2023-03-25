@@ -15,6 +15,7 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class DaoSupplier {
+    private final SingletonSupplier<fr.ird.driver.observe.dao.VersionDao> versionDao = SingletonSupplier.of(fr.ird.driver.observe.dao.VersionDao::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.referential.common.CountryDao> commonCountryDao = SingletonSupplier.of(fr.ird.driver.observe.dao.referential.common.CountryDao::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.referential.common.DataQualityDao> commonDtaQualityDao = SingletonSupplier.of(fr.ird.driver.observe.dao.referential.common.DataQualityDao::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.referential.common.FpaZoneDao> commonFpaZoneDao = SingletonSupplier.of(fr.ird.driver.observe.dao.referential.common.FpaZoneDao::new);
@@ -148,6 +149,10 @@ public class DaoSupplier {
         result.add(getPsLogbookWellSamplingStatusDao());
 
         return result;
+    }
+
+    public fr.ird.driver.observe.dao.VersionDao getVersionDao() {
+        return versionDao.get();
     }
 
     public fr.ird.driver.observe.dao.referential.common.CountryDao getCommonCountryDao() {
