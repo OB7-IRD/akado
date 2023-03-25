@@ -70,10 +70,6 @@ public abstract class AbstractDao<E extends Entity> {
         return entityType;
     }
 
-    protected Supplier<E> lazyFindById(String query, String id) throws ObserveDriverException {
-        return SingletonSupplier.of(() -> findById(query, id));
-    }
-
     protected E findById(String query, String id) throws ObserveDriverException {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, id);
@@ -90,15 +86,15 @@ public abstract class AbstractDao<E extends Entity> {
         }
     }
 
-    public boolean insert(E e) {
+    public boolean insert(E ignored) {
         throw new UnsupportedOperationException("Not supported on ObServe database.");
     }
 
-    public boolean delete(E e) {
+    public boolean delete(E ignored) {
         throw new UnsupportedOperationException("Not supported on ObServe database.");
     }
 
-    public boolean update(E e) {
+    public boolean update(E ignored) {
         throw new UnsupportedOperationException("Not supported on ObServe database.");
     }
 

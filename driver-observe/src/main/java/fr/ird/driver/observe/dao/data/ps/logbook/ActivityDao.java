@@ -15,9 +15,11 @@ import fr.ird.driver.observe.common.ObserveDriverException;
 import fr.ird.driver.observe.dao.DaoSupplier;
 import fr.ird.driver.observe.dao.data.AbstractDataDao;
 import fr.ird.driver.observe.dao.referential.ReferentialCache;
+import io.ultreia.java4all.util.sql.SqlQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * Created on 18/03/2023.
@@ -60,6 +62,11 @@ public class ActivityDao extends AbstractDataDao<Activity> {
         super(Activity.class, Activity::new, QUERY, BY_PARENT);
     }
 
+    public long count() {
+        SqlQuery<Long> query = SqlQuery.wrap("SELECT COUNT(*) FROM ps_logbook.Activity", rs -> rs.getLong(1));
+        return count(query);
+    }
+
     @Override
     protected void fill(Activity result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
@@ -94,5 +101,16 @@ public class ActivityDao extends AbstractDataDao<Activity> {
         result.setCatches(daoSupplier.getPsLogbookCatchDao().lazyListByParentId(activityId));
         result.setFloatingObject(daoSupplier.getPsLogbookFloatingObjectDao().lazySetByParentId(activityId));
         result.setObservedSystem(lazyReferentialSet(activityId, "ps_logbook", "activity_observedSystem", "activity", "observedSystem", ObservedSystem.class));
+    }
+
+    public Date firstActivityDate() {
+        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r WHERE (SELECT count(*) FROM ps_logbook.Activity a WHERE a.route = r.topiaId) > 0 ORDER BY r.date ASC", rs -> rs.getDate(1));
+        return findFirstOrNull(query);
+
+    }
+
+    public Date lastActivityDate() {
+        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r WHERE (SELECT count(*) FROM ps_logbook.Activity a WHERE a.route = r.topiaId) > 0 ORDER BY r.date DESC", rs -> rs.getDate(1));
+        return findFirstOrNull(query);
     }
 }

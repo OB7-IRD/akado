@@ -17,6 +17,7 @@ import java.nio.file.Path;
  * @since 1.0.0
  */
 public class WellDaoTest {
+    public static final int WELL_COUNT = 1;
     @Rule
     public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource(Path.of(new File("").getAbsolutePath()).resolve("target").resolve("observe-test"));
 
@@ -30,7 +31,7 @@ public class WellDaoTest {
     public void count() {
         WellDao dao = resource.getService().getDaoSupplier().getPsLogbookWellDao();
         long actual = dao.count();
-        Assert.assertEquals(1, actual);
+        Assert.assertEquals(WELL_COUNT, actual);
     }
 
 }

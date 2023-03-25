@@ -17,6 +17,7 @@ import java.nio.file.Path;
  * @since 1.0.0
  */
 public class SampleDaoTest {
+    public static final int SAMPLE_COUNT = 2;
     @Rule
     public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource(Path.of(new File("").getAbsolutePath()).resolve("target").resolve("observe-test"));
 
@@ -26,4 +27,9 @@ public class SampleDaoTest {
         Assert.assertNotNull(result);
     }
 
+    @Test
+    public void count() {
+        long result = resource.getService().getDaoSupplier().getPsLogbookSampleDao().count();
+        Assert.assertEquals(SAMPLE_COUNT, result);
+    }
 }

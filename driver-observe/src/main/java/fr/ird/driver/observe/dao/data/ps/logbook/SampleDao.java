@@ -7,6 +7,7 @@ import fr.ird.driver.observe.common.ObserveDriverException;
 import fr.ird.driver.observe.dao.DaoSupplier;
 import fr.ird.driver.observe.dao.data.AbstractDataDao;
 import fr.ird.driver.observe.dao.referential.ReferentialCache;
+import io.ultreia.java4all.util.sql.SqlQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +35,11 @@ public class SampleDao extends AbstractDataDao<Sample> {
 
     public SampleDao() {
         super(Sample.class, Sample::new, QUERY, BY_PARENT);
+    }
+
+    public long count() {
+        SqlQuery<Long> query = SqlQuery.wrap("SELECT COUNT(*) FROM ps_logbook.Sample", rs -> rs.getLong(1));
+        return count(query);
     }
 
     @Override
