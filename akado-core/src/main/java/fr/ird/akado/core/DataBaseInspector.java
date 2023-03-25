@@ -88,14 +88,14 @@ public abstract class DataBaseInspector {
         inspectors = new ArrayList<>();
     }
 
-    protected List<Inspector> inspectors;
+    protected List<Inspector<?>> inspectors;
 
-    public List<Inspector> getInspectors() {
+    public List<Inspector<?>> getInspectors() {
         // Automatically generated method. Please do not modify this code.
         return this.inspectors;
     }
 
-    public void setInspectors(List<Inspector> value) {
+    public void setInspectors(List<Inspector<?>> value) {
         // Automatically generated method. Please do not modify this code.
         this.inspectors = value;
     }

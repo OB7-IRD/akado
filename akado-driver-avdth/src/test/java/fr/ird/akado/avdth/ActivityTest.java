@@ -458,7 +458,8 @@ public class ActivityTest extends TestCase {
         for (Inspector<Activity> inspector : inspectors) {
             for (Activity activite : activities) {
                 inspector.set(activite);
-                results.addAll(inspector.execute());
+                Results execute = (Results) inspector.execute();
+                results.addAll(execute);
             }
         }
         assertNotNull(results);

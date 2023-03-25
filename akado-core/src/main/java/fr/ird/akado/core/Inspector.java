@@ -81,8 +81,8 @@ public abstract class Inspector<T> {
      * Execute the inspection.
      *
      * @return the results of execution
-     * @throws Exception
+     * @throws Exception if any error while executing the inspector
      */
-    public abstract AbstractResults execute() throws Exception;
+    public abstract AbstractResults<?> execute() throws Exception;
 
 }

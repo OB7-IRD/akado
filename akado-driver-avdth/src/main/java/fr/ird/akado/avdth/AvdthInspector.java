@@ -76,35 +76,35 @@ public class AvdthInspector extends DataBaseInspector {
     /**
      * List all trips inspectors.
      */
-    public static final List<Inspector> ALL_TRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.trip");
+    public static final List<Inspector<?>> ALL_TRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.trip");
     /**
      * List all trips (with partial landings) inspectors.
      */
-    public static final List<Inspector> ALL_METATRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.metatrip");
+    public static final List<Inspector<?>> ALL_METATRIP_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.metatrip");
     /**
      * List all inspectors ANAPO applied on activity.
      */
-    public static final List<Inspector> ALL_ANAPO_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.vms");
+    public static final List<Inspector<?>> ALL_ANAPO_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.vms");
     /**
      * List all inspectors applied applied on all activities.
      */
-    public static final List<Inspector> ALL_ANAPO_VMS_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.activity");
+    public static final List<Inspector<?>> ALL_ANAPO_VMS_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.anapo.activity");
     /**
      * List all activities inspectors.
      */
-    public static final List<Inspector> ALL_ACTIVITY_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activity");
+    public static final List<Inspector<?>> ALL_ACTIVITY_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activity");
     /**
      * List all activities inspectors.
      */
-    public static final List<Inspector> ALL_ACTIVITIES_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activities");
+    public static final List<Inspector<?>> ALL_ACTIVITIES_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.activities");
     /**
      * List all samples inspectors.
      */
-    public static final List<Inspector> ALL_SAMPLE_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.sample");
+    public static final List<Inspector<?>> ALL_SAMPLE_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.sample");
     /**
      * List all wells inspectors.
      */
-    public static final List<Inspector> ALL_WELL_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.well");
+    public static final List<Inspector<?>> ALL_WELL_INSPECTORS = ReflectionsUtils.loadClassesFromPackage("fr.ird.akado.avdth.well");
 
     Resume r = new Resume();
 
