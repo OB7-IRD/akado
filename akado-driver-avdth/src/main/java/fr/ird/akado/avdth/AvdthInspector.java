@@ -119,7 +119,6 @@ public class AvdthInspector extends DataBaseInspector {
      * @throws fr.ird.driver.anapo.common.exception.ANAPODriverException
      */
     public AvdthInspector(String url, String driver, String login, String password) throws AkadoException, ANAPODriverException, Exception {
-        super(url, driver, login, password);
 
         // Test l'export des resultats au fil de l'eau
         String databasePath = url.substring(AAProperties.PROTOCOL_JDBC_ACCESS.length());

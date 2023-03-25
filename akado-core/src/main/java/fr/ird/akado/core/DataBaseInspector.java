@@ -35,7 +35,6 @@ import org.joda.time.DateTime;
  */
 public abstract class DataBaseInspector {
 
-//    protected String bundleProperties;
     private AbstractResults results;
     private AkadoMessages akadoMessages;
 
@@ -62,26 +61,6 @@ public abstract class DataBaseInspector {
 
     public AbstractResults getResults() {
         return results;
-    }
-
-    private String url;
-    private String driver;
-    private String login;
-    private String password;
-
-    /**
-     *
-     * @param url the URL of the database to connect to
-     * @param driver the driver class of the database
-     * @param login the login of the database to connect to
-     * @param password the password of the database to connect to
-     */
-    public DataBaseInspector(String url, String driver, String login, String password) {
-        inspectors = new ArrayList<>();
-        this.url = url;
-        this.driver = driver;
-        this.login = login;
-        this.password = password;
     }
 
     public DataBaseInspector() {
