@@ -25,6 +25,7 @@ import fr.ird.akado.avdth.result.object.Resume;
 import fr.ird.akado.avdth.selector.FlagSelector;
 import fr.ird.akado.avdth.selector.VesselSelector;
 import fr.ird.akado.core.DataBaseInspector;
+import fr.ird.akado.core.DataBaseInspectorTask;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
@@ -225,7 +226,7 @@ public class AvdthInspector extends DataBaseInspector {
         }
     }
 
-    private class ActivityTask extends Task {
+    private class ActivityTask extends DataBaseInspectorTask {
 
         public ActivityTask(AbstractResults r) {
             super(r);
@@ -269,7 +270,7 @@ public class AvdthInspector extends DataBaseInspector {
         }
     }
 
-    private class TripTask extends Task {
+    private class TripTask extends DataBaseInspectorTask {
 
         public TripTask(AbstractResults r) {
             super(r);
@@ -303,7 +304,7 @@ public class AvdthInspector extends DataBaseInspector {
         }
     }
 
-    private class AnapoTask extends Task {
+    private class AnapoTask extends DataBaseInspectorTask {
 
         public AnapoTask(AbstractResults r) {
             super(r);
@@ -343,7 +344,7 @@ public class AvdthInspector extends DataBaseInspector {
         }
     }
 
-    private class WellTask extends Task {
+    private class WellTask extends DataBaseInspectorTask {
 
         public WellTask(AbstractResults r) {
             super(r);
@@ -369,20 +370,7 @@ public class AvdthInspector extends DataBaseInspector {
         }
     }
 
-    private abstract class Task implements Runnable {
-
-        protected AbstractResults results;
-
-        public Task(AbstractResults r) {
-            this.results = r;
-        }
-
-        public AbstractResults getResults() {
-            return results;
-        }
-    }
-
-    private class SampleTask extends Task {
+    private class SampleTask extends DataBaseInspectorTask {
 
         public SampleTask(AbstractResults r) {
             super(r);
