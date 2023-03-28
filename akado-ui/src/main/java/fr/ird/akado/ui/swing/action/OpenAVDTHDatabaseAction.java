@@ -46,8 +46,8 @@ public class OpenAVDTHDatabaseAction extends AbstractAction {
     public OpenAVDTHDatabaseAction(AkadoController vpc, InfoListeners listeners) {
         this.listeners = listeners;
         this.akadoController = vpc;
-        if (AkadoAvdthProperties.LAST_DATABASE_LOADED != null && !AkadoAvdthProperties.LAST_DATABASE_LOADED.equals("")) {
-            fileChooser = new JFileChooser(AkadoAvdthProperties.LAST_DATABASE_LOADED);
+        if (AkadoAvdthProperties.LAST_AVDTH_DATABASE_LOADED != null && !AkadoAvdthProperties.LAST_AVDTH_DATABASE_LOADED.equals("")) {
+            fileChooser = new JFileChooser(AkadoAvdthProperties.LAST_AVDTH_DATABASE_LOADED);
         } else {
             fileChooser = new JFileChooser();
         }
@@ -78,7 +78,7 @@ public class OpenAVDTHDatabaseAction extends AbstractAction {
                             JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    AkadoAvdthProperties.LAST_DATABASE_LOADED = file.getAbsolutePath();
+                    AkadoAvdthProperties.LAST_AVDTH_DATABASE_LOADED = file.getAbsolutePath();
                     return file;
                 }
             } else {
@@ -95,7 +95,7 @@ public class OpenAVDTHDatabaseAction extends AbstractAction {
         File file = openMenu(null, new MSAccessExtensionFilter());
 
         if (file != null) {
-            this.akadoController.setDataBase(file);
+            this.akadoController.setAvdthDataBase(file);
             listeners.fireInfoUpdated();
         }
 //        this.vpc.setNewView(this.handler);

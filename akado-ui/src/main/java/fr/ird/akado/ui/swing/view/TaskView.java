@@ -18,36 +18,23 @@ package fr.ird.akado.ui.swing.view;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.avdth.AvdthInspector;
 import fr.ird.akado.core.AkadoCore;
 import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.core.common.AkadoMessage;
-import fr.ird.akado.core.common.AkadoMessages;
-import fr.ird.akado.core.common.MessageAdapter;
-import fr.ird.akado.ui.AkadoAvdthProperties;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
+import fr.ird.akado.core.common.AkadoMessages;
+import fr.ird.akado.core.common.MessageListener;
+import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.ui.swing.view.p.InfoBar;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -60,175 +47,45 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
  * The TaskView class display the running button and the panel of the results.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 3 juin 2014
  * @see Inspector
  * @see Task
+ * @since 2.0
  */
-public class TaskView extends JPanel implements ActionListener,
-        PropertyChangeListener {
-
-    private Task task;
-
-    private DateTime startProcess;
-
-    /**
-     * The Task class represents a thread where the main validation is executed.
-     *
-     * @see DataBaseInspector
-     * @see AkadoMessages
-     * @see SwingWorker
-     */
-    class Task
-            extends SwingWorker<Void, Void> {
-
-        DataBaseInspector inspector;
-
-        private AkadoCore akado;
-        int progress = 0;
-        private String dataBasePath;
-        String exceptionMessage = "";
-
-        Task(String path) {
-            DateTime start = DateTimeUtils.convertLocalDate(dpStartDate.getDate());
-            DateTime end = DateTimeUtils.convertLocalDate(dpEndDate.getDate());
-            LogService.getService(this.getClass()).logApplicationInfo("" + start);
-            LogService.getService(this.getClass()).logApplicationInfo("" + end);
-
-            try {
-                Constructor ctor = AkadoAvdthProperties.THIRD_PARTY_DATASOURCE.getDeclaredConstructor(String.class, String.class, String.class, String.class);
-                ctor.setAccessible(true);
-
-                this.dataBasePath = path;
-                akado = new AkadoCore();
-                inspector = (DataBaseInspector) ctor.newInstance(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + path, AkadoAvdthProperties.JDBC_ACCESS_DRIVER, "", "");
-                inspector.setTemporalConstraint(start, end);
-
-                if (!akado.addDataBaseValidator(inspector)) {
-                    throw new AkadoException("Error during the AVDTHValidator creation.");
-                }
-
-                inspector.getAkadoMessages().addMessageListener(new MessageAdapter() {
-                    @Override
-                    public void messageAdded(AkadoMessage m) {
-                        taskOutput.append(m.getContent() + "\n");
-                    }
-                });
-                inspector.info();
-            } catch (InvocationTargetException ex) {
-                exceptionMessage = "" + ex.getTargetException().getMessage();
-                LogService.getService(this.getClass()).logApplicationError(exceptionMessage);
-                JOptionPane.showMessageDialog(null,
-                        exceptionMessage,
-                        "Akado error",
-                        JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                exceptionMessage = "" + ex.getMessage();
-                LogService.getService(this.getClass()).logApplicationError(exceptionMessage);
-
-                JOptionPane.showMessageDialog(null,
-                        exceptionMessage,
-                        "Akado error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        /*
-         * Main task. Executed in background thread.
-         */
-        @Override
-        public Void doInBackground() {
-            ref = System.currentTimeMillis();
-            timer.start();
-            startProcess = new DateTime();
-            try {
-
-                akado.execute();
-            } catch (Exception ex) {
-                exceptionMessage = "" + ex.getLocalizedMessage().toString();
-                LogService.getService(this.getClass()).logApplicationError("DoInBG: " + exceptionMessage);
-                JOptionPane.showMessageDialog(null,
-                        exceptionMessage,
-                        "Akado error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-            export();
-            return null;
-        }
-        private String exportOut = "";
-
-        private void export() {
-            DateTime endProcess = new DateTime();
-            int duration = Seconds.secondsBetween(startProcess, endProcess).getSeconds();
-            exportOut = "Done in " + duration / 60 + " minute(s) and " + duration % 60 + " seconds ! There is " + inspector.getAkadoMessages().size() + " messages.\n";
-        }
-
-        /*
-         * Executed in event dispatch thread
-         */
-        @Override
-        public void done() {
-            inspector.close();
-//            AvdthService.getService().close();
-            taskOutput.append(exportOut);
-            timer.stop();
-            Toolkit.getDefaultToolkit().beep();
-            startButton.setEnabled(true);
-            dpStartDate.setEnabled(true);
-            dpEndDate.setEnabled(true);
-            stopButton.setEnabled(false);
-//            if (exportNameWithExt != null) {
-//                runExternalProgram(exportNameWithExt);
-//            }
-        }
-
-        /**
-         * Launch a registered application to open, edit or print a result file.
-         *
-         * @param exportNameWithExt the result file
-         */
-        private void runExternalProgram(String exportNameWithExt) {
-            try {
-                Desktop.getDesktop().open(new File(exportNameWithExt));
-            } catch (IOException ex) {
-                LogService.getService(this.getClass()).logApplicationError("***" + ex.getMessage());
-                JOptionPane.showMessageDialog(null,
-                        ex.getMessage(),
-                        "Akado error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+public class TaskView extends JPanel implements ActionListener {
+    private static final Logger log = LogManager.getLogger(TaskView.class);
+    private static final String startActionCommand = "ui.swing.start";
+    private static final String endActionCommand = "ui.swing.stop";
     private final JButton startButton, stopButton;
     private final JTextArea taskOutput;
-
     private final DatePicker dpStartDate;
     private final DatePicker dpEndDate;
-
-    private TaskController vtc;
-    public static Boolean DEBUG = false;
-
-    final SimpleDateFormat timef = new SimpleDateFormat("HH:mm:ss");
+    private final TaskController vtc;
+    final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     final JLabel elapsedLabel = new JLabel("", SwingUtilities.CENTER);
-    Timer timer = new javax.swing.Timer(1000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Date currentDate = new Date(System.currentTimeMillis() - ref);
-            String formattedDate = timef.format(currentDate);
-            elapsedLabel.setText(UIManager.getString("ui.swing.elapsed.time", new Locale(AAProperties.L10N)) + " = " + formattedDate);
-        }
+    private Task task;
+    private long ref = 0;
+    Timer timer = new javax.swing.Timer(1000, e -> {
+        Date currentDate = new Date(System.currentTimeMillis() - ref);
+        String formattedDate = timeFormat.format(currentDate);
+        elapsedLabel.setText(UIManager.getString("ui.swing.elapsed.time", new Locale(AAProperties.L10N)) + " = " + formattedDate);
     });
-    static long ref = 0;
-
-    private String startActionCommand = "ui.swing.start";
-    private String endActionCommand = "ui.swing.stop";
 
     public TaskView(TaskController controller) {
         super(new BorderLayout());
@@ -284,31 +141,121 @@ public class TaskView extends JPanel implements ActionListener,
         add(new JScrollPane(taskOutput), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         add(infoBar, BorderLayout.PAGE_END);
-
     }
 
-    public void displayView() {
-        setVisible(true);
+    /**
+     * The Task class represents a thread where the main validation is executed.
+     *
+     * @see DataBaseInspector
+     * @see AkadoMessages
+     */
+    class Task extends SwingWorker<Void, Void> {
+        private final AkadoCore akado;
+        private final DataBaseInspector inspector;
+        private final MessageListener messageListener;
+        private DateTime startProcess;
+
+        Task(TaskController controller) throws Exception {
+            DateTime start = DateTimeUtils.convertLocalDate(dpStartDate.getDate());
+            DateTime end = DateTimeUtils.convertLocalDate(dpEndDate.getDate());
+            LogService.getService(this.getClass()).logApplicationInfo("" + start);
+            LogService.getService(this.getClass()).logApplicationInfo("" + end);
+
+            akado = new AkadoCore();
+
+            switch (controller.getDatabaseType()) {
+                case AVDTH:
+                    inspector = new AvdthInspector(controller.getJdbcConfiguration());
+                    break;
+                case OBSERVE:
+                    inspector = new ObserveDataBaseInspector(controller.getJdbcConfiguration(), controller.getBaseDirectory());
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Can't manager database type: %s", controller.getDatabaseType()));
+            }
+
+            inspector.setTemporalConstraint(start, end);
+
+            if (!akado.addDataBaseValidator(inspector)) {
+                throw new AkadoException("Error during the inspector creation.");
+            }
+
+            messageListener = m -> taskOutput.append(m.getContent() + "\n");
+            inspector.getAkadoMessages().addMessageListener(messageListener);
+            inspector.info();
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+            ref = System.currentTimeMillis();
+            timer.start();
+            startProcess = new DateTime();
+            akado.execute();
+            return null;
+        }
+
+        @Override
+        public void done() {
+            try {
+                inspector.close();
+            } catch (Exception e) {
+                log.error("Could not close inspector", e);
+            } finally {
+                inspector.getAkadoMessages().removeMessageListener(messageListener);
+            }
+            timer.stop();
+            Toolkit.getDefaultToolkit().beep();
+            startButton.setEnabled(true);
+            dpStartDate.setEnabled(true);
+            dpEndDate.setEnabled(true);
+            stopButton.setEnabled(false);
+            try {
+
+                if (!isCancelled()) {
+                    get();
+                }
+            } catch (InterruptedException ignored) {
+            } catch (ExecutionException e) {
+                Throwable ex = e.getCause();
+                log.error("Error while executing Akado", ex);
+                String exceptionMessage = "" + ex.getLocalizedMessage();
+                LogService.getService(this.getClass()).logApplicationError("DoInBG: " + exceptionMessage);
+                JOptionPane.showMessageDialog(null, exceptionMessage, "Akado error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                DateTime endProcess = new DateTime();
+                int duration = Seconds.secondsBetween(startProcess, endProcess).getSeconds();
+                String exportOut = "Done in " + duration / 60 + " minute(s) and " + duration % 60 + " seconds ! There is " + inspector.getAkadoMessages().size() + " messages.\n";
+
+                taskOutput.append(exportOut);
+
+                task = null;
+
+            }
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(startActionCommand)) {
             taskOutput.setText("");
-            task = new Task(vtc.getPathFile());
+            try {
+                task = new Task(vtc);
+            } catch (Exception ex) {
+                log.error("Error in executing task", ex);
+                String exceptionMessage = "" + ex.getMessage();
+                LogService.getService(this.getClass()).logApplicationError(exceptionMessage);
+                JOptionPane.showMessageDialog(null, exceptionMessage, "Akado error", JOptionPane.ERROR_MESSAGE);
+            }
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
             dpStartDate.setEnabled(false);
             dpEndDate.setEnabled(false);
-            task.addPropertyChangeListener(this);
             task.execute();
         }
         if (e.getActionCommand().equals(endActionCommand)) {
-            task.cancel(true);
+            if (task != null) {
+                task.cancel(true);
+            }
         }
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
     }
 }

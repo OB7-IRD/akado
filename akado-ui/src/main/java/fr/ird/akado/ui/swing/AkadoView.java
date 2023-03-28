@@ -24,22 +24,24 @@ import fr.ird.akado.ui.swing.view.TaskController;
 import fr.ird.akado.ui.swing.view.TaskView;
 import fr.ird.akado.ui.swing.view.p.SplashPanel;
 import fr.ird.akado.ui.swing.view.p.ToolsBar;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 /**
  * AkadoView class is the main frame of the application.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 27 mai 2014
+ * @since 2.0
  */
 public class AkadoView extends JFrame implements Constant {
 
@@ -61,8 +63,8 @@ public class AkadoView extends JFrame implements Constant {
             public void windowClosing(WindowEvent e) {
 
                 int resp = JOptionPane.showConfirmDialog(null,
-                        String.format(UIManager.getString("ui.swing.quit.message", getLocale()), APPLICATION_NAME), UIManager.getString("ui.swing.quit", getLocale()),
-                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                                                         String.format(UIManager.getString("ui.swing.quit.message", getLocale()), APPLICATION_NAME), UIManager.getString("ui.swing.quit", getLocale()),
+                                                         JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (resp == JOptionPane.YES_OPTION) {
                     System.exit(0);
@@ -101,15 +103,41 @@ public class AkadoView extends JFrame implements Constant {
     }
 
     /**
-     * Prepare the validation of an AVDTH database. This methods instanciate a
+     * Prepare the validation of an AVDTH database. This methods instantiate a
      * new {@link TaskController} and set the task view associate on the content
      * pane.
      *
      * @param file the file
      */
-    public void prepareValidating(File file) {
-//        System.out.println("prepareValidating " + listeners);
-        vtc = new TaskController(file, listeners);
+    public void prepareAvdthValidating(File file) {
+        vtc = new TaskController(DatabaseType.AVDTH, file, listeners);
+        this.setContentPane(vtc.getTaskView());
+        this.validate();
+    }
+
+    /**
+     * Prepare the validation of an ObServe database from a backup. This methods instantiate a
+     * new {@link TaskController} and set the task view associate on the content
+     * pane.
+     *
+     * @param file the file
+     */
+    public void prepareObserveValidating(File file) {
+        vtc = new TaskController(DatabaseType.OBSERVE, file, listeners);
+        this.setContentPane(vtc.getTaskView());
+        this.validate();
+    }
+
+
+    /**
+     * Prepare the validation of an Observe database. This methods instantiate a
+     * new {@link TaskController} and set the task view associate on the content
+     * pane.
+     *
+     * @param jdbcConfiguration jdbc configuration
+     */
+    public void prepareObserveValidating(JdbcConfiguration jdbcConfiguration) {
+        vtc = new TaskController(DatabaseType.OBSERVE, jdbcConfiguration, listeners);
         this.setContentPane(vtc.getTaskView());
         this.validate();
     }

@@ -16,6 +16,8 @@
  */
 package fr.ird.akado.ui.swing;
 
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+
 import java.io.File;
 
 /**
@@ -25,8 +27,8 @@ import java.io.File;
  * for accessing model and rendering it into various UIs.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 27 mai 2014
+ * @since 2.0
  */
 public class AkadoController {
 
@@ -44,8 +46,26 @@ public class AkadoController {
      *
      * @param file the database file.
      */
-    public void setDataBase(File file) {
-        akadoView.prepareValidating(file);
+    public void setAvdthDataBase(File file) {
+        akadoView.prepareAvdthValidating(file);
+    }
+
+    /**
+     * Set to the akado view an Observe database from a backup.
+     *
+     * @param file the database backup to open.
+     */
+    public void setObserveDataBase(File file) {
+        akadoView.prepareObserveValidating(file);
+    }
+
+    /**
+     * Set to the akado view an Observe database.
+     *
+     * @param jdbcConfiguration the database configuration to open.
+     */
+    public void setObserveDataBase(JdbcConfiguration jdbcConfiguration) {
+        akadoView.prepareObserveValidating(jdbcConfiguration);
     }
 
 }

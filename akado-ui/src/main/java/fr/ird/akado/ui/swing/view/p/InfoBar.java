@@ -50,15 +50,14 @@ public class InfoBar extends JPanel implements InfoListener {
     private JPanel createDBInfo() {
 
         JPanel dbInfo = new JPanel();
-        JLabel label = new JLabel("AVDTH DB :");
+        JLabel label = new JLabel("DB :");
         dbInfo.add(label);
-        String avdthFilePath = "";
         label = new JLabel();
         if (vtc == null) {
             label.setText("No database");
             label.setForeground(Color.RED);
         } else {
-            label.setText(vtc.getFilename());
+            label.setText(vtc.getDatabaseLabel());
             label.setForeground(Color.BLUE);
         }
         dbInfo.add(label);

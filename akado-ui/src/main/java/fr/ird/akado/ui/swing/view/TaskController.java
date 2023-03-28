@@ -16,52 +16,90 @@
  */
 package fr.ird.akado.ui.swing.view;
 
+import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.ui.AkadoAvdthProperties;
+import fr.ird.akado.ui.swing.DatabaseType;
 import fr.ird.akado.ui.swing.listener.InfoListeners;
+import fr.ird.driver.observe.service.ObserveService;
+import io.ultreia.java4all.lang.Objects2;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+import io.ultreia.java4all.util.sql.conf.JdbcConfigurationBuilder;
+
 import java.io.File;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * The task controller handles all request coming from the {@link TaskView}.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 3 juin 2014
  * @see TaskView
- *
+ * @since 2.0
  */
 public class TaskController {
 
-    private InfoListeners listeners;
-    private TaskView taskView;
+    private final InfoListeners listeners;
+    private final TaskView taskView;
+    private final DatabaseType databaseType;
     private final File file;
+    private final Path baseDirectory;
+    private final JdbcConfiguration jdbcConfiguration;
 
     public InfoListeners getListeners() {
         return listeners;
     }
 
-    public TaskController(File file, InfoListeners listeners) {
-        this.file = file;
+    public TaskController(DatabaseType databaseType, File file, InfoListeners listeners) {
+        this.databaseType = Objects.requireNonNull(databaseType);
+        this.file = Objects.requireNonNull(file);
+        switch (databaseType) {
+            case AVDTH:
+                this.baseDirectory = file.toPath().getParent();
+                this.jdbcConfiguration = new JdbcConfigurationBuilder().forDatabase(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + file, "", "", Objects2.forName(AkadoAvdthProperties.JDBC_ACCESS_DRIVER));
+                break;
+            case OBSERVE:
+                this.baseDirectory = ObserveService.createH2DatabaseFromBackupPath(file.toPath());
+                this.jdbcConfiguration = ObserveService.createH2DatabaseFromBackup(baseDirectory, file.toPath());
+                break;
+            default:
+                throw new IllegalStateException("Can't manage database type: " + databaseType);
+        }
         System.out.println("TaskController " + listeners);
         this.listeners = listeners;
-        taskView = new TaskView(this);
+        this.taskView = new TaskView(this);
+    }
 
+    public TaskController(DatabaseType databaseType, JdbcConfiguration jdbcConfiguration, InfoListeners listeners) {
+        this.databaseType = Objects.requireNonNull(databaseType);
+        this.baseDirectory = Path.of(AAProperties.STANDARD_DIRECTORY);
+        this.file = null;
+        this.jdbcConfiguration = jdbcConfiguration;
+        System.out.println("TaskController " + listeners);
+        this.listeners = listeners;
+        this.taskView = new TaskView(this);
     }
 
     /**
-     * Return the path of the database file.
-     *
-     * @return the absolute path
+     * @return the type of database
      */
-    public String getPathFile() {
-        return file.getPath();
+    public DatabaseType getDatabaseType() {
+        return databaseType;
     }
 
-    /**
-     * Return the filename of the database file.
-     *
-     * @return the file name path
-     */
-    public String getFilename() {
-        return file.getName();
+    public JdbcConfiguration getJdbcConfiguration() {
+        return jdbcConfiguration;
+    }
+
+    public Path getBaseDirectory() {
+        return baseDirectory;
+    }
+
+    public String getDatabaseLabel() {
+        if (file == null) {
+            return String.format("[%s] %s", getDatabaseType(), "from configuration");
+        }
+        return String.format("[%s] %s", getDatabaseType(), file.getName());
     }
 
     /**
