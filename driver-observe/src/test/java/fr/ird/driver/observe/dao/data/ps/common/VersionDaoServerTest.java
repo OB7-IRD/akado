@@ -4,9 +4,6 @@ import fr.ird.driver.observe.ObserveTestH2ServerDatabaseResource;
 import fr.ird.driver.observe.service.ObserveService;
 import org.junit.Rule;
 
-import java.io.File;
-import java.nio.file.Path;
-
 /**
  * Created on 25/03/2023.
  *
@@ -15,7 +12,7 @@ import java.nio.file.Path;
  */
 public class VersionDaoServerTest extends AbstractVersionDaoTest {
     @Rule
-    public ObserveTestH2ServerDatabaseResource resource = new ObserveTestH2ServerDatabaseResource(Path.of(new File("").getAbsolutePath()).resolve("target").resolve("observe-test"));
+    public ObserveTestH2ServerDatabaseResource resource = new ObserveTestH2ServerDatabaseResource();
 
     @Override
     protected ObserveService service() {

@@ -8,8 +8,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.Date;
 
 /**
@@ -23,7 +21,7 @@ public class ActivityDaoTest {
     public static final Date FIRST_ACTIVITY_DATE = Dates.createDate(30, ACTIVITY_COUNT, 2019);
     public static final Date LAST_ACTIVITY_DATE = Dates.createDate(1, 4, 2019);
     @Rule
-    public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource(Path.of(new File("").getAbsolutePath()).resolve("target").resolve("observe-test"));
+    public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource();
 
     @Test
     public void findById() {

@@ -7,9 +7,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.File;
-import java.nio.file.Path;
-
 /**
  * Created on 19/03/2023.
  *
@@ -19,7 +16,7 @@ import java.nio.file.Path;
 public class SampleDaoTest {
     public static final int SAMPLE_COUNT = 2;
     @Rule
-    public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource(Path.of(new File("").getAbsolutePath()).resolve("target").resolve("observe-test"));
+    public ObserveTestH2DatabaseResource resource = new ObserveTestH2DatabaseResource();
 
     @Test
     public void findById() {

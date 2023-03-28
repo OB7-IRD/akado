@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.h2.tools.Server;
 import org.junit.Assume;
 
-import java.nio.file.Path;
 import java.sql.SQLException;
 
 /**
@@ -24,8 +23,7 @@ public class ObserveTestH2ServerDatabaseResource extends ObserveTestH2DatabaseRe
     private static final Logger log = LogManager.getLogger(ObserveTestH2ServerDatabaseResource.class);
     private Server server;
 
-    public ObserveTestH2ServerDatabaseResource(Path dbPath) {
-        super(dbPath);
+    public ObserveTestH2ServerDatabaseResource() {
     }
 
     @Override
