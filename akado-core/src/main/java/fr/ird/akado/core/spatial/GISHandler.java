@@ -20,6 +20,8 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.common.JDBCUtilities;
 import fr.ird.common.log.LogService;
+import org.h2gis.functions.factory.H2GISFunctions;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -29,18 +31,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.h2gis.h2spatialext.CreateSpatialExtension;
 
 /**
  * Create the GIS databases for validation rules including spatial areas. It is
  * based on H2Gis library developed at CNRS and loads data from the SHP file
  * format.
  *
- * @see <a href="http://www.h2gis.org/">site de H2Gis</a>
- *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 30 juin 2014
+ * @see <a href="http://www.h2gis.org/">site de H2Gis</a>
+ * @since 2.0
  */
 public class GISHandler {
 
@@ -55,6 +55,7 @@ public class GISHandler {
     public static GISHandler getService() {
         return SERVICE;
     }
+
     private String harbourShapePath;
 
     public void init(String directoryPath, String countryShapePath, String oceanShapePath, String harbourShapePath, String eezShapePath) throws AkadoException {
@@ -70,13 +71,12 @@ public class GISHandler {
     }
 
     /**
-     *
      * Checks whether the databases are already created.
      *
      * @return true if exists
      */
     public boolean exists() {
-        return (new File(dbPath + ".db")).exists();
+        return dbPath != null && new File(dbPath + ".mv.db").exists();
     }
 
     /**
@@ -85,34 +85,34 @@ public class GISHandler {
      * @return true if the db are deleted
      */
     public boolean delete() {
-        return (new File(dbPath + ".db")).delete();
+        return (new File(dbPath + ".mv.db")).delete();
     }
 
     /**
      * Create the GIS databe by loading the file data
-     *
      */
     public void create(boolean force) {
-        if(force){
+        if (force) {
             delete();
         }
         create();
     }
+
     public void create() {
 
         LogService.getService(GISHandler.class).logApplicationDebug("File: " + dbPath + ", File exits: " + (new File(dbPath + ".db")).exists());
-        if (!(new File(dbPath + ".db")).exists()) {
+        if (!exists()) {
             LogService.getService(GISHandler.class).logApplicationInfo("Create the GIS database.");
 
             try {
                 Class.forName("org.h2.Driver");
 
                 try (Connection connection = DriverManager.getConnection("jdbc:h2:" + dbPath);
-                        Statement st = connection.createStatement()) {
+                     Statement st = connection.createStatement()) {
                     // Import spatial functions, domains and drivers
                     // If you are using a file database, you have to do only that once.
                     //System.out.println("Apres STatement");
-                    CreateSpatialExtension.initSpatialExtension(connection);
+                    H2GISFunctions.load(connection);
                     LogService.getService(GISHandler.class).logApplicationDebug("SHP_OCEAN_PATH " + oceanShapePath);
                     st.execute("DROP TABLE IF EXISTS seasandoceans;");
                     st.execute("CALL SHPREAD('" + oceanShapePath + "', 'seasandoceans')");
@@ -200,8 +200,7 @@ public class GISHandler {
                 //System.out.println("URL DB GIS " + url);
                 connection = DriverManager.getConnection(url);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(GISHandler.class
-                        .getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GISHandler.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 JDBCUtilities.printSQLException(ex);
             }

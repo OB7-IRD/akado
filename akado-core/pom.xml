@@ -16,18 +16,20 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.locationtech.jts</groupId>
+      <artifactId>jts-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2gis-ext</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2gis-functions</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-    </dependency>
-    <!-- http://mvnrepository.com/artifact/org.orbisgis/h2gis -->
-    <dependency>
-      <groupId>org.orbisgis</groupId>
-      <artifactId>h2gis</artifactId>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.orbisgis</groupId>
-      <artifactId>h2spatial-ext</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
