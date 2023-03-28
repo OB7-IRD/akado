@@ -17,7 +17,6 @@
 package fr.ird.akado.avdth;
 
 import fr.ird.akado.avdth.activity.EEZInspector;
-import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.activity.FishingContextInspector;
 import fr.ird.akado.avdth.activity.OperationtInspector;
 import fr.ird.akado.avdth.activity.PositionInEEZInspector;
@@ -25,10 +24,10 @@ import fr.ird.akado.avdth.activity.PositionInspector;
 import fr.ird.akado.avdth.activity.QuadrantInspector;
 import fr.ird.akado.avdth.activity.WeightInspector;
 import fr.ird.akado.avdth.activity.WeightingSampleInspector;
+import fr.ird.akado.avdth.result.Result;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.avdth.result.Result;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.OTUtils;
 import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
@@ -39,16 +38,14 @@ import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.ActivityDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
 import fr.ird.driver.avdth.service.AvdthService;
+import junit.framework.TestCase;
+import org.joda.time.DateTime;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.TestCase;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import org.joda.time.DateTime;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 
 /**
  * This test class checks all activities inspectors.
@@ -85,25 +82,8 @@ public class ActivityTest extends TestCase {
 //        AkadoAvdthProperties.getService().init();
 
         AAProperties.DATE_FORMAT_XLS = "dd/mm/yyyy hh:mm";
-        AAProperties.STANDARD_DIRECTORY = Path.of(System.getProperty("java.io.tmpdir")).resolve(""+System.currentTimeMillis()).toString();//ActivityTest.class.getResource("/db").getFile();
-
-        AAProperties.SHP_COUNTRIES_PATH = ActivityTest.class.getResource("/shp/countries.shp").getFile();
-//        System.out.println(AAProperties.SHP_COUNTRIES_PATH);
-        AAProperties.SHP_OCEAN_PATH = ActivityTest.class.getResource("/shp/IHOSeasAndOceans.shp").getFile();
-        AAProperties.SHP_HARBOUR_PATH = ActivityTest.class.getResource("/shp/harbour.shp").getFile();
-        AAProperties.SHP_EEZ_PATH = ActivityTest.class.getResource("/shp/eez.shp").getFile();
-//        System.out.println(AAProperties.SHP_OCEAN_PATH);
-        AAProperties.WARNING_INSPECTOR = AAProperties.ACTIVE_VALUE;
-
-        if (!GISHandler.getService().exists()) {
-            System.out.println("Create the database! " + AAProperties.STANDARD_DIRECTORY);
-            GISHandler.getService().init(AAProperties.STANDARD_DIRECTORY,
-                    AAProperties.SHP_COUNTRIES_PATH,
-                    AAProperties.SHP_OCEAN_PATH,
-                    AAProperties.SHP_HARBOUR_PATH,
-                    AAProperties.SHP_EEZ_PATH);
-            GISHandler.getService().create(true);
-        }
+        Path directory = SampleTest.initStandardDirectory();
+        SampleTest.initGIS(directory);
 
         AvdthService.getService()
                 .init(avdthDatabasePath, JDBC_ACCESS_DRIVER, "", "");

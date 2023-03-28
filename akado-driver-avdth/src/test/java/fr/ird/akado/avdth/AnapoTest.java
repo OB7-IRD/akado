@@ -16,13 +16,11 @@
  */
 package fr.ird.akado.avdth;
 
-import static fr.ird.common.Utils.round;
 import fr.ird.akado.avdth.anapo.activity.AnapoActivityConsistentInspector;
 import fr.ird.akado.avdth.anapo.vms.AnapoInspector;
+import fr.ird.akado.avdth.result.Result;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.avdth.result.Result;
 import fr.ird.akado.core.spatial.WGS84;
 import fr.ird.common.OTUtils;
 import fr.ird.driver.anapo.business.PosVMS;
@@ -32,15 +30,16 @@ import fr.ird.driver.avdth.business.Ocean;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.ActivityDAO;
 import fr.ird.driver.avdth.service.AvdthService;
-
-import java.nio.file.Path;
-import java.util.List;
 import junit.framework.TestCase;
-import static junit.framework.TestCase.assertNotNull;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+
+import java.nio.file.Path;
+import java.util.List;
+
 import static fr.ird.common.OTUtils.convertLongitude;
+import static fr.ird.common.Utils.round;
 
 /**
  * This test class checks the Anapo functionalities.
@@ -81,24 +80,9 @@ public class AnapoTest extends TestCase {
 
         //        AkadoAvdthProperties.getService().init();
         AAProperties.DATE_FORMAT_XLS = "dd/mm/yyyy hh:mm";
-        AAProperties.STANDARD_DIRECTORY = Path.of(System.getProperty("java.io.tmpdir")).resolve(""+System.currentTimeMillis()).toString();//ActivityTest.class.getResource("/db").getFile();
+        Path directory = SampleTest.initStandardDirectory();
+        SampleTest.initGIS(directory);
 
-        AAProperties.SHP_COUNTRIES_PATH = ActivityTest.class.getResource("/shp/countries.shp").getFile();
-//        System.out.println(AAProperties.SHP_COUNTRIES_PATH);
-        AAProperties.SHP_OCEAN_PATH = ActivityTest.class.getResource("/shp/IHOSeasAndOceans.shp").getFile();
-        AAProperties.SHP_HARBOUR_PATH = ActivityTest.class.getResource("/shp/harbour.shp").getFile();
-//        System.out.println(AAProperties.SHP_OCEAN_PATH);
-        AAProperties.WARNING_INSPECTOR = AAProperties.ACTIVE_VALUE;
-
-        if (!GISHandler.getService().exists()) {
-            System.out.println("Create the database!");
-                GISHandler.getService().init(AAProperties.STANDARD_DIRECTORY ,
-                        AAProperties.SHP_COUNTRIES_PATH,
-                        AAProperties.SHP_OCEAN_PATH,
-                        AAProperties.SHP_HARBOUR_PATH,
-                        AAProperties.SHP_EEZ_PATH);
-            GISHandler.getService().create();
-        }
         AvdthService.getService()
                 .init(avdthDatabasePath, JDBC_ACCESS_DRIVER, "", "");
         ANAPOService.getService()

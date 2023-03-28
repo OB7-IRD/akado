@@ -17,15 +17,13 @@
 package fr.ird.akado.avdth;
 
 import fr.ird.akado.avdth.result.Result;
-import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.sample.DistributionInspector;
-import fr.ird.akado.avdth.sample.well.ActivityConsistentInspector;
+import fr.ird.akado.avdth.sample.HarbourInspector;
 import fr.ird.akado.avdth.sample.LDLFInspector;
 import fr.ird.akado.avdth.sample.LengthClassInspector;
 import fr.ird.akado.avdth.sample.LittleBigInspector;
 import fr.ird.akado.avdth.sample.MeasureInspector;
-import fr.ird.akado.avdth.sample.well.PositionActivityConsistentInspector;
 import fr.ird.akado.avdth.sample.SampleWithoutMeasureInspector;
 import fr.ird.akado.avdth.sample.SampleWithoutSpeciesInspector;
 import fr.ird.akado.avdth.sample.SampleWithoutTripInspector;
@@ -33,28 +31,31 @@ import fr.ird.akado.avdth.sample.SpeciesInspector;
 import fr.ird.akado.avdth.sample.SuperSampleNumberConsistentInspector;
 import fr.ird.akado.avdth.sample.WeightSampleInspector;
 import fr.ird.akado.avdth.sample.WeightingInspector;
-import static fr.ird.akado.avdth.sample.WeightingInspector.weightedWeight;
 import fr.ird.akado.avdth.sample.WellNumberConsistentInspector;
+import fr.ird.akado.avdth.sample.well.ActivityConsistentInspector;
+import fr.ird.akado.avdth.sample.well.PositionActivityConsistentInspector;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.avdth.sample.HarbourInspector;
 import fr.ird.driver.avdth.business.Sample;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.SampleDAO;
 import fr.ird.driver.avdth.service.AvdthService;
+import junit.framework.TestCase;
+import org.joda.time.DateTime;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import junit.framework.TestCase;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import org.joda.time.DateTime;
+
+import static fr.ird.akado.avdth.sample.WeightingInspector.weightedWeight;
 
 /**
  * This test class checks all samples inspectors.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 6 juin 2014
+ * @since 2.0
  */
 public class SampleTest extends TestCase {
 
@@ -73,8 +74,18 @@ public class SampleTest extends TestCase {
         AvdthService.getService().init(avdthDatabasePath, JDBC_ACCESS_DRIVER, "", "");
 //        AkadoProperties.getService().init();
         AAProperties.DATE_FORMAT_XLS = "dd/mm/yyyy hh:mm";
-        AAProperties.STANDARD_DIRECTORY = Path.of(System.getProperty("java.io.tmpdir")).resolve(""+System.currentTimeMillis()).toString();//ActivityTest.class.getResource("/db").getFile();
+        Path directory = initStandardDirectory();
+        initGIS(directory);
+    }
 
+    public static Path initStandardDirectory() throws IOException {
+        Path directory = Path.of(System.getProperty("java.io.tmpdir")).resolve("tests");
+        AAProperties.STANDARD_DIRECTORY = directory.toString();
+        Files.createDirectories(directory);
+        return directory;
+    }
+
+    public static void initGIS(Path directory) throws Exception {
         AAProperties.SHP_COUNTRIES_PATH = ActivityTest.class.getResource("/shp/countries.shp").getFile();
         AAProperties.SHP_OCEAN_PATH = ActivityTest.class.getResource("/shp/IHOSeasAndOceans.shp").getFile();
         AAProperties.SHP_HARBOUR_PATH = ActivityTest.class.getResource("/shp/harbour.shp").getFile();
@@ -82,15 +93,15 @@ public class SampleTest extends TestCase {
         AAProperties.WARNING_INSPECTOR = AAProperties.ACTIVE_VALUE;
 
         if (!GISHandler.getService().exists()) {
-
-            GISHandler.getService().init(AAProperties.STANDARD_DIRECTORY,
-                    AAProperties.SHP_COUNTRIES_PATH,
-                    AAProperties.SHP_OCEAN_PATH,
-                    AAProperties.SHP_HARBOUR_PATH,
-                    AAProperties.SHP_EEZ_PATH);
+            String gisPath = directory.getParent().toString();
+            System.out.println("Create GIS database! " + gisPath);
+            GISHandler.getService().init(gisPath,
+                                         AAProperties.SHP_COUNTRIES_PATH,
+                                         AAProperties.SHP_OCEAN_PATH,
+                                         AAProperties.SHP_HARBOUR_PATH,
+                                         AAProperties.SHP_EEZ_PATH);
             GISHandler.getService().create();
         }
-
     }
 
     @Override
