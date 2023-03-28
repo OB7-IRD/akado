@@ -16,21 +16,23 @@
  */
 package fr.ird.akado.ui;
 
+import fr.ird.akado.avdth.AvdthInspector;
 import fr.ird.akado.core.AkadoCore;
 import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.MessageAdapter;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Trip;
 import fr.ird.driver.avdth.business.Vessel;
 import fr.ird.driver.avdth.dao.HarbourDAO;
 import fr.ird.driver.avdth.service.AvdthService;
-import java.lang.reflect.Constructor;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+import io.ultreia.java4all.util.sql.conf.JdbcConfigurationBuilder;
+import junit.framework.TestCase;
+import org.joda.time.DateTime;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -114,17 +116,11 @@ public class ExecuteTest extends TestCase {
     }
     DataBaseInspector inspector;
 
-    private void task(String path) throws SecurityException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, Exception {
-        Constructor ctor = AkadoAvdthProperties.THIRD_PARTY_DATASOURCE.getDeclaredConstructor(String.class, String.class, String.class, String.class);
-        ctor.setAccessible(true);
+    private void task(String path) throws Exception {
 
+        JdbcConfiguration configuration = new JdbcConfigurationBuilder().forDatabase(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + path, "", "");
         AkadoCore akado = new AkadoCore();
-        try {
-            inspector = (DataBaseInspector) ctor.newInstance(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + path, AkadoAvdthProperties.JDBC_ACCESS_DRIVER, "", "");
-        } catch (InstantiationException e) {
-            LogService.getService(this.getClass()).logApplicationError(e.getCause().toString());
-        }
-
+        inspector = new AvdthInspector(configuration);
         if (!akado.addDataBaseValidator(inspector)) {
             throw new Exception("Error during the AVDTHValidator creation");
         }

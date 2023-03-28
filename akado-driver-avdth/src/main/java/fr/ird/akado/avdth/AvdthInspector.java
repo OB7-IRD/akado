@@ -62,6 +62,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
 
 /**
  *
@@ -70,6 +71,8 @@ import org.joda.time.DateTime;
  * @date 21 mai 2014
  */
 public class AvdthInspector extends DataBaseInspector {
+
+    public static final String JDBC_ACCESS_DRIVER = "com.hxtt.sql.access.AccessDriver";
 
     private String exportDirectoryPath;
     private static final int VERSION_AVDTH_COMPATIBILITY = 35;
@@ -111,15 +114,12 @@ public class AvdthInspector extends DataBaseInspector {
 
     /**
      *
-     * @param url the URL of the database to connect to
-     * @param driver the driver class of the database
-     * @param login the login of the database to connect to
-     * @param password the password of the database to connect to
-     * @throws AkadoException
-     * @throws fr.ird.driver.anapo.common.exception.ANAPODriverException
+     * @param configuration jdbc configuration
+     * @throws Exception if any error
      */
-    public AvdthInspector(String url, String driver, String login, String password) throws AkadoException, ANAPODriverException, Exception {
+    public AvdthInspector(JdbcConfiguration configuration) throws Exception {
 
+        String url = configuration.getJdbcConnectionUrl();
         // Test l'export des resultats au fil de l'eau
         String databasePath = url.substring(AAProperties.PROTOCOL_JDBC_ACCESS.length());
         String pathExport = new File(databasePath).getParent();
@@ -130,7 +130,7 @@ public class AvdthInspector extends DataBaseInspector {
             if (!(new File(exportDirectoryPath)).exists()) {
                 new File(exportDirectoryPath).mkdirs();
             }
-            LogService.getService(this.getClass()).logApplicationInfo("The results will be write in the direcory " + exportDirectoryPath);
+            LogService.getService(this.getClass()).logApplicationInfo("The results will be write in the directory " + exportDirectoryPath);
         }
         LogService.getService(this.getClass()).logApplicationDebug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
         loadProperties();
@@ -141,13 +141,13 @@ public class AvdthInspector extends DataBaseInspector {
         flagSelectors = new ArrayList<>();
         vesselSelectors = new ArrayList<>();
         try {
-            AvdthService.getService().init(url, driver, login, password);
+            AvdthService.getService().init(configuration.getJdbcConnectionUrl(), JDBC_ACCESS_DRIVER, configuration.getJdbcConnectionUser(), configuration.getJdbcConnectionPassword());
             if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
 
                 if (AAProperties.ANAPO_DB_URL == null || "".equals(AAProperties.ANAPO_DB_URL)) {
                     throw new ANAPODriverException("The connection to ANAPO database has failed. The database isn't set correctly.");
                 }
-                ANAPOService.getService().init(AAProperties.PROTOCOL_JDBC_ACCESS + AAProperties.ANAPO_DB_URL, driver, AAProperties.ANAPO_USER, AAProperties.ANAPO_PASSWORD);
+                ANAPOService.getService().init(AAProperties.PROTOCOL_JDBC_ACCESS + AAProperties.ANAPO_DB_URL, JDBC_ACCESS_DRIVER, AAProperties.ANAPO_USER, AAProperties.ANAPO_PASSWORD);
 
             }
         } catch (AvdthDriverException ex) {

@@ -16,17 +16,17 @@
  */
 package fr.ird.akado.ui.cli;
 
+import fr.ird.akado.avdth.AvdthInspector;
 import fr.ird.akado.core.AkadoCore;
 import fr.ird.akado.core.DataBaseInspector;
+import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.MessageAdapter;
 import fr.ird.akado.ui.AkadoAvdthProperties;
 import fr.ird.akado.ui.swing.AkadoController;
-import fr.ird.akado.core.common.AkadoException;
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import io.ultreia.java4all.lang.Objects2;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+import io.ultreia.java4all.util.sql.conf.JdbcConfigurationBuilder;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -35,6 +35,10 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The RunCLI class implements a command-line interfaces. It can run AKaDo with
@@ -108,16 +112,11 @@ public class RunCLI {
             try {
                 AkadoAvdthProperties.getService().init();
 
-                //System.out.println("The DB path " + dataBasePath);
-                //System.out.println("Create Akado ");
+                JdbcConfiguration configuration = new JdbcConfigurationBuilder().forDatabase(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + dataBasePath, "", "", Objects2.forName(AkadoAvdthProperties.JDBC_ACCESS_DRIVER));
+
                 AkadoCore akado = new AkadoCore();
-                Constructor ctor = AkadoAvdthProperties.THIRD_PARTY_DATASOURCE.getDeclaredConstructor(String.class, String.class, String.class, String.class);
-                ctor.setAccessible(true);
+                DataBaseInspector inspector = new AvdthInspector(configuration);
 
-                akado = new AkadoCore();
-                DataBaseInspector inspector = (DataBaseInspector) ctor.newInstance(AkadoAvdthProperties.PROTOCOL_JDBC_ACCESS + dataBasePath, DataBaseInspector.CONFIGURATION_PROPERTIES.getProperty(AkadoAvdthProperties.KEY_JDBC_ACCESS_DRIVER), "", "");
-
-                //System.out.println("Add AVDTH Inspection to Akado ");
                 if (!akado.addDataBaseValidator(inspector)) {
                     throw new AkadoException("Error during the AVDTHValidator creation");
                 }

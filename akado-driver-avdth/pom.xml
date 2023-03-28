@@ -35,16 +35,16 @@
       <artifactId>commons-io</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.ultreia.java4all</groupId>
+      <artifactId>java-util</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.jxls</groupId>
       <artifactId>jxls</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jxls</groupId>
       <artifactId>jxls-poi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.orbisgis</groupId>
-      <artifactId>h2gis-ext</artifactId>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
