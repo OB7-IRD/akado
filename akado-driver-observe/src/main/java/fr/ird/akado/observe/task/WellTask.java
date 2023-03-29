@@ -2,7 +2,7 @@ package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.observe.ObserveDataBaseInspector;
-import fr.ird.akado.observe.inspector.ps.logbook.well.ObserveWellInspector;
+import fr.ird.akado.observe.inspector.well.ObserveWellInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;

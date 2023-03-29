@@ -1,8 +1,12 @@
 package fr.ird.akado.observe.inspector;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.observe.result.Result;
 import fr.ird.akado.observe.result.Results;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -15,11 +19,13 @@ import java.util.stream.Collectors;
  * <p>
  * Created on 20/03/2023.
  *
- * @param <T> the type of inspection
+ * @param <T> the type of data to inspect
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
 public abstract class ObserveInspector<T> extends Inspector<T> {
+
+    protected final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 
     protected static <T, I extends ObserveInspector<T>> List<I> loadInspectors(Class<I> inspectorType) {
         List<I> result = new LinkedList<>();
@@ -32,6 +38,19 @@ public abstract class ObserveInspector<T> extends Inspector<T> {
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected static <T, I extends ObserveInspector<T>> List<I> filterInspectors(Class<I> inspectorType, List<Inspector<?>> inspectors) {
         return (List) inspectors.stream().filter(i -> inspectorType.isAssignableFrom(i.getClass())).collect(Collectors.toList());
+    }
+
+    protected static Result<?> createResult(Result<?> r, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
+        r.setMessageType(messageLevel);
+        r.setMessageCode(messageCode);
+        r.setMessageLabel(messageLabel);
+        r.setInconsistent(inconsistent);
+        if (parameters.length > 0) {
+            ArrayList<Object> parametersList = new ArrayList<>();
+            Collections.addAll(parametersList, parameters);
+            r.setMessageParameters(parametersList);
+        }
+        return r;
     }
 
     @Override

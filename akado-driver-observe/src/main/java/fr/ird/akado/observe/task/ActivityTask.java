@@ -1,8 +1,8 @@
 package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.observe.inspector.ps.logbook.activities.ObserveActivityListInspector;
-import fr.ird.akado.observe.inspector.ps.logbook.activity.ObserveActivityInspector;
+import fr.ird.akado.observe.inspector.activities.ObserveActivityListInspector;
+import fr.ird.akado.observe.inspector.activity.ObserveActivityInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
