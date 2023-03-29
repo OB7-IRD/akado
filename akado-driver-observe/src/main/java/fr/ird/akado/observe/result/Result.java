@@ -42,7 +42,7 @@ public abstract class Result<T> extends AbstractResult<T> {
     protected ArrayList messageParameters = null;
     protected boolean inconsistent = false;
 
-    public abstract List extractResults();
+    public abstract <X> List<X> extractResults();
 
     public boolean isInconsistent() {
         return inconsistent;

@@ -16,10 +16,6 @@
  */
 package fr.ird.akado.observe.result.model;
 
-import org.joda.time.DateTime;
-
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
-
 /**
  * This class represents the Activity output model.
  * <p>
@@ -30,12 +26,12 @@ import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
  */
 public final class ActivityDataSheet {
 
-    private int vesselCode;
+    private String vesselCode;
     private String engine;
     private String landingDate;
     private String activityDate;
     private int activityNumber;
-    private int operationCode;
+    private String operationCode;
     private Double catchWeight;
     private Double elementaryCatchesWeight;
     private Double sampleWeightedWeight;
@@ -61,11 +57,11 @@ public final class ActivityDataSheet {
         this.inOcean = inOcean;
     }
 
-    public int getVesselCode() {
+    public String getVesselCode() {
         return vesselCode;
     }
 
-    public void setVesselCode(int vesselCode) {
+    public void setVesselCode(String vesselCode) {
         this.vesselCode = vesselCode;
     }
 
@@ -85,24 +81,12 @@ public final class ActivityDataSheet {
         this.landingDate = landingDate;
     }
 
-    public void setLandingDate(DateTime landingDate) {
-        if (landingDate != null) {
-            this.landingDate = landingDate.toString(DATE_FORMATTER);
-        }
-    }
-
     public String getActivityDate() {
         return activityDate;
     }
 
     public void setActivityDate(String activityDate) {
         this.activityDate = activityDate;
-    }
-
-    public void setActivityDate(DateTime activityDate) {
-        if (activityDate != null) {
-            this.activityDate = activityDate.toString(DATE_FORMATTER);
-        }
     }
 
     public int getActivityNumber() {
@@ -113,11 +97,11 @@ public final class ActivityDataSheet {
         this.activityNumber = activityNumber;
     }
 
-    public int getOperationCode() {
+    public String getOperationCode() {
         return operationCode;
     }
 
-    public void setOperationCode(int operationCode) {
+    public void setOperationCode(String operationCode) {
         this.operationCode = operationCode;
     }
 

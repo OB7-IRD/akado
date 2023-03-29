@@ -16,10 +16,6 @@
  */
 package fr.ird.akado.observe.result.model;
 
-import org.joda.time.DateTime;
-
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
-
 /**
  * This class represents the Meta Trip output model.
  * <p>
@@ -30,7 +26,7 @@ import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
  */
 public final class MetaTripDataSheet {
 
-    private int vesselCode;
+    private String vesselCode;
     private String engine;
     private String landingDate;
     private String departureDate;
@@ -42,11 +38,11 @@ public final class MetaTripDataSheet {
     private boolean hasCatches;
     private String flag;
 
-    public int getVesselCode() {
+    public String getVesselCode() {
         return vesselCode;
     }
 
-    public void setVesselCode(int vesselCode) {
+    public void setVesselCode(String vesselCode) {
         this.vesselCode = vesselCode;
     }
 
@@ -62,12 +58,6 @@ public final class MetaTripDataSheet {
         return landingDate;
     }
 
-    public void setLandingDate(DateTime landingDate) {
-        if (landingDate != null) {
-            this.landingDate = landingDate.toString(DATE_FORMATTER);
-        }
-    }
-
     public void setLandingDate(String landingDate) {
         this.landingDate = landingDate;
     }
@@ -76,24 +66,12 @@ public final class MetaTripDataSheet {
         return departureDate;
     }
 
-    public void setDepartureDate(DateTime departureDate) {
-        if (departureDate != null) {
-            this.departureDate = departureDate.toString(DATE_FORMATTER);
-        }
-    }
-
     public void setDepartureDate(String departureDate) {
         this.departureDate = departureDate;
     }
 
     public String getFirstActivityDate() {
         return firstActivityDate;
-    }
-
-    public void setFirstActivityDate(DateTime firstActivityDate) {
-        if (firstActivityDate != null) {
-            this.firstActivityDate = firstActivityDate.toString(DATE_FORMATTER);
-        }
     }
 
     public void setFirstActivityDate(String firstActivityDate) {
@@ -106,12 +84,6 @@ public final class MetaTripDataSheet {
 
     public void setLastActivityDate(String lastActivityDate) {
         this.lastActivityDate = lastActivityDate;
-    }
-
-    public void setLastActivityDate(DateTime lastActivityDate) {
-        if (lastActivityDate != null) {
-            this.lastActivityDate = lastActivityDate.toString(DATE_FORMATTER);
-        }
     }
 
     public int getPartialLandingIndicator() {

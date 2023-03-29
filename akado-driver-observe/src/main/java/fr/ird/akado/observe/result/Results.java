@@ -30,14 +30,12 @@ import org.jxls.util.JxlsHelper;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -83,9 +81,9 @@ public class Results extends AbstractResults<Result<?>> {
             return;
         }
         List<TripDataSheet> trips = new ArrayList<>();
-        for (Result r : results) {
+        for (Result<?> r : results) {
 //            LogService.getService(Results.class).logApplicationDebug("TripResult : " + r);
-            List l = r.extractResults();
+            List<TripDataSheet> l = r.extractResults();
 //            LogService.getService(Results.class).logApplicationDebug("TripResult extractResults: " + l.size());
 //            for (Object o : l) {
 //                LogService.getService(Results.class).logApplicationDebug(o.toString());
@@ -102,7 +100,7 @@ public class Results extends AbstractResults<Result<?>> {
             return;
         }
         List<SampleDataSheet> samples = new ArrayList<>();
-        for (Result r : results) {
+        for (Result<?> r : results) {
             samples.addAll(r.extractResults());
         }
         String template = "sample_template.xlsx";
@@ -115,7 +113,7 @@ public class Results extends AbstractResults<Result<?>> {
             return;
         }
         List<WellDataSheet> wdtos = new ArrayList<>();
-        for (Result r : results) {
+        for (Result<?> r : results) {
             wdtos.addAll(r.extractResults());
         }
         String template = "well_template.xlsx";
@@ -128,7 +126,7 @@ public class Results extends AbstractResults<Result<?>> {
             return;
         }
         List<MetaTripDataSheet> mtdtos = new ArrayList<>();
-        for (Result r : results) {
+        for (Result<?> r : results) {
             mtdtos.addAll(r.extractResults());
         }
         String template = "metatrip_template.xlsx";
@@ -141,7 +139,7 @@ public class Results extends AbstractResults<Result<?>> {
             return;
         }
         List<AnapoDataSheet> adtos = new ArrayList<>();
-        for (Result r : results) {
+        for (Result<?> r : results) {
             adtos.addAll(r.extractResults());
         }
         String template = "anapo_template.xlsx";
@@ -155,15 +153,6 @@ public class Results extends AbstractResults<Result<?>> {
         OutputStream os = new FileOutputStream(directoryPath + File.separator + sheetName + "_akado_output.xlsx");
         JxlsHelper.getInstance().processTemplate(is, os, context);
 //        JxlsHelper.getInstance().processTemplateAtCell(is, os, context, sheetName + "!A1");
-    }
-
-    //FIXME Remove this when all inspectors will be coded
-    @Override
-    public boolean addAll(Collection<? extends Result<?>> collection) {
-        if (collection == null) {
-            return false;
-        }
-        return super.addAll(collection);
     }
 
     @Override
@@ -185,7 +174,7 @@ public class Results extends AbstractResults<Result<?>> {
         }
     }
 
-    public boolean in(AbstractResult result) {
+    public boolean in(Result<?> result) {
         for (AbstractResult r : this) {
             if (result.get().equals(r.get())) {
                 return true;
@@ -196,10 +185,10 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getTripResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof TripResult && !results.in(result)) {
                 LogService.getService(Results.class).logApplicationDebug(result.toString());
-                results.add((TripResult) result);
+                results.add(result);
             }
         }
         return results;
@@ -207,9 +196,9 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getAnapoResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof AnapoResult && !results.in(result)) {
-                results.add((AnapoResult) result);
+                results.add(result);
             }
         }
         return results;
@@ -217,9 +206,9 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getActivityResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof ActivityResult && !results.in(result)) {
-                results.add((ActivityResult) result);
+                results.add(result);
             }
         }
         return results;
@@ -227,9 +216,9 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getWellResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof WellResult && !results.in(result)) {
-                results.add((WellResult) result);
+                results.add(result);
             }
         }
         return results;
@@ -237,9 +226,9 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getSampleResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof SampleResult && !results.in(result)) {
-                results.add((SampleResult) result);
+                results.add(result);
             }
         }
         return results;
@@ -247,28 +236,27 @@ public class Results extends AbstractResults<Result<?>> {
 
     private Results getMetaTripResults() {
         Results results = new Results();
-        for (AbstractResult result : this) {
+        for (Result<?> result : this) {
             if (result instanceof MetaTripResult && !results.in(result)) {
-                results.add((MetaTripResult) result);
+                results.add(result);
             }
         }
         return results;
     }
 
-    private void writeLogs(String directoryPath) throws FileNotFoundException, IOException {
+    private void writeLogs(String directoryPath) throws IOException {
         File file = new File(directoryPath + File.separator + "akado.log");
         if (!file.exists()) {
             file.createNewFile();
         }
 
         //true = append file
-        FileWriter fileWritter = new FileWriter(file, true);
-        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-
-        for (AbstractResult result : this) {
-            LogService.getService(Results.class).logApplicationDebug(result.getMessage().getContent());
-            bufferWritter.write(result.getMessage().getContent() + "\n");
+        try (BufferedWriter bufferWritter = new BufferedWriter(new FileWriter(file, true))) {
+            for (Result<?> result : this) {
+                String message = result.getMessage().getContent();
+                LogService.getService(Results.class).logApplicationDebug(message);
+                bufferWritter.write(message + "\n");
+            }
         }
-        bufferWritter.close();
     }
 }

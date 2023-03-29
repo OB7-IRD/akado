@@ -16,10 +16,6 @@
  */
 package fr.ird.akado.observe.result.model;
 
-import org.joda.time.DateTime;
-
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
-
 /**
  * This class represents the Sample output model.
  * <p>
@@ -30,12 +26,12 @@ import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
  */
 public final class SampleDataSheet {
 
-    private int vesselCode;
+    private String vesselCode;
     private String engine;
     private String landingDate;
     private boolean tripExist;
-    private int harbourCode;
-    private int hasLogbook;
+    private String harbourCode;
+    private boolean hasLogbook;
     private String bigFish;
     private String littleFish;
     private String activityConsistent;
@@ -57,19 +53,30 @@ public final class SampleDataSheet {
     private boolean hasWell;
     private String distribution;
 
-    public SampleDataSheet() {
-    }
-
-    public SampleDataSheet(int vesselCode, String engine, String landingDate,
-                           int hasLogbook, boolean tripExist, int harbourCode, String bigFish, String littleFish,
-                           String activityConsistent, String positionConsistent, double sampleSpeciesFrequencyCount,
-                           double sampleSpeciesMeasuredCount, double weightedWeight, double sPoids,
-                           double globalWeight, double plus10Weight, double minus10Weight,
-                           String sampleType, boolean hasWell, int sampleNumber, String distribution) {
+    public SampleDataSheet(String vesselCode,
+                           String engine,
+                           String landingDate,
+                           boolean hasLogbook,
+                           String harbourCode,
+                           String bigFish,
+                           String littleFish,
+                           String activityConsistent,
+                           String positionConsistent,
+                           double sampleSpeciesFrequencyCount,
+                           double sampleSpeciesMeasuredCount,
+                           double weightedWeight,
+                           double sPoids,
+                           double globalWeight,
+                           double plus10Weight,
+                           double minus10Weight,
+                           String sampleType,
+                           boolean hasWell,
+                           int sampleNumber,
+                           String distribution) {
         this.vesselCode = vesselCode;
         this.engine = engine;
         this.landingDate = landingDate;
-        this.tripExist = tripExist;
+        this.tripExist = true;
         this.harbourCode = harbourCode;
         this.hasLogbook = hasLogbook;
         this.bigFish = bigFish;
@@ -89,20 +96,58 @@ public final class SampleDataSheet {
         this.distribution = distribution;
     }
 
-    public SampleDataSheet(int vesselCode, String engine, String landingDate,
-                           int hasLogbook, boolean tripExist, int harbourCode, String bigFish, String littleFish,
-                           String activityConsistent, String positionConsistent, double sampleSpeciesFrequencyCount,
-                           double sampleSpeciesMeasuredCount, double weightedWeight, double sPoids,
-                           double globalWeight, double plus10Weight, double minus10Weight,
-                           String sampleType, boolean hasWell, int sampleNumber, String distribution,
-                           Integer subSampleNumber, String speciesCode) {
-        this(vesselCode, engine, landingDate, hasLogbook, tripExist, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution);
+    public SampleDataSheet(String vesselCode,
+                           String engine,
+                           String landingDate,
+                           boolean hasLogbook,
+                           String harbourCode,
+                           String bigFish,
+                           String littleFish,
+                           String activityConsistent,
+                           String positionConsistent,
+                           double sampleSpeciesFrequencyCount,
+                           double sampleSpeciesMeasuredCount,
+                           double weightedWeight,
+                           double sPoids,
+                           double globalWeight,
+                           double plus10Weight,
+                           double minus10Weight,
+                           String sampleType,
+                           boolean hasWell,
+                           int sampleNumber,
+                           String distribution,
+                           Integer subSampleNumber,
+                           String speciesCode) {
+        this(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution);
         this.subSampleNumber = subSampleNumber;
         this.speciesCode = speciesCode;
     }
 
-    public SampleDataSheet(int vesselCode, String engine, String landingDate, int hasLogbook, boolean tripExist, int harbourCode, String bigFish, String littleFish, String activityConsistent, String positionConsistent, double sampleSpeciesFrequencyCount, double sampleSpeciesMeasuredCount, double weightedWeight, double sPoids, double globalWeight, double plus10Weight, double minus10Weight, String sampleType, boolean hasWell, int sampleNumber, String distribution, Integer subSampleNumber, String speciesCode, String lengthClassCount, String ldlf) {
-        this(vesselCode, engine, landingDate, hasLogbook, tripExist, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode);
+    public SampleDataSheet(String vesselCode,
+                           String engine,
+                           String landingDate,
+                           boolean hasLogbook,
+                           String harbourCode,
+                           String bigFish,
+                           String littleFish,
+                           String activityConsistent,
+                           String positionConsistent,
+                           double sampleSpeciesFrequencyCount,
+                           double sampleSpeciesMeasuredCount,
+                           double weightedWeight,
+                           double sPoids,
+                           double globalWeight,
+                           double plus10Weight,
+                           double minus10Weight,
+                           String sampleType,
+                           boolean hasWell,
+                           int sampleNumber,
+                           String distribution,
+                           Integer subSampleNumber,
+                           String speciesCode,
+                           String lengthClassCount,
+                           String ldlf) {
+        this(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode);
         this.lengthClassCount = lengthClassCount;
         this.ldlf = ldlf;
     }
@@ -179,11 +224,11 @@ public final class SampleDataSheet {
         this.sampleType = sampleType;
     }
 
-    public int getVesselCode() {
+    public String getVesselCode() {
         return vesselCode;
     }
 
-    public void setVesselCode(int vesselCode) {
+    public void setVesselCode(String vesselCode) {
         this.vesselCode = vesselCode;
     }
 
@@ -199,12 +244,6 @@ public final class SampleDataSheet {
         return landingDate;
     }
 
-    public void setLandingDate(DateTime landingDate) {
-        if (landingDate != null) {
-            this.landingDate = landingDate.toString(DATE_FORMATTER);
-        }
-    }
-
     public void setLandingDate(String landingDate) {
         this.landingDate = landingDate;
     }
@@ -217,11 +256,11 @@ public final class SampleDataSheet {
         this.tripExist = tripExist;
     }
 
-    public int getHasLogbook() {
+    public boolean getHasLogbook() {
         return hasLogbook;
     }
 
-    public void setHasLogbook(int hasLogbook) {
+    public void setHasLogbook(boolean hasLogbook) {
         this.hasLogbook = hasLogbook;
     }
 
@@ -337,11 +376,11 @@ public final class SampleDataSheet {
         this.distribution = distribution;
     }
 
-    public int getHarbourCode() {
+    public String getHarbourCode() {
         return harbourCode;
     }
 
-    public void setHarbourCode(int harbourCode) {
+    public void setHarbourCode(String harbourCode) {
         this.harbourCode = harbourCode;
     }
 

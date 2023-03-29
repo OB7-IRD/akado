@@ -16,7 +16,9 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.observe.WithTrip;
 import fr.ird.akado.observe.result.model.WellDataSheet;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Well;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.List;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-public class WellResult extends Result<Well> {
+public class WellResult extends Result<Well> implements WithTrip {
 
     public static List<WellDataSheet> factory(Well well) {
         List<WellDataSheet> list = new ArrayList<>();
@@ -65,16 +67,31 @@ public class WellResult extends Result<Well> {
         super();
     }
 
+    public WellResult(Well datum) {
+        set(datum);
+    }
+
     @Override
-    public List extractResults() {
-        List<Object> list = new ArrayList<>();
+    public List<WellDataSheet> extractResults() {
+        List<WellDataSheet> list = new ArrayList<>();
         Well well = get();
         if (well == null) {
             return list;
         }
-
         list.addAll(factory(well));
         return list;
+    }
+
+    private Trip trip;
+
+    @Override
+    public Trip getTrip() {
+        return trip;
+    }
+
+    @Override
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 
 }

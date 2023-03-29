@@ -31,8 +31,8 @@ import java.util.List;
 public class InfoResult extends Result<Resume> {
 
     @Override
-    public List extractResults() {
-        return new ArrayList();
+    public List<Resume> extractResults() {
+        return new ArrayList<>();
     }
 
 }

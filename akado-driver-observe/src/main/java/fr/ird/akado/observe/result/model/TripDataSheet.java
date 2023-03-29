@@ -16,10 +16,6 @@
  */
 package fr.ird.akado.observe.result.model;
 
-import org.joda.time.DateTime;
-
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
-
 /**
  * This class represents the Trip output model.
  * <p>
@@ -32,11 +28,11 @@ public final class TripDataSheet {
 
     public String landingHarbour;
     public String departureHarbour;
-    private int vesselCode;
+    private String vesselCode;
     private String engine;
     private String landingDate;
     private String departureDate;
-    private int hasLogbook;
+    private boolean hasLogbook;
     private String firstActivityDate;
     private String lastActivityDate;
 
@@ -51,7 +47,7 @@ public final class TripDataSheet {
 
     private String recoveryTimeDate;
 
-    public int getVesselCode() {
+    public String getVesselCode() {
         return vesselCode;
     }
 
@@ -63,7 +59,7 @@ public final class TripDataSheet {
         this.lastActivityDate = lastActivityDate;
     }
 
-    public void setVesselCode(int vesselCode) {
+    public void setVesselCode(String vesselCode) {
         this.vesselCode = vesselCode;
     }
 
@@ -83,12 +79,6 @@ public final class TripDataSheet {
         this.landingDate = landingDate;
     }
 
-    public void setLandingDate(DateTime landingDate) {
-        if (landingDate != null) {
-            this.landingDate = landingDate.toString(DATE_FORMATTER);
-        }
-    }
-
     public String getLandingHarbour() {
         return landingHarbour;
     }
@@ -105,17 +95,11 @@ public final class TripDataSheet {
         this.departureDate = departureDate;
     }
 
-    public void setDepartureDate(DateTime departureDate) {
-        if (departureDate != null) {
-            this.departureDate = departureDate.toString(DATE_FORMATTER);
-        }
-    }
-
-    public int getHasLogbook() {
+    public boolean getHasLogbook() {
         return hasLogbook;
     }
 
-    public void setHasLogbook(int hasLogbook) {
+    public void setHasLogbook(boolean hasLogbook) {
         this.hasLogbook = hasLogbook;
     }
 
@@ -125,22 +109,6 @@ public final class TripDataSheet {
 
     public void setFirstActivityDate(String firstActivityDate) {
         this.firstActivityDate = firstActivityDate;
-    }
-
-    public void setFirstActivityDate(DateTime fisrtActivyDate) {
-        if (fisrtActivyDate != null) {
-            this.firstActivityDate = fisrtActivyDate.toString(DATE_FORMATTER);
-        }
-    }
-
-    public String getLastActivyDate() {
-        return lastActivityDate;
-    }
-
-    public void setLastActivityDate(DateTime lastActivyDate) {
-        if (lastActivyDate != null) {
-            this.lastActivityDate = lastActivyDate.toString(DATE_FORMATTER);
-        }
     }
 
     public int getTimeAtSea() {
@@ -205,12 +173,6 @@ public final class TripDataSheet {
 
     public void setRecoveryTimeDate(String recoveryTimeDate) {
         this.recoveryTimeDate = recoveryTimeDate;
-    }
-
-    public void setRecoveryTimeDate(DateTime recoveryTimeDate) {
-        if (recoveryTimeDate != null) {
-            this.recoveryTimeDate = recoveryTimeDate.toString(DATE_FORMATTER);
-        }
     }
 
     public String getDepartureHarbour() {

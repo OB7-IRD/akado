@@ -16,9 +16,12 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.result.model.AnapoDataSheet;
 import fr.ird.akado.observe.result.object.Anapo;
 import fr.ird.common.log.LogService;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
+import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +37,7 @@ import java.util.Map;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-public class AnapoResult extends Result<Anapo> {
+public class AnapoResult extends Result<Anapo> implements WithRoute {
 
     public static Map<String, Results> filter(Results anapoResults) {
         Map<String, Results> anapoResultsByCFR = new HashMap<>();
@@ -148,9 +151,31 @@ public class AnapoResult extends Result<Anapo> {
 
         return list;
     }
+    private Trip trip;
+    private Route route;
 
-    public AnapoResult() {
-        super();
+    @Override
+    public Trip getTrip() {
+        return trip;
+    }
+
+    @Override
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    @Override
+    public Route getRoute() {
+        return route;
+    }
+
+    @Override
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public AnapoResult(Anapo datum) {
+        set(datum);
     }
 
     @Override

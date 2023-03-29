@@ -16,10 +16,13 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.observe.inspector.metatrip.RaisingFactorInspector;
 import fr.ird.akado.observe.result.model.MetaTripDataSheet;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
+import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,48 +40,47 @@ public class MetaTripResult extends Result<List<Trip>> {
     public static List<MetaTripDataSheet> factory(List<Trip> trips) {
         MetaTripDataSheet metaTripDataSheet;
         List<MetaTripDataSheet> list = new ArrayList<>();
-//        for (Trip trip : trips) {
-//            metaTripDataSheet = new MetaTripDataSheet();
-//            metaTripDataSheet.setVesselCode(trip.getVessel().getCode());
-//            metaTripDataSheet.setFlag(trip.getVessel().getCountry().getName());
-//            metaTripDataSheet.setEngine(trip.getVessel().getVesselType().getName());
-//            metaTripDataSheet.setLandingDate(trip.getLandingDate());
-//            metaTripDataSheet.setDepartureDate(trip.getDepartureDate());
-//
-//            Activity a = trip.firstActivity();
-//            DateTime d = null;
-//            if (a != null) {
-//                d = a.getDate();
-//            }
-//            metaTripDataSheet.setFirstActivityDate(d);
-//            a = trip.lastActivity();
-//            d = null;
-//            if (a != null) {
-//                d = a.getDate();
-//            }
-//            metaTripDataSheet.setLastActivityDate(d);
+        for (Trip trip : trips) {
+            metaTripDataSheet = new MetaTripDataSheet();
+            metaTripDataSheet.setVesselCode(trip.getVessel().getCode());
+            metaTripDataSheet.setFlag(trip.getVessel().getFlagCountry().getLabel2());
+            metaTripDataSheet.setEngine(trip.getVessel().getVesselType().getLabel2());
+            metaTripDataSheet.setLandingDate(TripResult.formatDate(trip.getEndDate()));
+            metaTripDataSheet.setDepartureDate(TripResult.formatDate(trip.getStartDate()));
+
+            Route r = trip.firstRouteWithActivity();
+            if (r != null) {
+                Date d = r.getDate();
+
+                metaTripDataSheet.setFirstActivityDate(TripResult.formatDate(d));
+            }
+
+            r = trip.lastRouteWithActivity();
+            if (r != null) {
+                Date d = r.getDate();
+                metaTripDataSheet.setLastActivityDate(TripResult.formatDate(d));
+            }
+            //FIXME
 //            metaTripDataSheet.setPartialLandingIndicator(trip.getFlagCaleVide());
-//
-//            double subTotalCatchesWeight = RaisingFactorInspector.catchesWeight(trip);
-//            metaTripDataSheet.setHasCatches(subTotalCatchesWeight > 0);
-//
-//            metaTripDataSheet.setRaisingFactor(RaisingFactorInspector.RaisingFactor1(trips));
-////            metaTripDataSheet.setRaisingFactor1WithLocalMarket(RaisingFactorInspector.RaisingFactor1WithLocalMarket(trips));
-//            list.add(metaTripDataSheet);
-//        }
+
+            double subTotalCatchesWeight = RaisingFactorInspector.catchesWeight(trip);
+            metaTripDataSheet.setHasCatches(subTotalCatchesWeight > 0);
+
+            metaTripDataSheet.setRaisingFactor(RaisingFactorInspector.RaisingFactor1(trips));
+//            metaTripDataSheet.setRaisingFactor1WithLocalMarket(RaisingFactorInspector.RaisingFactor1WithLocalMarket(trips));
+            list.add(metaTripDataSheet);
+        }
         return list;
     }
 
-    public MetaTripResult() {
-        super();
+    public MetaTripResult(List<Trip> datum) {
+        set(datum);
     }
 
     @Override
-    public List extractResults() {
-        List<Object> list = new ArrayList<>();
+    public List<MetaTripDataSheet> extractResults() {
         List<Trip> trips = get();
-        list.addAll(factory(trips));
-        return list;
+        return factory(trips);
     }
 
 }

@@ -16,10 +16,20 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.observe.inspector.trip.FishingTimeInspector;
+import fr.ird.akado.observe.inspector.trip.HarbourInspector;
+import fr.ird.akado.observe.inspector.trip.LandingTotalWeightInspector;
+import fr.ird.akado.observe.inspector.trip.RecoveryTimeInspector;
+import fr.ird.akado.observe.inspector.trip.TimeAtSeaInspector;
 import fr.ird.akado.observe.result.model.TripDataSheet;
+import fr.ird.common.Utils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
+import fr.ird.driver.observe.business.data.ps.logbook.Route;
+import fr.ird.driver.observe.business.referential.common.Harbour;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,60 +40,76 @@ import java.util.List;
  */
 public class TripResult extends Result<Trip> {
 
-    public static TripDataSheet factory(Trip trip) {
-        TripDataSheet tdto = new TripDataSheet();
+    protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 
-//        tdto.setVesselCode(trip.getVessel().getCode());
-//        tdto.setEngine(trip.getVessel().getVesselType().getName());
-//        tdto.setLandingDate(trip.getLandingDate());
-//        Harbour harbour = trip.getLandingHarbour();
-//        String locode = "?";
-//        if (harbour != null) {
-//            locode = harbour.getLocode();
-//        }
-//        tdto.setLandingHarbour(locode);
-//        tdto.setHasLogbook(trip.getFlagEnquete());
-//        tdto.setDepartureDate(trip.getDepartureDate());
-//
-//        harbour = trip.getDepartureHarbour();
-//        locode = "?";
-//        if (harbour != null) {
-//            locode = harbour.getLocode();
-//            if (!HarbourInspector.harbourAreIdentical(trip)) {
-//                locode = "? " + locode;
-//            }
-//        }
-//        tdto.setDepartureHarbour(locode);
-//
-//        Activity a = trip.firstActivity();
-//        DateTime d = null;
-//        if (a != null) {
-//            d = a.getDate();
-//        }
-//        tdto.setFirstActivityDate(d);
-//        a = trip.lastActivity();
-//        d = null;
-//        if (a != null) {
-//            d = a.getDate();
-//        }
-//        tdto.setLastActivityDate(d);
-//
-//        tdto.setRecoveryTimeDate(RecoveryTimeInspector.continuous(trip));
-//
-//        tdto.setTimeAtSea(trip.getTimeAtSea());
-//        tdto.setTimeAtSeaExpected(TimeAtSeaInspector.timeAtSeaExpected(trip));
-//        tdto.setFishingTime(trip.getFishingTime());
-//        tdto.setFishingTimeExpected(FishingTimeInspector.fishingTimeExpected(trip));
-//        tdto.setLandingWeight(Utils.round(trip.getTotalLandingWeight(), 3));
-//        tdto.setLandingWeightExpected(LandingTotalWeightInspector.landingTotalWeightExpected(trip));
-//
-//        tdto.setPartialLandingIndicator(trip.getFlagCaleVide());
-////        LogService.getService(TripResult.class).logApplicationDebug(tdto.toString());
-        return tdto;
+    public static String formatDate(Date date) {
+        return date == null ? null : dateFormat.format(date);
+    }
+
+    public static TripDataSheet factory(Trip trip) {
+        TripDataSheet result = new TripDataSheet();
+
+        result.setVesselCode(trip.getVessel().getCode());
+        result.setEngine(trip.getVessel().getVesselType().getLabel2());
+        result.setLandingDate(formatDate(trip.getEndDate()));
+        Harbour harbour = trip.getLandingHarbour();
+        String locode = "?";
+        if (harbour != null) {
+            locode = harbour.getLocode();
+        }
+        result.setLandingHarbour(locode);
+        result.setHasLogbook(trip.hasLogbook());
+        result.setDepartureDate(formatDate(trip.getStartDate()));
+
+        harbour = trip.getDepartureHarbour();
+        locode = "?";
+        if (harbour != null) {
+            locode = harbour.getLocode();
+            if (!HarbourInspector.harbourAreIdentical(trip)) {
+                locode = "? " + locode;
+            }
+        }
+        result.setDepartureHarbour(locode);
+
+        Route a = trip.firstRouteWithActivity();
+        Date d = null;
+        if (a != null) {
+            d = a.getDate();
+        }
+        result.setFirstActivityDate(formatDate(d));
+        a = trip.lastRouteWithActivity();
+        d = null;
+        if (a != null) {
+            d = a.getDate();
+        }
+        result.setLastActivityDate(formatDate(d));
+
+        result.setRecoveryTimeDate(formatDate(RecoveryTimeInspector.continuous(trip)));
+
+        if (trip.getTimeAtSea() != null) {
+            result.setTimeAtSea(trip.getTimeAtSea());
+        }
+        result.setTimeAtSeaExpected(TimeAtSeaInspector.timeAtSeaExpected(trip));
+        if (trip.getFishingTime() != null) {
+            result.setFishingTime(trip.getFishingTime());
+        }
+        result.setFishingTimeExpected(FishingTimeInspector.fishingTimeExpected(trip));
+        if (trip.getLandingTotalWeight() != null) {
+            result.setLandingWeight(Utils.round(trip.getLandingTotalWeight(), 3));
+        }
+        result.setLandingWeightExpected(LandingTotalWeightInspector.landingTotalWeightExpected(trip));
+
+        //FIXME
+//        result.setPartialLandingIndicator(trip.getFlagCaleVide());
+        return result;
     }
 
     public TripResult() {
         super();
+    }
+
+    public TripResult(Trip datum) {
+        set(datum);
     }
 
     @Override
