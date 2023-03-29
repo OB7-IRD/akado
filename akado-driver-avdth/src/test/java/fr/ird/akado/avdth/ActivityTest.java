@@ -28,6 +28,7 @@ import fr.ird.akado.avdth.result.Result;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.OTUtils;
 import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
@@ -124,8 +125,7 @@ public class ActivityTest extends TestCase {
 //    }
 
     public void testEEZ() throws AvdthDriverException {
-        PositionInEEZInspector inspector = new PositionInEEZInspector();
-        assertEquals("CIV", inspector.getEEZ(-5.43, 1.6));
+        assertEquals("CIV", GISHandler.getService().getEEZ(-5.43, 1.6));
 
         Activity a = (new ActivityDAO()).findActivityByTripAndDateOfLandingAndNum(
                 401,
@@ -134,7 +134,7 @@ public class ActivityTest extends TestCase {
                 1);
         LogService.getService().logApplicationInfo("=> " + a);
         assertNotNull(a);
-        assertEquals("CIV", inspector.getEEZ(OTUtils.convertLongitude(4, 400),
+        assertEquals("CIV", GISHandler.getService().getEEZ(OTUtils.convertLongitude(4, 400),
                 OTUtils.convertLatitude(4, 515)));
         assertFalse(PositionInEEZInspector.activityPositionAndEEZInconsistent(a));
 
@@ -144,7 +144,7 @@ public class ActivityTest extends TestCase {
                 new DateTime(2014, 02, 11, 0, 0),
                 1);
         assertNotNull(a);
-        assertEquals("GMB", inspector.getEEZ(OTUtils.convertLongitude(4, 1949),
+        assertEquals("GMB", GISHandler.getService().getEEZ(OTUtils.convertLongitude(4, 1949),
                 OTUtils.convertLatitude(4, 1318)));
         assertFalse(PositionInEEZInspector.activityPositionAndEEZInconsistent(a));
 
@@ -158,38 +158,34 @@ public class ActivityTest extends TestCase {
     }
 
     public void test1InLand() throws AvdthDriverException {
-        PositionInspector inspector = new PositionInspector();
-        assertEquals("Ghana", inspector.inLand(-1.5, 8.5));
+        assertEquals("Ghana", GISHandler.getService().inLand(-1.5, 8.5));
 
 //        assertEquals("Côte d'Ivoire", inspector.inLand(-4.0, 5.25));
-        assertTrue(inspector.onCoastLine(-4.0, 5.25));
-        assertFalse(inspector.onCoastLine(-4.0, 6.25));
+        assertTrue(GISHandler.getService().onCoastLine(-4.0, 5.25));
+        assertFalse(GISHandler.getService().onCoastLine(-4.0, 6.25));
     }
 
     public void test2InIndianOcean() throws AvdthDriverException {
-        PositionInspector inspector = new PositionInspector();
-        assertTrue(inspector.inIndianOcean(65, 12));
-        assertFalse(inspector.inIndianOcean(-1.5, 8.5));
+        assertTrue(GISHandler.getService().inIndianOcean(65, 12));
+        assertFalse(GISHandler.getService().inIndianOcean(-1.5, 8.5));
 
     }
 
     public void test3InAtlanticOcean() throws AvdthDriverException {
-        PositionInspector inspector = new PositionInspector();
-        assertTrue(inspector.inAtlanticOcean(4.5, 2.4));
-        assertTrue(inspector.inAtlanticOcean(-4.0, 5.25));
-        assertFalse(inspector.inAtlanticOcean(-1.5, 8.5));
-        assertTrue(inspector.inAtlanticOcean(-79.71, 9.65));
+        assertTrue(GISHandler.getService().inAtlanticOcean(4.5, 2.4));
+        assertTrue(GISHandler.getService().inAtlanticOcean(-4.0, 5.25));
+        assertFalse(GISHandler.getService().inAtlanticOcean(-1.5, 8.5));
+        assertTrue(GISHandler.getService().inAtlanticOcean(-79.71, 9.65));
 
     }
 
     public void test4InHarbour() throws AvdthDriverException {
-        PositionInspector inspector = new PositionInspector();
         //In the buffer of Abidjan
-        assertTrue(PositionInspector.inHarbour(-4.013, 5.287));
+        assertTrue(GISHandler.getService().inHarbour(-4.013, 5.287));
         //Not In the buffer of Abidjan
-        assertFalse(PositionInspector.inHarbour(-4.0, 6.25));
+        assertFalse(GISHandler.getService().inHarbour(-4.0, 6.25));
         //In the buffer of Tema
-        assertTrue(PositionInspector.inHarbour(-0.02, 5.63));
+        assertTrue(GISHandler.getService().inHarbour(-0.02, 5.63));
         //Not In the buffer of Tema
 //        assertFalse(inspector.inHarbour(-4.0, 6.25));
     }

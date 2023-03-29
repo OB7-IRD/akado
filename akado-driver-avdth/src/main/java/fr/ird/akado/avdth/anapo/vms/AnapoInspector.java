@@ -17,7 +17,7 @@
 package fr.ird.akado.avdth.anapo.vms;
 
 import fr.ird.akado.avdth.Constant;
-import fr.ird.akado.avdth.activity.PositionInspector;
+
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_NO_TRACE_VMS;
 import static fr.ird.akado.avdth.Constant.CODE_INCONSISTENCY_VMS_POSITION_COUNT;
 import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_NO_TRACE_VMS;
@@ -28,6 +28,8 @@ import fr.ird.akado.avdth.result.object.Anapo;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import static fr.ird.akado.core.common.AAProperties.THRESHOLD_CLASS_TWO;
+
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.core.spatial.WGS84;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.OTUtils;
@@ -137,7 +139,7 @@ public class AnapoInspector extends Inspector<Activity> {
         Map<PosVMS, Double> scores = new HashMap<>();
         boolean foundValidPosition = false;
         for (PosVMS pvms : positions) {
-            if (!PositionInspector.inHarbour(pvms.getLongitude(), pvms.getLatitude())) {
+            if (!GISHandler.getService().inHarbour(pvms.getLongitude(), pvms.getLatitude())) {
                 double distance = calculateDistanceProximity(pvms, a);
 
                 if (distance < THRESHOLD_CLASS_TWO) {

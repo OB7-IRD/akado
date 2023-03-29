@@ -20,15 +20,19 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.common.JDBCUtilities;
 import fr.ird.common.log.LogService;
+import io.ultreia.java4all.util.sql.SqlQuery;
 import org.h2gis.functions.factory.H2GISFunctions;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +46,7 @@ import java.util.logging.Logger;
  * @see <a href="http://www.h2gis.org/">site de H2Gis</a>
  * @since 2.0
  */
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
 public class GISHandler {
 
     private static final GISHandler SERVICE = new GISHandler();
@@ -191,13 +196,10 @@ public class GISHandler {
      * @return a database connection
      */
     public Connection getConnection() {
-//        System.out.println("DB Path" + dbPath);
         if (connection == null && dbPath != null) {
-
             try {
                 Class.forName("org.h2.Driver");
                 String url = "jdbc:h2:" + dbPath + ";ACCESS_MODE_DATA=R;DB_CLOSE_ON_EXIT=FALSE";
-                //System.out.println("URL DB GIS " + url);
                 connection = DriverManager.getConnection(url);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(GISHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -206,6 +208,140 @@ public class GISHandler {
             }
         }
         return connection;
+    }
+
+    public String getEEZ(double longitude, double latitude) {
+        String eez = "-";
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM eez e WHERE "
+                                                       + "	ST_Covers( "
+                                                       + "		ST_SetSRID(e.the_geom, 4326),"
+                                                       + "      ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326 )" +
+                                                       "    )",
+                                               rs -> rs.getString("ISO_Ter1"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                eez = query.prepareResult(rs);
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return eez;
+    }
+
+
+    public List<String> getEEZList(String multipoint) {
+        List<String> eezList = new ArrayList<>();
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM eez e"
+                                                       + " WHERE "
+                                                       + "	ST_Within( "
+                                                       + "         ST_GeomFromText('MULTIPOINT(" + multipoint + ")', 4326 ),"
+                                                       + "		ST_SetSRID(e.the_geom, 4326)"
+                                                       + "	)",
+                                               rs -> rs.getString("ISO_Ter1"));
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                String eez = query.prepareResult(rs);
+                eezList.add(eez);
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return eezList;
+    }
+
+    public boolean inIndianOcean(double longitude, double latitude) {
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM SeasAndOceans s"
+                                                       + " WHERE "
+                                                       + "	ST_Within( "
+                                                       + "		ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326 ) , "
+                                                       + "		ST_BUFFER(s.the_geom, 1/120.0) "
+                                                       + "	)"
+                                                       + " AND s.id IN('45','45A','44','46A','62','42', '43', '38','39')",
+                                               rs -> rs.getString("ISO_Ter1"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return false;
+    }
+
+    public boolean inAtlanticOcean(double longitude, double latitude) {
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM SeasAndOceans S"
+                                                       + " WHERE "
+                                                       + "	ST_Within( "
+                                                       + "		ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326 ) , "
+                                                       + "		ST_BUFFER(S.THE_GEOM, 1/120.0) "
+                                                       + "	)"
+                                                       + " AND S.ID IN('15','15A','21', '21A', '22','23','26','27','32','34')",
+                                               rs -> rs.getString("ISO_Ter1"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return false;
+    }
+
+    public boolean inHarbour(double longitude, double latitude) {
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM harbour h"
+                                                       + " WHERE "
+                                                       + "	ST_Within( "
+                                                       + "		ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326 ) , "
+                                                       + "		ST_BUFFER(h.the_geom, 0.2) "
+                                                       + "	)",
+                                               rs -> rs.getString("ISO_Ter1"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return false;
+    }
+
+    public boolean onCoastLine(double longitude, double latitude) {
+        SqlQuery<String> query = SqlQuery.wrap("SELECT S.NAME FROM SEASANDOCEANS S "
+                                                       + " WHERE  ST_Within(ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326), "
+                                                       + " ST_BUFFER(S.THE_GEOM, 1/120.0))",
+                                               rs -> rs.getString("ISO_Ter1"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return false;
+    }
+
+    public String inLand(double longitude, double latitude) {
+        SqlQuery<String> query = SqlQuery.wrap("SELECT * FROM COUNTRIES C"
+                                                       + " WHERE "
+                                                       + "	ST_Within( "
+                                                       + "		ST_GeomFromText('POINT(" + longitude + " " + latitude + ")', 4326 ) , "
+                                                       + "		C.the_geom "
+                                                       + "	)",
+                                               rs -> rs.getString("ENGLISH"));
+
+        try (PreparedStatement statement = query.prepareQuery(getConnection()); ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                return query.prepareResult(rs);
+            }
+        } catch (SQLException ex) {
+            JDBCUtilities.printSQLException(ex);
+        }
+        return null;
     }
 
 }
