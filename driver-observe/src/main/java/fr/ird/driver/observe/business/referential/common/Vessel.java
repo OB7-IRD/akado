@@ -257,4 +257,14 @@ public class Vessel extends I18nReferentialEntity {
     public void setShipOwner(Supplier<ShipOwner> shipOwner) {
         this.shipOwner = Objects.requireNonNull(shipOwner);
     }
+
+    public boolean isPurseSeine() {
+        //FIXME
+        return false;
+    }
+
+    public boolean isBaitBoat() {
+        //FIXME
+        return false;
+    }
 }

@@ -3,6 +3,8 @@ package fr.ird.driver.observe.business.referential.common;
 import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * Created on 18/03/2023.
@@ -14,6 +16,7 @@ public class FpaZone extends I18nReferentialEntity {
 
     private Date startDate;
     private Date endDate;
+    private Supplier<Country> country = () -> null;
 
     public Date getStartDate() {
         return startDate;
@@ -29,5 +32,13 @@ public class FpaZone extends I18nReferentialEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Country getCountry() {
+        return country.get();
+    }
+
+    public void setCountry(Supplier<Country> country) {
+        this.country = Objects.requireNonNull(country);
     }
 }

@@ -10,4 +10,7 @@ import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
  */
 public class SchoolType extends I18nReferentialEntity {
 
+    //FIXME Validate this one
+    public static final String ARTIFICIAL_SCHOOL = "1";
+    public static final String FREE_SCHOOL = "2";
 }

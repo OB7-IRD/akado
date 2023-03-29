@@ -19,6 +19,10 @@ import java.util.function.Supplier;
  */
 public class SampleSpecies extends DataEntity {
 
+    public static String SAMPLE_LENGTH_CLASS_FOR_DORSAL = "fr.ird.referential.common.SizeMeasureType#1433499466774#0.529249255312607";
+    public static String SAMPLE_LENGTH_CLASS_FOR_FORK = "fr.ird.referential.common.SizeMeasureType#1433499465700#0.0902433863375336";
+    //FIXME
+    public static String SAMPLE_LENGTH_CLASS_FOR_DORSAL_ONE_CENTIMER_FREQUENCY = "fr.ird.referential.common.SizeMeasureType#1433499465700#0.0902433863375336";
     private String comment;
     private Date startTime;
     private Date endTime;
@@ -28,6 +32,13 @@ public class SampleSpecies extends DataEntity {
     private Supplier<Species> species = () -> null;
     private Supplier<SizeMeasureType> sizeMeasureType = () -> null;
     private Supplier<Set<SampleSpeciesMeasure>> sampleSpeciesMeasure = SingletonSupplier.of(LinkedHashSet::new);
+
+    public boolean isLd() {
+        return getSizeMeasureType().getTopiaId().equals(SAMPLE_LENGTH_CLASS_FOR_DORSAL);
+    }
+    public boolean isLf() {
+        return getSizeMeasureType().getTopiaId().equals(SAMPLE_LENGTH_CLASS_FOR_FORK);
+    }
 
     public String getComment() {
         return comment;

@@ -9,6 +9,10 @@ import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
  * @since 1.0.0
  */
 public class Country extends I18nReferentialEntity {
+
+    public static String AVDTH_CODE_COUNTRY_FRANCE = "1";
+    public static String AVDTH_CODE_COUNTRY_SPAIN = "4";
+
     private String iso2Code;
     private String iso3Code;
 

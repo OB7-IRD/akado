@@ -17,6 +17,8 @@ import fr.ird.driver.observe.business.referential.ps.common.Program;
 import fr.ird.driver.observe.business.referential.ps.logbook.WellContentStatus;
 import io.ultreia.java4all.util.SingletonSupplier;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -365,5 +367,43 @@ public class Trip extends DataEntity {
 
     public void setLocalmarketSample(Supplier<Set<Sample>> localmarketSample) {
         this.localmarketSample = Objects.requireNonNull(localmarketSample);
+    }
+
+    public boolean hasLogbook() {
+        return getLogbookAcquisitionStatus() != null && getLogbookAcquisitionStatus().isFieldEnabler();
+    }
+
+    public boolean withLogbookActivities() {
+        for (Route route : getLogbookRoute()) {
+            if (route.getActivity().size() > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Route firstRouteWithActivity() {
+        for (Route route : getLogbookRoute()) {
+            if (route.getActivity().size() > 1) {
+                return route;
+            }
+        }
+        return null;
+    }
+
+    public Route lastRouteWithActivity() {
+        List<Route> routes = new ArrayList<>(getLogbookRoute());
+        Collections.reverse(routes);
+        for (Route route : routes) {
+            if (route.getActivity().size() > 1) {
+                return route;
+            }
+        }
+        return null;
+    }
+
+    public boolean isPartialLanding() {
+        //FIXME
+        return false;
     }
 }

@@ -11,6 +11,7 @@ import fr.ird.driver.observe.business.referential.ps.common.SchoolType;
 import fr.ird.driver.observe.business.referential.ps.common.VesselActivity;
 import fr.ird.driver.observe.business.referential.ps.logbook.InformationSource;
 import fr.ird.driver.observe.business.referential.ps.logbook.SetSuccessStatus;
+import fr.ird.driver.observe.common.ObserveUtils;
 import io.ultreia.java4all.util.SingletonSupplier;
 
 import java.util.Date;
@@ -280,5 +281,9 @@ public class Activity extends DataEntity {
 
     public void setObservedSystem(Supplier<Set<ObservedSystem>> observedSystem) {
         this.observedSystem = Objects.requireNonNull(observedSystem);
+    }
+
+    public int getQuadrant() {
+        return ObserveUtils.getQuadrant(getLongitude(), getLatitude());
     }
 }
