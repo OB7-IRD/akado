@@ -16,6 +16,7 @@ public class FpaZone extends I18nReferentialEntity {
 
     private Date startDate;
     private Date endDate;
+    private String subdivision;
     private Supplier<Country> country = () -> null;
 
     public Date getStartDate() {
@@ -32,6 +33,14 @@ public class FpaZone extends I18nReferentialEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getSubdivision() {
+        return subdivision;
+    }
+
+    public void setSubdivision(String subdivision) {
+        this.subdivision = subdivision;
     }
 
     public Country getCountry() {

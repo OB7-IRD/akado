@@ -360,187 +360,80 @@ VALUES ('fr.ird.referential.common.DataQuality#0#1', 0, TIMESTAMP '2018-12-07 00
         TIMESTAMP '2019-04-15 17:56:20.87', 'E', NULL, NULL, FALSE, 1, 'Not qualified',
         STRINGDECODE('Non qualifi\u00e9e'), STRINGDECODE('Non qualifi\u00e9e TODO'), NULL, NULL, NULL, NULL, NULL);
 CREATE INDEX COMMON.IDX_COMMON_DATAQUALITY_LASTUPDATEDATE ON COMMON.DATAQUALITY (LASTUPDATEDATE);
-CREATE CACHED TABLE COMMON.FPAZONE
+create table common.fpaZone
 (
-    TOPIAID         VARCHAR(255)                          NOT NULL,
-    TOPIAVERSION    BIGINT                                NOT NULL,
-    TOPIACREATEDATE TIMESTAMP                             NOT NULL,
-    LASTUPDATEDATE  TIMESTAMP DEFAULT CURRENT_TIMESTAMP() NOT NULL,
-    CODE            VARCHAR(255)                          NOT NULL,
-    URI             VARCHAR(255),
-    HOMEID          VARCHAR(255),
-    NEEDCOMMENT     BOOLEAN   DEFAULT FALSE               NOT NULL,
-    STATUS          INTEGER                               NOT NULL,
-    LABEL1          VARCHAR(255)                          NOT NULL,
-    LABEL2          VARCHAR(255)                          NOT NULL,
-    LABEL3          VARCHAR(255)                          NOT NULL,
-    LABEL4          VARCHAR(255),
-    LABEL5          VARCHAR(255),
-    LABEL6          VARCHAR(255),
-    LABEL7          VARCHAR(255),
-    LABEL8          VARCHAR(255),
-    STARTDATE       DATE,
-    ENDDATE         DATE
+    topiaId         varchar(255)                        not null,
+    topiaVersion    bigint                              not null,
+    topiaCreateDate timestamp                           not null,
+    lastUpdateDate  timestamp default CURRENT_TIMESTAMP not null,
+    code            varchar(255)                        not null,
+    uri             varchar(255),
+    homeId          varchar(255),
+    needComment     boolean   default false             not null,
+    status          integer                             not null,
+    label1          varchar(255)                        not null,
+    label2          varchar(255)                        not null,
+    label3          varchar(255)                        not null,
+    label4          varchar(255),
+    label5          varchar(255),
+    label6          varchar(255),
+    label7          varchar(255),
+    label8          varchar(255),
+    startDate       date,
+    endDate         date,
+    country         varchar(255)                        not null,
+    subdivision     varchar(10),
+    primary key (topiaId)
 );
-ALTER TABLE COMMON.FPAZONE
-    ADD CONSTRAINT COMMON.CONSTRAINT_3 PRIMARY KEY (TOPIAID);
+alter table common.fpaZone add constraint fk_common_fpazone_country foreign key (country) references common.country;
 -- 45 +/- SELECT COUNT(*) FROM COMMON.FPAZONE;
-INSERT INTO COMMON.FPAZONE(TOPIAID, TOPIAVERSION, TOPIACREATEDATE, LASTUPDATEDATE, CODE, URI, HOMEID, NEEDCOMMENT,
-                           STATUS, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, LABEL6, LABEL7, LABEL8, STARTDATE, ENDDATE)
-VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.1', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'AGO', NULL, '1', FALSE, 1, 'Angola', 'Angola', 'Angola', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.3', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'BEN', NULL, '2', FALSE, 1, STRINGDECODE('B\u00e9nin'),
-        STRINGDECODE('B\u00e9nin'), STRINGDECODE('B\u00e9nin'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.5', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'CMR', NULL, '3', FALSE, 1, 'Cameroun', 'Cameroun', 'Cameroun', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.7', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'CPV', NULL, '4', FALSE, 1, 'Cap Vert', 'Cap Vert', 'Cap Vert', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.9', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'COG', NULL, '5', FALSE, 1, 'Congo', 'Congo', 'Congo', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.1', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'CIV', NULL, '6', FALSE, 1, STRINGDECODE('C\u00f4te d''Ivoire'),
-        STRINGDECODE('C\u00f4te d''Ivoire'), STRINGDECODE('C\u00f4te d''Ivoire'), NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.3', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GAB', NULL, '7', FALSE, 1, 'Gabon', 'Gabon', 'Gabon', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.5', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GMB', NULL, '8', FALSE, 1, 'Gambie', 'Gambie', 'Gambie', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.7', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GHA', NULL, '9', FALSE, 1, 'Ghana', 'Ghana', 'Ghana', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.9', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GIN', NULL, '10', FALSE, 1, STRINGDECODE('Guin\u00e9e'),
-        STRINGDECODE('Guin\u00e9e'), STRINGDECODE('Guin\u00e9e'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.1', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GNB', NULL, '11', FALSE, 1, STRINGDECODE('Guin\u00e9e Bissau'),
-        STRINGDECODE('Guin\u00e9e Bissau'), STRINGDECODE('Guin\u00e9e Bissau'), NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.3', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GNQ', NULL, '12', FALSE, 1, STRINGDECODE('Guin\u00e9e Equatoriale'),
-        STRINGDECODE('Guin\u00e9e Equatoriale'), STRINGDECODE('Guin\u00e9e Equatoriale'), NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.5', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'LBR', NULL, '13', FALSE, 1, STRINGDECODE('Lib\u00e9ria'),
-        STRINGDECODE('Lib\u00e9ria'), STRINGDECODE('Lib\u00e9ria'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.7', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MAR', NULL, '14', FALSE, 1, 'Maroc', 'Maroc', 'Maroc', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.9', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MRT', NULL, '15', FALSE, 1, 'Mauritanie', 'Mauritanie', 'Mauritanie', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO COMMON.FPAZONE(TOPIAID, TOPIAVERSION, TOPIACREATEDATE, LASTUPDATEDATE, CODE, URI, HOMEID, NEEDCOMMENT,
-                           STATUS, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, LABEL6, LABEL7, LABEL8, STARTDATE, ENDDATE)
-VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.1', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'NGA', NULL, '16', FALSE, 1, STRINGDECODE('Nig\u00e9ria'),
-        STRINGDECODE('Nig\u00e9ria'), STRINGDECODE('Nig\u00e9ria'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.3', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'COD', NULL, '17', FALSE, 1,
-        STRINGDECODE('R\u00e9publ. D\u00e9mocr. du Congo'), STRINGDECODE('R\u00e9publ. D\u00e9mocr. du Congo'),
-        STRINGDECODE('R\u00e9publ. D\u00e9mocr. du Congo'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.5', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'ESH', NULL, '18', FALSE, 1, 'Sahara Occidental', 'Sahara Occidental',
-        'Sahara Occidental', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.2', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'ZAF', NULL, '19', FALSE, 1, 'Afrique du Sud', 'Afrique du Sud',
-        'Afrique du Sud', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.4', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'COM', NULL, '20', FALSE, 1, 'Comores', 'Comores', 'Comores', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.6', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'KEN', NULL, '21', FALSE, 1, 'Kenya', 'Kenya', 'Kenya', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#0.8', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MDG', NULL, '22', FALSE, 1, 'Madagascar', 'Madagascar', 'Madagascar', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.0', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MDV', NULL, '23', FALSE, 1, 'Maldives', 'Maldives', 'Maldives', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.2', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MUS', NULL, '24', FALSE, 1, 'Maurice', 'Maurice', 'Maurice', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.4', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-YT', NULL, '25', FALSE, 1, 'Mayotte', 'Mayotte', 'Mayotte', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.6', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'MZ', NULL, '26', FALSE, 1, 'Mozambique', 'Mozambique', 'Mozambique', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#1.8', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-RE', NULL, '27', FALSE, 1, STRINGDECODE('R\u00e9union'),
-        STRINGDECODE('R\u00e9union'), STRINGDECODE('R\u00e9union'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.0', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'SYC', NULL, '28', FALSE, 1, 'Seychelles', 'Seychelles', 'Seychelles', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.2', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'SOM', NULL, '29', FALSE, 1, 'Somalie', 'Somalie', 'Somalie', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.4', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'TZA', NULL, '30', FALSE, 1, 'Tanzanie', 'Tanzanie', 'Tanzanie', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#2.6', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'GBR-CH', NULL, '31', FALSE, 1, 'Terr. Britannique (Chagos)',
-        'Terr. Britannique (Chagos)', 'Terr. Britannique (Chagos)', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO COMMON.FPAZONE(TOPIAID, TOPIAVERSION, TOPIACREATEDATE, LASTUPDATEDATE, CODE, URI, HOMEID, NEEDCOMMENT,
-                           STATUS, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, LABEL6, LABEL7, LABEL8, STARTDATE, ENDDATE)
-VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.8', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-BA', NULL, '32', FALSE, 1, STRINGDECODE('Terr. Fran\u00e7. Bassas'),
-        STRINGDECODE('Terr. Fran\u00e7. Bassas'), STRINGDECODE('Terr. Fran\u00e7. Bassas'), NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.0', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-EU', NULL, '33', FALSE, 1, STRINGDECODE('Terr. Fran\u00e7. Europa'),
-        STRINGDECODE('Terr. Fran\u00e7. Europa'), STRINGDECODE('Terr. Fran\u00e7. Europa'), NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.2', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-GL', NULL, '34', FALSE, 1, STRINGDECODE('Terr. Fran\u00e7. Glorieuses'),
-        STRINGDECODE('Terr. Fran\u00e7. Glorieuses'), STRINGDECODE('Terr. Fran\u00e7. Glorieuses'), NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.4', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-JN', NULL, '35', FALSE, 1,
-        STRINGDECODE('Terr. Fran\u00e7. Juan de Nova'), STRINGDECODE('Terr. Fran\u00e7. Juan de Nova'),
-        STRINGDECODE('Terr. Fran\u00e7. Juan de Nova'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.6', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'FRA-TR', NULL, '36', FALSE, 1, STRINGDECODE('Terr. Fran\u00e7. Tromelin'),
-        STRINGDECODE('Terr. Fran\u00e7. Tromelin'), STRINGDECODE('Terr. Fran\u00e7. Tromelin'), NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.7', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'STP', NULL, '37', FALSE, 1, 'Saint Thomas et Prince',
-        'Saint Thomas et Prince', 'Saint Thomas et Prince', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.8', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'SEN', NULL, '38', FALSE, 1, STRINGDECODE('S\u00e9n\u00e9gal'),
-        STRINGDECODE('S\u00e9n\u00e9gal'), STRINGDECODE('S\u00e9n\u00e9gal'), NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#3.9', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'SLE', NULL, '39', FALSE, 1, 'Sierra Leone', 'Sierra Leone', 'Sierra Leone',
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#4.0', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'TGO', NULL, '40', FALSE, 1, 'Togo', 'Togo', 'Togo', NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1239832686122#4.1', 1, TIMESTAMP '2015-01-07 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'XIN', NULL, '41', FALSE, 1, 'Eaux Internationales', 'Eaux Internationales',
-        'Eaux Internationales', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1464000000000#42', 1, TIMESTAMP '2021-09-17 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'XSG', NULL, '42', FALSE, 1,
-        STRINGDECODE('Zone de cogestion S\u00e9n\u00e9gal/Guin\u00e9e-Bissau TODO'),
-        STRINGDECODE('Zone de cogestion S\u00e9n\u00e9gal/Guin\u00e9e-Bissau'),
-        STRINGDECODE('Zone de cogestion S\u00e9n\u00e9gal/Guin\u00e9e-Bissau TODO'), NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('fr.ird.referential.common.FpaZone#1464000000000#43', 1, TIMESTAMP '2021-09-17 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'NAM', NULL, '43', FALSE, 1, 'Namibie TODO', 'Namibie', 'Namibie TODO', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL),
-       ('fr.ird.referential.common.FpaZone#1472549603992#0.4034175948140135', 3, TIMESTAMP '2016-08-30 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'ESP', NULL, '44', FALSE, 1, 'Spain', 'Espagne', 'Espana', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL);
-INSERT INTO COMMON.FPAZONE(TOPIAID, TOPIAVERSION, TOPIACREATEDATE, LASTUPDATEDATE, CODE, URI, HOMEID, NEEDCOMMENT,
-                           STATUS, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, LABEL6, LABEL7, LABEL8, STARTDATE, ENDDATE)
-VALUES ('fr.ird.referential.common.FpaZone#1464000000000#999', 1, TIMESTAMP '2021-09-17 00:00:00.0',
-        TIMESTAMP '2021-09-17 00:00:00.0', 'XXX*', NULL, '999', TRUE, 1, 'Inconnue TODO', 'Inconnue', 'Inconnue TODO',
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.1', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'AGO', NULL, '1', false, 1, 'Angola', 'Angola', 'Angola', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00048');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.3', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'BEN', NULL, '2', false, 1, 'Bénin', 'Bénin', 'Bénin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00056');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.5', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'CMR', NULL, '3', false, 1, 'Cameroun', 'Cameroun', 'Cameroun', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00057');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.7', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'CPV', NULL, '4', false, 1, 'Cap Vert', 'Cap Vert', 'Cap Vert', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675593#0.5564506922817382');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.9', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'COG', NULL, '5', false, 1, 'Congo', 'Congo', 'Congo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675591#0.43427027828177345');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.1', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'CIV', NULL, '6', false, 1, 'Côte d''Ivoire', 'Côte d''Ivoire', 'Côte d''Ivoire', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675584#0.7208429105932204');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.3', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GAB', NULL, '7', false, 1, 'Gabon', 'Gabon', 'Gabon', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GA', 'fr.ird.referential.common.Country#1464000000000#0.00047');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.5', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GMB', NULL, '8', false, 1, 'Gambie', 'Gambie', 'Gambie', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00058');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.7', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GHA', NULL, '9', false, 1, 'Ghana', 'Ghana', 'Ghana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675590#0.8642150406061876');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.9', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GIN', NULL, '10', false, 1, 'Guinée', 'Guinée', 'Guinée', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675595#0.9573433532024453');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.1', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GNB', NULL, '11', false, 1, 'Guinée Bissau', 'Guinée Bissau', 'Guinée Bissau', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00059');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.3', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GNQ', NULL, '12', false, 1, 'Guinée Equatoriale', 'Guinée Equatoriale', 'Guinée Equatoriale', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00055');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.5', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'LBR', NULL, '13', false, 1, 'Libéria', 'Libéria', 'Libéria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675594#0.141909095388714');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.7', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MAR', NULL, '14', false, 1, 'Maroc', 'Maroc', 'Maroc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675590#0.9860530760211061');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.9', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MRT', NULL, '15', false, 1, 'Mauritanie', 'Mauritanie', 'Mauritanie', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00054');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.1', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'NGA', NULL, '16', false, 1, 'Nigéria', 'Nigéria', 'Nigéria', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00060');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.3', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'COD', NULL, '17', false, 1, 'Républ. Démocr. du Congo', 'Républ. Démocr. du Congo', 'Républ. Démocr. du Congo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675591#0.43427027828177345');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.5', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'ESH', NULL, '18', false, 1, 'Sahara Occidental', 'Sahara Occidental', 'Sahara Occidental', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00067');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.2', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'ZAF', NULL, '19', false, 1, 'Afrique du Sud', 'Afrique du Sud', 'Afrique du Sud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00066');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.4', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'COM', NULL, '20', false, 1, 'Comores', 'Comores', 'Comores', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1433499422828#0.162370163481683');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.6', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'KEN', NULL, '21', false, 1, 'Kenya', 'Kenya', 'Kenya', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1433499422444#0.191530283074826');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#0.8', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MDG', NULL, '22', false, 1, 'Madagascar', 'Madagascar', 'Madagascar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1433499421089#0.790609733667225');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.0', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MDV', NULL, '23', false, 1, 'Maldives', 'Maldives', 'Maldives', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00065');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.2', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MUS', NULL, '24', false, 1, 'Maurice', 'Maurice', 'Maurice', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675593#0.24921769452411147');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.4', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-YT', NULL, '25', false, 1, 'Mayotte', 'Mayotte', 'Mayotte', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'YT', 'fr.ird.referential.common.Country#1239832675597#0.708958027082267');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.6', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'MZ', NULL, '26', false, 1, 'Mozambique', 'Mozambique', 'Mozambique', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1433499422061#0.580995921976864');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#1.8', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-RE', NULL, '27', false, 1, 'Réunion', 'Réunion', 'Réunion', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'RE', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.0', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'SYC', NULL, '28', false, 1, 'Seychelles', 'Seychelles', 'Seychelles', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675593#0.3601938043845213');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.2', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'SOM', NULL, '29', false, 1, 'Somalie', 'Somalie', 'Somalie', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00062');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.4', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'TZA', NULL, '30', false, 1, 'Tanzanie', 'Tanzanie', 'Tanzanie', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TZ', 'fr.ird.referential.common.Country#1433499420350#0.873300955630839');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.6', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'GBR-CH', NULL, '31', false, 1, 'Terr. Britannique (Chagos)', 'Terr. Britannique (Chagos)', 'Terr. Britannique (Chagos)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00064');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#2.8', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-BA', NULL, '32', false, 1, 'Terr. Franç. Bassas', 'Terr. Franç. Bassas', 'Terr. Franç. Bassas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'BA', 'fr.ird.referential.common.Country#1433499423185#0.295651502907276');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.0', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-EU', NULL, '33', false, 1, 'Terr. Franç. Europa', 'Terr. Franç. Europa', 'Terr. Franç. Europa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'EU', 'fr.ird.referential.common.Country#1433499423185#0.295651502907276');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.2', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-GL', NULL, '34', false, 1, 'Terr. Franç. Glorieuses', 'Terr. Franç. Glorieuses', 'Terr. Franç. Glorieuses', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GL', 'fr.ird.referential.common.Country#1433499423185#0.295651502907276');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.4', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-JN', NULL, '35', false, 1, 'Terr. Franç. Juan de Nova', 'Terr. Franç. Juan de Nova', 'Terr. Franç. Juan de Nova', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'JN', 'fr.ird.referential.common.Country#1433499423185#0.295651502907276');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.6', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'FRA-TR', NULL, '36', false, 1, 'Terr. Franç. Tromelin', 'Terr. Franç. Tromelin', 'Terr. Franç. Tromelin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'TR', 'fr.ird.referential.common.Country#1433499423185#0.295651502907276');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.7', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'STP', NULL, '37', false, 1, 'Saint Thomas et Prince', 'Saint Thomas et Prince', 'Saint Thomas et Prince', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ST', 'fr.ird.referential.common.Country#1464000000000#0.00049');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.8', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'SEN', NULL, '38', false, 1, 'Sénégal', 'Sénégal', 'Sénégal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675584#0.10128636927717882');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#3.9', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'SLE', NULL, '39', false, 1, 'Sierra Leone', 'Sierra Leone', 'Sierra Leone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675595#0.4516205269922994');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#4.0', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'TGO', NULL, '40', false, 1, 'Togo', 'Togo', 'Togo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00063');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1239832686122#4.1', '2015-01-07 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'XIN', NULL, '41', false, 1, 'Eaux Internationales', 'Eaux Internationales', 'Eaux Internationales', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'XIN', 'fr.ird.referential.common.Country#1464000000000#0.00050');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1464000000000#43', '2021-09-17 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'NAM', NULL, '43', false, 1, 'Namibie TODO', 'Namibie', 'Namibie TODO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1464000000000#0.00072');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1472549603992#0.4034175948140135', '2016-08-30 00:00:00.0', 4, '2023-02-14 00:00:00.0', 'ESP', NULL, '44', false, 1, 'Spain', 'Espagne', 'Espana', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1239832675584#0.0783072255559325');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1464000000000#42', '2021-09-17 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'XSG', NULL, '42', false, 1, 'Zone de cogestion Sénégal/Guinée-Bissau TODO', 'Zone de cogestion Sénégal/Guinée-Bissau', 'Zone de cogestion Sénégal/Guinée-Bissau TODO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1308140312730#0.23814082967457195');
+INSERT INTO common.fpaZone(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, startDate, endDate, subdivision, country) VALUES ('fr.ird.referential.common.FpaZone#1464000000000#999', '2021-09-17 00:00:00.0', 2, '2023-02-14 00:00:00.0', 'XXX*', NULL, '999', true, 1, 'Inconnue TODO', 'Inconnue', 'Inconnue TODO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.Country#1308140312730#0.23814082967457195');
 CREATE INDEX COMMON.IDX_COMMON_FPAZONE_LASTUPDATEDATE ON COMMON.FPAZONE (LASTUPDATEDATE);
+CREATE INDEX idx_common_fpazone_country ON common.fpaZone(country);
 CREATE CACHED TABLE COMMON.GEAR
 (
     TOPIAID         VARCHAR(255)                          NOT NULL,
