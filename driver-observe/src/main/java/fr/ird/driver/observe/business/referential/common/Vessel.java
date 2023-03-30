@@ -4,6 +4,7 @@ import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -41,6 +42,24 @@ public class Vessel extends I18nReferentialEntity {
     private Supplier<Country> flagCountry = () -> null;
     private Supplier<Country> fleetCountry = () -> null;
     private Supplier<ShipOwner> shipOwner = () -> null;
+
+    public static final Set<String> SEINE_VESSEL_TYPE = Set.of(
+            "fr.ird.referential.common.VesselType#1239832675735#0.7380146830307519",
+            "fr.ird.referential.common.VesselType#1239832675735#0.9086075071905084",
+            "fr.ird.referential.common.VesselType#1239832675735#0.307197212385357");
+
+    public static final Set<String> BAIT_VESSEL_TYPE = Set.of(
+            "fr.ird.referential.common.VesselType#1239832675734#0.24685054061673772",
+            "fr.ird.referential.common.VesselType#1308149674400#0.8030832839591066",
+            "fr.ird.referential.common.VesselType#1239832675734#0.4191950326431938");
+
+    public boolean isPurseSeine() {
+        return SEINE_VESSEL_TYPE.contains(getVesselType().getTopiaId());
+    }
+
+    public boolean isBaitBoat() {
+        return BAIT_VESSEL_TYPE.contains(getVesselType().getTopiaId());
+    }
 
     public Integer getKeelCode() {
         return keelCode;
@@ -256,15 +275,5 @@ public class Vessel extends I18nReferentialEntity {
 
     public void setShipOwner(Supplier<ShipOwner> shipOwner) {
         this.shipOwner = Objects.requireNonNull(shipOwner);
-    }
-
-    public boolean isPurseSeine() {
-        //FIXME
-        return false;
-    }
-
-    public boolean isBaitBoat() {
-        //FIXME
-        return false;
     }
 }

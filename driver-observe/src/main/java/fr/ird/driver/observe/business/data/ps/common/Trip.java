@@ -403,7 +403,7 @@ public class Trip extends DataEntity {
     }
 
     public boolean isPartialLanding() {
-        //FIXME
-        return false;
+        //FIXME getLandingWellContentStatus() ne devrait pas etre null, ajouter un nouveau controle sur le sujet
+        return getLandingWellContentStatus() != null && getLandingWellContentStatus().getTopiaId().equals("fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#02");
     }
 }
