@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 public class Catch extends DataEntity {
 
     private String comment;
-    private Float weight;
-    private Integer count;
+    private float weight;
+    private int count;
     private String well;
     private Supplier<Species> species = () -> null;
     private Supplier<WeightCategory> weightCategory = () -> null;
@@ -34,19 +34,19 @@ public class Catch extends DataEntity {
         this.comment = comment;
     }
 
-    public Float getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
     }
 

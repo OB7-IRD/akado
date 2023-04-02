@@ -19,7 +19,7 @@ public class Survey extends DataEntity {
 
     private String comment;
     private Date date;
-    private Integer number;
+    private int number;
     private Supplier<Set<SurveyPart>> surveyPart = SingletonSupplier.of(LinkedHashSet::new);
 
     public String getComment() {
@@ -38,11 +38,11 @@ public class Survey extends DataEntity {
         this.date = date;
     }
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

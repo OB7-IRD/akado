@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public class SampleSpecies extends DataEntity {
 
     private String comment;
-    private Integer measuredCount;
+    private int measuredCount;
     private Supplier<Species> species = () -> null;
     private Supplier<SizeMeasureType> sizeMeasureType = () -> null;
     private Supplier<Set<SampleSpeciesMeasure>> sampleSpeciesMeasure = SingletonSupplier.of(LinkedHashSet::new);
@@ -32,11 +32,11 @@ public class SampleSpecies extends DataEntity {
         this.comment = comment;
     }
 
-    public Integer getMeasuredCount() {
+    public int getMeasuredCount() {
         return measuredCount;
     }
 
-    public void setMeasuredCount(Integer measuredCount) {
+    public void setMeasuredCount(int measuredCount) {
         this.measuredCount = measuredCount;
     }
 

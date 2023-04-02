@@ -18,11 +18,11 @@ public class Vessel extends I18nReferentialEntity {
     private Integer keelCode;
     private Date changeDate;
     private Integer yearService;
-    private Float length;
-    private Float capacity;
+    private float length;
+    private float capacity;
     private Integer powerCv;
     private Integer powerKW;
-    private Float searchMaximum;
+    private float searchMaximum;
     private String comment;
     private String source;
     private String iccatId;
@@ -85,19 +85,19 @@ public class Vessel extends I18nReferentialEntity {
         this.yearService = yearService;
     }
 
-    public Float getLength() {
+    public float getLength() {
         return length;
     }
 
-    public void setLength(Float length) {
+    public void setLength(float length) {
         this.length = length;
     }
 
-    public Float getCapacity() {
+    public float getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(Float capacity) {
+    public void setCapacity(float capacity) {
         this.capacity = capacity;
     }
 
@@ -117,11 +117,11 @@ public class Vessel extends I18nReferentialEntity {
         this.powerKW = powerKW;
     }
 
-    public Float getSearchMaximum() {
+    public float getSearchMaximum() {
         return searchMaximum;
     }
 
-    public void setSearchMaximum(Float searchMaximum) {
+    public void setSearchMaximum(float searchMaximum) {
         this.searchMaximum = searchMaximum;
     }
 

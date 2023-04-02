@@ -34,7 +34,7 @@ public class SampleSpeciesDao extends AbstractDataDao<SampleSpecies> {
     protected void fill(SampleSpecies result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
         result.setComment(rs.getString(6));
-        result.setMeasuredCount(getInteger(rs, 7));
+        result.setMeasuredCount(rs.getInt(7));
         ReferentialCache referentialCache = referentialCache();
         result.setSpecies(referentialCache.lazyReferential(Species.class, rs.getString(8)));
         result.setSizeMeasureType(referentialCache.lazyReferential(SizeMeasureType.class, rs.getString(9)));

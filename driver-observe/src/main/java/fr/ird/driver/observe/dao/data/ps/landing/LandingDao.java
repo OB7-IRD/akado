@@ -39,7 +39,7 @@ public class LandingDao extends AbstractDataDao<Landing> {
     protected void fill(Landing result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
         result.setDate(rs.getDate(6));
-        result.setWeight(getFloat(rs, 7));
+        result.setWeight(rs.getFloat(7));
         ReferentialCache referentialCache = referentialCache();
         result.setSpecies(referentialCache.lazyReferential(Species.class, rs.getString(8)));
         result.setWeightCategory(referentialCache.lazyReferential(WeightCategory.class, rs.getString(9)));

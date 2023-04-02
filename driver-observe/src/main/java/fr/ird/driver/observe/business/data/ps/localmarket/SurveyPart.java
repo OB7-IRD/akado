@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class SurveyPart extends DataEntity {
 
-    private Integer proportion;
+    private int proportion;
     private Supplier<Species> species = () -> null;
 
     public Species getSpecies() {
@@ -25,11 +25,11 @@ public class SurveyPart extends DataEntity {
         this.species = Objects.requireNonNull(species);
     }
 
-    public Integer getProportion() {
+    public int getProportion() {
         return proportion;
     }
 
-    public void setProportion(Integer proportion) {
+    public void setProportion(int proportion) {
         this.proportion = proportion;
     }
 }

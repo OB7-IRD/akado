@@ -28,7 +28,7 @@ public class SampleActivityDao extends AbstractDataDao<SampleActivity> {
     @Override
     protected void fill(SampleActivity result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
-        result.setWeightedWeight(getFloat(rs, 6));
+        result.setWeightedWeight(rs.getFloat(6));
         result.setActivity(daoSupplier().getPsLogbookActivityDao().lazyFindById(rs.getString(7)));
     }
 }

@@ -33,8 +33,8 @@ public class RouteDao extends AbstractDataDao<Route> {
         super.fill(result, rs);
         result.setComment(rs.getString(6));
         result.setDate(rs.getDate(7));
-        result.setTimeAtSea(getInteger(rs, 8));
-        result.setFishingTime(getInteger(rs, 9));
+        result.setTimeAtSea(rs.getInt(8));
+        result.setFishingTime(rs.getInt(9));
         result.setActivity(daoSupplier().getPsLogbookActivityDao().lazySetByParentId(result.getTopiaId()));
     }
 }

@@ -26,9 +26,9 @@ public class SampleSpecies extends DataEntity {
     private String comment;
     private Date startTime;
     private Date endTime;
-    private Integer subSampleNumber;
-    private Integer measuredCount;
-    private Integer totalCount;
+    private int subSampleNumber;
+    private int measuredCount;
+    private int totalCount;
     private Supplier<Species> species = () -> null;
     private Supplier<SizeMeasureType> sizeMeasureType = () -> null;
     private Supplier<Set<SampleSpeciesMeasure>> sampleSpeciesMeasure = SingletonSupplier.of(LinkedHashSet::new);
@@ -64,27 +64,27 @@ public class SampleSpecies extends DataEntity {
         this.endTime = endTime;
     }
 
-    public Integer getSubSampleNumber() {
+    public int getSubSampleNumber() {
         return subSampleNumber;
     }
 
-    public void setSubSampleNumber(Integer subSampleNumber) {
+    public void setSubSampleNumber(int subSampleNumber) {
         this.subSampleNumber = subSampleNumber;
     }
 
-    public Integer getMeasuredCount() {
+    public int getMeasuredCount() {
         return measuredCount;
     }
 
-    public void setMeasuredCount(Integer measuredCount) {
+    public void setMeasuredCount(int measuredCount) {
         this.measuredCount = measuredCount;
     }
 
-    public Integer getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 

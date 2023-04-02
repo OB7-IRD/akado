@@ -30,6 +30,6 @@ public class SurveyPartDao extends AbstractDataDao<SurveyPart> {
     protected void fill(SurveyPart result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
         result.setSpecies(referentialCache().lazyReferential(Species.class, rs.getString(6)));
-        result.setProportion(getInteger(rs, 7));
+        result.setProportion(rs.getInt(7));
     }
 }

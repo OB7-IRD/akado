@@ -40,12 +40,12 @@ public class Activity extends DataEntity {
     private boolean vmsDivergent;
     private boolean positionCorrected;
     private int number;
-    private Integer setCount;
-    private Float seaSurfaceTemperature;
-    private Integer windDirection;
-    private Float totalWeight;
-    private Float currentSpeed;
-    private Integer currentDirection;
+    private int setCount;
+    private float seaSurfaceTemperature;
+    private int windDirection;
+    private float totalWeight;
+    private float currentSpeed;
+    private int currentDirection;
     private Supplier<VesselActivity> vesselActivity = () -> null;
     private Supplier<Wind> wind = () -> null;
     private Supplier<SchoolType> schoolType = () -> null;
@@ -139,51 +139,51 @@ public class Activity extends DataEntity {
         this.number = number;
     }
 
-    public Integer getSetCount() {
+    public int getSetCount() {
         return setCount;
     }
 
-    public void setSetCount(Integer setCount) {
+    public void setSetCount(int setCount) {
         this.setCount = setCount;
     }
 
-    public Float getSeaSurfaceTemperature() {
+    public float getSeaSurfaceTemperature() {
         return seaSurfaceTemperature;
     }
 
-    public void setSeaSurfaceTemperature(Float seaSurfaceTemperature) {
+    public void setSeaSurfaceTemperature(float seaSurfaceTemperature) {
         this.seaSurfaceTemperature = seaSurfaceTemperature;
     }
 
-    public Integer getWindDirection() {
+    public int getWindDirection() {
         return windDirection;
     }
 
-    public void setWindDirection(Integer windDirection) {
+    public void setWindDirection(int windDirection) {
         this.windDirection = windDirection;
     }
 
-    public Float getTotalWeight() {
+    public float getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(Float totalWeight) {
+    public void setTotalWeight(float totalWeight) {
         this.totalWeight = totalWeight;
     }
 
-    public Float getCurrentSpeed() {
+    public float getCurrentSpeed() {
         return currentSpeed;
     }
 
-    public void setCurrentSpeed(Float currentSpeed) {
+    public void setCurrentSpeed(float currentSpeed) {
         this.currentSpeed = currentSpeed;
     }
 
-    public Integer getCurrentDirection() {
+    public int getCurrentDirection() {
         return currentDirection;
     }
 
-    public void setCurrentDirection(Integer currentDirection) {
+    public void setCurrentDirection(int currentDirection) {
         this.currentDirection = currentDirection;
     }
 

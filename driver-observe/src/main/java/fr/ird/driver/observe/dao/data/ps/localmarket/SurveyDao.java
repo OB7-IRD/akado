@@ -31,7 +31,7 @@ public class SurveyDao extends AbstractDataDao<Survey> {
         super.fill(result, rs);
         result.setComment(rs.getString(6));
         result.setDate(rs.getDate(7));
-        result.setNumber(getInteger(rs, 8));
+        result.setNumber(rs.getInt(8));
         result.setSurveyPart(daoSupplier().getPsLocalmarketSurveyPartDao().lazySetByParentId(result.getTopiaId()));
     }
 }

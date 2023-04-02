@@ -19,8 +19,8 @@ public class Route extends DataEntity {
 
     private String comment;
     private Date date;
-    private Integer timeAtSea;
-    private Integer fishingTime;
+    private int timeAtSea;
+    private int fishingTime;
     private Supplier<Set<Activity>> activity = SingletonSupplier.of(LinkedHashSet::new);
 
     public String getComment() {
@@ -39,19 +39,19 @@ public class Route extends DataEntity {
         this.date = date;
     }
 
-    public Integer getTimeAtSea() {
+    public int getTimeAtSea() {
         return timeAtSea;
     }
 
-    public void setTimeAtSea(Integer timeAtSea) {
+    public void setTimeAtSea(int timeAtSea) {
         this.timeAtSea = timeAtSea;
     }
 
-    public Integer getFishingTime() {
+    public int getFishingTime() {
         return fishingTime;
     }
 
-    public void setFishingTime(Integer fishingTime) {
+    public void setFishingTime(int fishingTime) {
         this.fishingTime = fishingTime;
     }
 

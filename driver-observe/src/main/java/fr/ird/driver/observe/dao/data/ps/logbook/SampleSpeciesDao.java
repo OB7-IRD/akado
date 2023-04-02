@@ -40,9 +40,9 @@ public class SampleSpeciesDao extends AbstractDataDao<SampleSpecies> {
         result.setComment(rs.getString(6));
         result.setStartTime(rs.getTime(7));
         result.setEndTime(rs.getTime(8));
-        result.setSubSampleNumber(getInteger(rs, 9));
-        result.setMeasuredCount(getInteger(rs, 10));
-        result.setTotalCount(getInteger(rs, 11));
+        result.setSubSampleNumber(rs.getInt(9));
+        result.setMeasuredCount(rs.getInt(10));
+        result.setTotalCount(rs.getInt(11));
         ReferentialCache referentialCache = referentialCache();
         result.setSpecies(referentialCache.lazyReferential(Species.class, rs.getString(12)));
         result.setSizeMeasureType(referentialCache.lazyReferential(SizeMeasureType.class, rs.getString(13)));

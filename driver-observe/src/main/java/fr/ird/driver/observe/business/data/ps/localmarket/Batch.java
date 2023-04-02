@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 public class Batch extends DataEntity {
 
     private Date date;
-    private Integer count;
-    private Float weight;
+    private int count;
+    private float weight;
     private String weightComputedSource;
     private String origin;
     private String comment;
@@ -36,19 +36,19 @@ public class Batch extends DataEntity {
         this.date = date;
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
-    public Float getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 

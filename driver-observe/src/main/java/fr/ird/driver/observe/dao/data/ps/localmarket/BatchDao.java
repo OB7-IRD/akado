@@ -41,8 +41,8 @@ public class BatchDao extends AbstractDataDao<Batch> {
     protected void fill(Batch result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
         result.setDate(rs.getDate(6));
-        result.setCount(getInteger(rs, 7));
-        result.setWeight(getFloat(rs, 8));
+        result.setCount(rs.getInt(7));
+        result.setWeight(rs.getFloat(8));
         result.setWeightComputedSource(rs.getString(9));
         result.setOrigin(rs.getString(10));
         result.setComment(rs.getString(11));

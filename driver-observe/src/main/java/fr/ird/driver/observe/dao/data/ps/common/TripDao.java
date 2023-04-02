@@ -156,11 +156,11 @@ public class TripDao extends AbstractDataDao<Trip> {
         result.setReportsUrl(rs.getString(9));
         result.setHistoricalData(rs.getBoolean(10));
         result.setErsId(rs.getString(11));
-        result.setTimeAtSea(getInteger(rs, 12));
-        result.setFishingTime(getInteger(rs, 13));
-        result.setLandingTotalWeight(getFloat(rs, 14));
-        result.setLocalMarketTotalWeight(getFloat(rs, 15));
-        result.setLoch(getInteger(rs, 16));
+        result.setTimeAtSea(rs.getInt(12));
+        result.setFishingTime(rs.getInt(13));
+        result.setLandingTotalWeight(rs.getFloat(14));
+        result.setLocalMarketTotalWeight(rs.getFloat(15));
+        result.setLoch(rs.getInt(16));
         result.setGeneralComment(rs.getString(17));
         result.setLogbookComment(rs.getString(18));
 

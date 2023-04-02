@@ -45,13 +45,13 @@ public class SampleDao extends AbstractDataDao<Sample> {
     @Override
     protected void fill(Sample result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
-        result.setNumber(getInteger(rs, 6));
+        result.setNumber(rs.getInt(6));
         result.setComment(rs.getString(7));
         result.setWell(rs.getString(8));
         result.setSuperSample(rs.getBoolean(9));
-        result.setSmallsWeight(getFloat(rs, 10));
-        result.setBigsWeight(getFloat(rs, 11));
-        result.setTotalWeight(getFloat(rs, 12));
+        result.setSmallsWeight(rs.getFloat(10));
+        result.setBigsWeight(rs.getFloat(11));
+        result.setTotalWeight(rs.getFloat(12));
         ReferentialCache referentialCache = referentialCache();
         result.setSampleType(referentialCache.lazyReferential(SampleType.class, rs.getString(13)));
         result.setSampleQuality(referentialCache.lazyReferential(SampleQuality.class, rs.getString(14)));

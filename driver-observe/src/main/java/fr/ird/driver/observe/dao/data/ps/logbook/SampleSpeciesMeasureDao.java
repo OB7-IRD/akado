@@ -28,7 +28,7 @@ public class SampleSpeciesMeasureDao extends AbstractDataDao<SampleSpeciesMeasur
     @Override
     protected void fill(SampleSpeciesMeasure result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
-        result.setSizeClass(getFloat(rs, 6));
-        result.setCount(getInteger(rs, 7));
+        result.setSizeClass(rs.getFloat(6));
+        result.setCount(rs.getInt(7));
     }
 }

@@ -20,23 +20,23 @@ import java.util.function.Supplier;
  */
 public class Sample extends DataEntity {
 
-    private Integer number;
+    private int number;
     private String comment;
     private String well;
     private boolean superSample;
-    private Float smallsWeight;
-    private Float bigsWeight;
-    private Float totalWeight;
+    private float smallsWeight;
+    private float bigsWeight;
+    private float totalWeight;
     private Supplier<SampleType> sampleType = () -> null;
     private Supplier<SampleQuality> sampleQuality = () -> null;
     private Supplier<Set<SampleActivity>> sampleActivity = SingletonSupplier.of(LinkedHashSet::new);
     private Supplier<List<SampleSpecies>> sampleSpecies = SingletonSupplier.of(LinkedList::new);
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -64,27 +64,27 @@ public class Sample extends DataEntity {
         this.superSample = superSample;
     }
 
-    public Float getSmallsWeight() {
+    public float getSmallsWeight() {
         return smallsWeight;
     }
 
-    public void setSmallsWeight(Float smallsWeight) {
+    public void setSmallsWeight(float smallsWeight) {
         this.smallsWeight = smallsWeight;
     }
 
-    public Float getBigsWeight() {
+    public float getBigsWeight() {
         return bigsWeight;
     }
 
-    public void setBigsWeight(Float bigsWeight) {
+    public void setBigsWeight(float bigsWeight) {
         this.bigsWeight = bigsWeight;
     }
 
-    public Float getTotalWeight() {
+    public float getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(Float totalWeight) {
+    public void setTotalWeight(float totalWeight) {
         this.totalWeight = totalWeight;
     }
 

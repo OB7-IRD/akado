@@ -41,11 +41,11 @@ public class Trip extends DataEntity {
     private String reportsUrl;
     private boolean historicalData;
     private String ersId;
-    private Integer timeAtSea;
-    private Integer fishingTime;
-    private Float landingTotalWeight;
-    private Float localMarketTotalWeight;
-    private Integer loch;
+    private int timeAtSea;
+    private int fishingTime;
+    private float landingTotalWeight;
+    private float localMarketTotalWeight;
+    private int loch;
     private String generalComment;
     private String logbookComment;
     private Supplier<Ocean> ocean = () -> null;
@@ -129,43 +129,43 @@ public class Trip extends DataEntity {
         this.ocean = Objects.requireNonNull(ocean);
     }
 
-    public Integer getTimeAtSea() {
+    public int getTimeAtSea() {
         return timeAtSea;
     }
 
-    public void setTimeAtSea(Integer timeAtSea) {
+    public void setTimeAtSea(int timeAtSea) {
         this.timeAtSea = timeAtSea;
     }
 
-    public Integer getFishingTime() {
+    public int getFishingTime() {
         return fishingTime;
     }
 
-    public void setFishingTime(Integer fishingTime) {
+    public void setFishingTime(int fishingTime) {
         this.fishingTime = fishingTime;
     }
 
-    public Float getLandingTotalWeight() {
+    public float getLandingTotalWeight() {
         return landingTotalWeight;
     }
 
-    public void setLandingTotalWeight(Float landingTotalWeight) {
+    public void setLandingTotalWeight(float landingTotalWeight) {
         this.landingTotalWeight = landingTotalWeight;
     }
 
-    public Float getLocalMarketTotalWeight() {
+    public float getLocalMarketTotalWeight() {
         return localMarketTotalWeight;
     }
 
-    public void setLocalMarketTotalWeight(Float localMarketTotalWeight) {
+    public void setLocalMarketTotalWeight(float localMarketTotalWeight) {
         this.localMarketTotalWeight = localMarketTotalWeight;
     }
 
-    public Integer getLoch() {
+    public int getLoch() {
         return loch;
     }
 
-    public void setLoch(Integer loch) {
+    public void setLoch(int loch) {
         this.loch = loch;
     }
 
