@@ -46,10 +46,8 @@ public class TimeAtSeaInspector extends ObserveTripInspector {
     public static int timeAtSeaExpected(Trip trip) {
         int timeAtSeaExpected = 0;
         for (Route route : trip.getLogbookRoute()) {
-            Integer timeAtSea = route.getTimeAtSea();
-            if (timeAtSea != null) {
-                timeAtSeaExpected += timeAtSea;
-            }
+            int timeAtSea = route.getTimeAtSea();
+            timeAtSeaExpected += timeAtSea;
         }
         return timeAtSeaExpected;
     }
@@ -64,18 +62,14 @@ public class TimeAtSeaInspector extends ObserveTripInspector {
     public Results execute() {
         Results results = new Results();
         Trip trip = get();
-        Integer timeAtSea = trip.getTimeAtSea();
-        if (timeAtSea == null) {
-            return results;
-        }
+        int timeAtSea = trip.getTimeAtSea();
         int timeAtSeaExpected = timeAtSeaExpected(trip);
-        if (0 != timeAtSea && timeAtSeaExpected == timeAtSea) {
-            return results;
+        if (0 == trip.getTimeAtSea() || timeAtSeaExpected != trip.getTimeAtSea()) {
+            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_TIME_AT_SEA, LABEL_TRIP_TIME_AT_SEA, false, trip.getTopiaId(), timeAtSea, timeAtSeaExpected);
+            r.setValueObtained(timeAtSea);
+            r.setValueExpected(timeAtSeaExpected);
+            results.add(r);
         }
-        TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_TIME_AT_SEA, LABEL_TRIP_TIME_AT_SEA, false, trip.getTopiaId(), timeAtSea, timeAtSeaExpected);
-        r.setValueObtained(timeAtSea);
-        r.setValueExpected(timeAtSeaExpected);
-        results.add(r);
         return results;
     }
 }

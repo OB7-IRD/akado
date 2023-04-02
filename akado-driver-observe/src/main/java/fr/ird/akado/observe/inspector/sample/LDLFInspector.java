@@ -38,13 +38,13 @@ public class LDLFInspector extends ObserveSampleInspector {
     public static boolean ldlfP10(Sample s, SampleSpecies sampleSpecies) {
         SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
         return (Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL) || Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL_ONE_CENTIMER_FREQUENCY))
-                && s.getBigsWeight() == null && s.getTotalWeight() == null;
+                && s.getBigsWeight() == 0 && s.getTotalWeight() == 0;
     }
 
     public static boolean ldlfM10(Sample s, SampleSpecies sampleSpecies) {
         SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
         return Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_FORK)
-                && s.getSmallsWeight() == null && s.getTotalWeight() == null;
+                && s.getSmallsWeight() == 0 && s.getTotalWeight() == 0;
     }
 
     @Override

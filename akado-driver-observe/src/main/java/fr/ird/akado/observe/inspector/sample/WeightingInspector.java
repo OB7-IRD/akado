@@ -24,10 +24,8 @@ public class WeightingInspector extends ObserveSampleInspector {
     public static double weightedWeight(Sample s) {
         double result = 0;
         for (SampleActivity sw : s.getSampleActivity()) {
-            Float weightedWeight = sw.getWeightedWeight();
-            if (weightedWeight != null) {
-                result += weightedWeight;
-            }
+            float weightedWeight = sw.getWeightedWeight();
+            result += weightedWeight;
         }
         return result;
     }
@@ -43,20 +41,10 @@ public class WeightingInspector extends ObserveSampleInspector {
         Results results = new Results();
         Sample s = get();
         Trip trip = getTrip();
-        Float totalWeight = s.getTotalWeight();
-        if (totalWeight == null) {
-            totalWeight = 0f;
-        }
-        double weight = totalWeight;
+        double weight = s.getTotalWeight();
         if (weight == 0) {
-            Float smallsWeight = s.getSmallsWeight();
-            if (smallsWeight == null) {
-                smallsWeight = 0f;
-            }
-            Float bigsWeight = s.getBigsWeight();
-            if (bigsWeight == null) {
-                bigsWeight = 0f;
-            }
+            float smallsWeight = s.getSmallsWeight();
+            float bigsWeight = s.getBigsWeight();
             weight = smallsWeight + bigsWeight;
         }
         double weightedWeight = weightedWeight(s);

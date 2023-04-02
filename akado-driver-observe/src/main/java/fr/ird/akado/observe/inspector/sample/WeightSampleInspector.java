@@ -26,20 +26,10 @@ public class WeightSampleInspector extends ObserveSampleInspector {
     public Results execute() throws Exception {
         Results results = new Results();
         Sample s = get();
-        Float smallsWeight = s.getSmallsWeight();
-        if (smallsWeight == null) {
-            smallsWeight = 0f;
-        }
-        Float bigsWeight = s.getBigsWeight();
-        if (bigsWeight == null) {
-            bigsWeight = 0f;
-        }
-        Float totalWeight = s.getTotalWeight();
-        if (totalWeight == null) {
-            totalWeight = 0f;
-        }
-        if ((smallsWeight + bigsWeight == 0
-                && totalWeight == 0) || (smallsWeight + bigsWeight > 0 && totalWeight != 0)) {
+        float smallsWeight = s.getSmallsWeight();
+        float bigsWeight = s.getBigsWeight();
+        float totalWeight = s.getTotalWeight();
+        if ((smallsWeight + bigsWeight == 0 && totalWeight == 0) || (smallsWeight + bigsWeight > 0 && totalWeight != 0)) {
             SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_WEIGHT_INCONSISTENCY, Constant.LABEL_SAMPLE_WEIGHT_INCONSISTENCY, true, s.getTopiaId(), smallsWeight + bigsWeight, totalWeight);
             results.add(r);
         }

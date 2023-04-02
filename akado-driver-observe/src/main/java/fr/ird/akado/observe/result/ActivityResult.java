@@ -60,9 +60,7 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
 
         result.setOperationCode(operation);
 
-        if (a.getTotalWeight() != null) {
-            result.setCatchWeight(Double.valueOf(a.getTotalWeight()));
-        }
+        result.setCatchWeight((double) a.getTotalWeight());
         result.setElementaryCatchesWeight(WeightInspector.totalCatchWeight(a));
         result.setSampleWeightedWeight(WeightingSampleInspector.sumOfSampleWeightedWeight(trip, a));
 
@@ -115,9 +113,7 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
         result.setInOcean(ocean);
         result.setInLand(inLand);
 
-        if (a.getSeaSurfaceTemperature() != null) {
-            result.setTemperature(Double.valueOf(a.getSeaSurfaceTemperature()));
-        }
+        result.setTemperature((double) a.getSeaSurfaceTemperature());
 
         if (a.getLatitude() != null) {
             result.setLatitude(OTUtils.degreesDecimalToStringDegreesMinutes(

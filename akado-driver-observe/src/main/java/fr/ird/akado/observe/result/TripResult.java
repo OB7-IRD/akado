@@ -86,21 +86,13 @@ public class TripResult extends Result<Trip> {
 
         result.setRecoveryTimeDate(formatDate(RecoveryTimeInspector.continuous(trip)));
 
-        if (trip.getTimeAtSea() != null) {
-            result.setTimeAtSea(trip.getTimeAtSea());
-        }
+        result.setTimeAtSea(trip.getTimeAtSea());
         result.setTimeAtSeaExpected(TimeAtSeaInspector.timeAtSeaExpected(trip));
-        if (trip.getFishingTime() != null) {
-            result.setFishingTime(trip.getFishingTime());
-        }
+        result.setFishingTime(trip.getFishingTime());
         result.setFishingTimeExpected(FishingTimeInspector.fishingTimeExpected(trip));
-        if (trip.getLandingTotalWeight() != null) {
-            result.setLandingWeight(Utils.round(trip.getLandingTotalWeight(), 3));
-        }
+        result.setLandingWeight(Utils.round(trip.getLandingTotalWeight(), 3));
         result.setLandingWeightExpected(LandingTotalWeightInspector.landingTotalWeightExpected(trip));
-
-        //FIXME
-//        result.setPartialLandingIndicator(trip.getFlagCaleVide());
+        result.setPartialLandingIndicator(trip.isPartialLanding());
         return result;
     }
 
@@ -113,8 +105,8 @@ public class TripResult extends Result<Trip> {
     }
 
     @Override
-    public List extractResults() {
-        List<Object> list = new ArrayList<>();
+    public List<TripDataSheet> extractResults() {
+        List<TripDataSheet> list = new ArrayList<>();
         Trip trip = get();
         if (trip == null) {
             return list;

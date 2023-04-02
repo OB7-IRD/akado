@@ -47,11 +47,11 @@ public class OperationInspector extends ObserveActivityInspector {
     }
 
     public static boolean activityAndOperationConsistent(Activity a) {
-        Float totalCatchWeightExpected = a.getTotalWeight();
-        return (totalCatchWeightExpected == null && (Objects.equals(a.getVesselActivity().getCode(), "1") || Objects.equals(a.getVesselActivity().getCode(), "2")))
-                || (totalCatchWeightExpected != null && totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "0")))
-                || (totalCatchWeightExpected != null && totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "3")))
-                || (totalCatchWeightExpected != null && totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "12") || Objects.equals(a.getVesselActivity().getCode(), "13") || Objects.equals(a.getVesselActivity().getCode(), "14")));
+        float totalCatchWeightExpected = a.getTotalWeight();
+        return totalCatchWeightExpected == 0 && Objects.equals(a.getVesselActivity().getCode(), "1")
+                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "0")
+                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "3")
+                || totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "12") || Objects.equals(a.getVesselActivity().getCode(), "13") || Objects.equals(a.getVesselActivity().getCode(), "14"));
     }
 
     public static boolean operationAndSchoolTypeConsistent(Activity a) {

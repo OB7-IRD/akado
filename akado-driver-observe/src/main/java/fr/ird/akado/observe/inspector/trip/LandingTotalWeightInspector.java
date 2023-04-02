@@ -48,10 +48,8 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
     public static double landingTotalWeightExpected(Trip trip) {
         double landingTotalWeightExpected = 0;
         for (Landing commercial : trip.getLanding()) {
-            Float weight = commercial.getWeight();
-            if (weight != null) {
-                landingTotalWeightExpected += weight;
-            }
+            float weight = commercial.getWeight();
+            landingTotalWeightExpected += weight;
         }
         return landingTotalWeightExpected;
     }
@@ -67,8 +65,8 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
         Results results = new Results();
         Trip trip = get();
         double landingTotalWeightExpected = landingTotalWeightExpected(trip);
-        Float landingTotalWeight = trip.getLandingTotalWeight();
-        if (landingTotalWeight != null && Math.abs(landingTotalWeight - landingTotalWeightExpected) > EPSILON) {
+        float landingTotalWeight = trip.getLandingTotalWeight();
+        if (Math.abs(landingTotalWeight - landingTotalWeightExpected) > EPSILON) {
             TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_LANDING_TOTAL_WEIGHT, LABEL_TRIP_LANDING_TOTAL_WEIGHT, false, trip.getTopiaId(), landingTotalWeight, landingTotalWeightExpected);
             r.setValueObtained(landingTotalWeight);
             r.setValueExpected(landingTotalWeightExpected);

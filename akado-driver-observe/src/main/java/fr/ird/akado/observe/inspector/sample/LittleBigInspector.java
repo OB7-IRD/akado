@@ -132,13 +132,13 @@ public class LittleBigInspector extends ObserveSampleInspector {
     }
 
     private static boolean littleIsInfThreshold(Sample s, double little, double lf, double ld1) {
-        return (s.getSmallsWeight() != null && s.getSmallsWeight() > 0 && (s.getBigsWeight() == null || s.getBigsWeight() == 0) && little < THRESHOLD)
-                || (((s.getTotalWeight() != null && s.getTotalWeight() != 0) || (s.getSmallsWeight() != null && s.getSmallsWeight() > 0 && s.getBigsWeight() != null && s.getBigsWeight() > 0)) && lf > ld1 && little < THRESHOLD);
+        return (s.getSmallsWeight() > 0 && s.getBigsWeight() == 0 && little < THRESHOLD)
+                || ((s.getTotalWeight() > 0 || (s.getSmallsWeight() > 0 && s.getBigsWeight() > 0)) && lf > ld1 && little < THRESHOLD);
     }
 
     private static boolean bigIsInfThreshold(Sample s, double big, double lf, double ld1) {
-        return ((s.getSmallsWeight() == null || s.getSmallsWeight() == 0) && s.getBigsWeight()!=null && s.getBigsWeight() > 0 && big < THRESHOLD)
-                || (((s.getTotalWeight() != null && s.getTotalWeight() != 0) || (s.getSmallsWeight() != null && s.getSmallsWeight() > 0 && s.getBigsWeight() != null && s.getBigsWeight() > 0)) && lf < ld1 && big < THRESHOLD);
+        return (s.getSmallsWeight() == 0 && s.getBigsWeight() > 0 && big < THRESHOLD)
+                || ((s.getTotalWeight() > 0 || (s.getSmallsWeight() > 0 && s.getBigsWeight() > 0)) && lf < ld1 && big < THRESHOLD);
     }
 
     public LittleBigInspector() {

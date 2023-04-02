@@ -28,10 +28,8 @@ public class WeightInspector extends ObserveActivityInspector {
     public static double totalCatchWeight(Activity a) {
         double totalCatchWeight = 0d;
         for (Catch aCatch : a.getCatches()) {
-            Float weight = aCatch.getWeight();
-            if (weight != null) {
-                totalCatchWeight += weight;
-            }
+            float weight = aCatch.getWeight();
+            totalCatchWeight += weight;
         }
         return totalCatchWeight;
     }
@@ -47,10 +45,7 @@ public class WeightInspector extends ObserveActivityInspector {
         Results results = new Results();
 
         Activity activity = get();
-        Float totalWeight = activity.getTotalWeight();
-        if (totalWeight == null) {
-            return results;
-        }
+        float totalWeight = activity.getTotalWeight();
         double totalCatchWeightExpected = totalCatchWeight(activity);
         if (Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON) {
             ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_TOTAL_CATCH_WEIGHT, Constant.LABEL_ACTIVITY_TOTAL_CATCH_WEIGHT, false,

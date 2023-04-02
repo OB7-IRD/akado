@@ -47,10 +47,8 @@ public class FishingTimeInspector extends ObserveTripInspector {
     public static int fishingTimeExpected(Trip trip) {
         int fishingTimeExpected = 0;
         for (Route route : trip.getLogbookRoute()) {
-            Integer fishingTime = route.getFishingTime();
-            if (fishingTime != null) {
-                fishingTimeExpected += fishingTime;
-            }
+            int fishingTime = route.getFishingTime();
+            fishingTimeExpected += fishingTime;
         }
         return fishingTimeExpected;
     }
@@ -62,7 +60,7 @@ public class FishingTimeInspector extends ObserveTripInspector {
      * @return true if the value are same
      */
     public static boolean isFishingTimeConsistency(Trip trip) {
-        return trip.getFishingTime() != null && trip.getFishingTime() == fishingTimeExpected(trip);
+        return trip.getFishingTime() == fishingTimeExpected(trip);
     }
 
     public FishingTimeInspector() {
@@ -75,12 +73,9 @@ public class FishingTimeInspector extends ObserveTripInspector {
     public Results execute() {
         Results results = new Results();
         Trip trip = get();
-        Integer fishingTime = trip.getFishingTime();
-        if (fishingTime == null) {
-            return results;
-        }
-        int fishingTimeExpected = fishingTimeExpected(trip);
         if (!isFishingTimeConsistency(trip)) {
+            int fishingTime = trip.getFishingTime();
+            int fishingTimeExpected = fishingTimeExpected(trip);
             TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_FISHING_TIME, LABEL_TRIP_FISHING_TIME, true, trip.getTopiaId(), fishingTime, fishingTimeExpected);
             r.setValueObtained(fishingTime);
             r.setValueExpected(fishingTimeExpected);

@@ -46,17 +46,14 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
             if (trip.withLogbookActivities()) {
                 subTotalCatchesWeight += catchesWeight(trip);
             }
-            Float landingTotalWeight = trip.getLandingTotalWeight();
+            float landingTotalWeight = trip.getLandingTotalWeight();
             if (previous == null || !previous.isPartialLanding()) {
-                if (subTotalCatchesWeight == 0 && landingTotalWeight != null && landingTotalWeight != 0) {
+                if (subTotalCatchesWeight == 0 && landingTotalWeight != 0) {
                     return 0;
                 }
             }
             totalCatchesWeight += subTotalCatchesWeight;
-            if (landingTotalWeight != null) {
-                totalLandingWeight += landingTotalWeight;
-            }
-
+            totalLandingWeight += landingTotalWeight;
             previous = trip;
         }
         if (totalCatchesWeight == 0) {
@@ -121,15 +118,13 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                         subTotalCatchesWeight += catchesWeight(trip);
                     }
                     if (previous == null || !previous.isPartialLanding()) {
-                        if (subTotalCatchesWeight == 0 && trip.getLandingTotalWeight() != null && trip.getLandingTotalWeight() != 0) {
+                        if (subTotalCatchesWeight == 0 && trip.getLandingTotalWeight() != 0) {
                             TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_NO_CATCH, Constant.LABEL_TRIP_NO_CATCH, true, trip.getTopiaId(), trip.getLandingTotalWeight());
                             results.add(r);
                         }
                     }
                     totalCatchesWeight += subTotalCatchesWeight;
-                    if (trip.getLandingTotalWeight() != null) {
-                        totalLandingWeight += trip.getLandingTotalWeight();
-                    }
+                    totalLandingWeight += trip.getLandingTotalWeight();
 //                totalLocalMarketWeight += trip.getLocalMarketWeight();
                     tripID += "{" + trip.getVessel().getCode() + " " + TripResult.formatDate(trip.getEndDate()) + "}";
 
@@ -200,21 +195,19 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
         double catchesWeight = 0;
         if (Objects.equals(trip.getVessel().getFlagCountry().getCode(), Country.AVDTH_CODE_COUNTRY_FRANCE)) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeight() != null && aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), FRENCH_TARGET_SPECIES)) {
+                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), FRENCH_TARGET_SPECIES)) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
         } else if (Objects.equals(trip.getVessel().getFlagCountry().getCode(), Country.AVDTH_CODE_COUNTRY_SPAIN)) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeight() != null && aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), SPAIN_TARGET_SPECIES)) {
+                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), SPAIN_TARGET_SPECIES)) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
         } else {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeight() != null) {
-                    catchesWeight += aCatch.getWeight();
-                }
+                catchesWeight += aCatch.getWeight();
             }
         }
         return catchesWeight;
