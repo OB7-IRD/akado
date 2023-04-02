@@ -22,8 +22,6 @@ import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 
-import java.util.Set;
-
 import static fr.ird.akado.observe.Constant.CODE_TRIP_CAPACITY_OVERRIDE;
 import static fr.ird.akado.observe.Constant.CODE_VESSEL_NO_CAPACITY;
 import static fr.ird.akado.observe.Constant.LABEL_TRIP_CAPACITY_OVERRIDE;
@@ -41,15 +39,6 @@ import static fr.ird.akado.observe.Constant.LABEL_VESSEL_NO_CAPACITY;
 @AutoService(ObserveTripInspector.class)
 public class LandingConsistentInspector extends ObserveTripInspector {
 
-    public static final Set<String> SEINE_VESSEL_TYPE = Set.of(
-            "fr.ird.referential.common.VesselType#1239832675734#0.24685054061673772",
-            "fr.ird.referential.common.VesselType#1308149674400#0.8030832839591066",
-            "fr.ird.referential.common.VesselType#1239832675734#0.4191950326431938",
-            "fr.ird.referential.common.VesselType#1239832675735#0.044156847891821505",
-            "fr.ird.referential.common.VesselType#1239832675735#0.7380146830307519",
-            "fr.ird.referential.common.VesselType#1239832675735#0.9086075071905084",
-            "fr.ird.referential.common.VesselType#1239832675735#0.307197212385357"
-    );
     public static float COEFF_M3_TO_TON = 0.7f;
 
     public LandingConsistentInspector() {
@@ -62,7 +51,7 @@ public class LandingConsistentInspector extends ObserveTripInspector {
     public Results execute() {
         Results results = new Results();
         Trip trip = get();
-        if (!SEINE_VESSEL_TYPE.contains(trip.getVessel().getVesselSizeCategory().getTopiaId())) {
+        if (!trip.getVessel().isPurseSeine()) {
             return results;
         }
         float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;

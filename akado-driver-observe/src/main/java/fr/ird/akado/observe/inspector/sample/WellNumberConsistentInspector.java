@@ -24,7 +24,6 @@ public class WellNumberConsistentInspector extends ObserveSampleInspector {
     }
 
     public static boolean wellIsConsistent(Trip trip, Sample sample) {
-        //FIXME
         if (trip.getVessel().isBaitBoat()) {
             return true;
         }

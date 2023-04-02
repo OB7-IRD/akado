@@ -43,7 +43,7 @@ public final class TripDataSheet {
     private double landingWeight;
     private double landingWeightExpected;
 
-    private int partialLandingIndicator;
+    private boolean partialLandingIndicator;
 
     private String recoveryTimeDate;
 
@@ -159,11 +159,11 @@ public final class TripDataSheet {
         this.landingWeightExpected = landingWeightExpected;
     }
 
-    public int getPartialLandingIndicator() {
+    public boolean getPartialLandingIndicator() {
         return partialLandingIndicator;
     }
 
-    public void setPartialLandingIndicator(int partialLandingIndicator) {
+    public void setPartialLandingIndicator(boolean partialLandingIndicator) {
         this.partialLandingIndicator = partialLandingIndicator;
     }
 
