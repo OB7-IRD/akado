@@ -31,6 +31,8 @@ public class PositionsInEEZInspector extends ObserveActivityListInspector {
             if (!multiPoint.toString().equals("")) {
                 multiPoint.append(",");
             }
+            //FIXME authorize null coordinate only for vessel activity Lost
+            //FIXME See with Pascal
             Float latitude = a.getLatitude();
             Float longitude = a.getLongitude();
             multiPoint.append("(").append(longitude).append(" ").append(latitude).append(")");
