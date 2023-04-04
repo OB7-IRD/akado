@@ -286,4 +286,18 @@ public class Activity extends DataEntity {
     public int getQuadrant() {
         return ObserveUtils.getQuadrant(getLongitude(), getLatitude());
     }
+
+    /**
+     * Calculate the total catches weight with discards.
+     *
+     * @return the sum of catches weight.
+     */
+    public double totalCatchWeightFromCatches() {
+        double totalCatchWeight = 0d;
+        for (Catch aCatch : getCatches()) {
+            float weight = aCatch.getWeight();
+            totalCatchWeight += weight;
+        }
+        return totalCatchWeight;
+    }
 }

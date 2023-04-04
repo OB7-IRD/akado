@@ -19,7 +19,6 @@ package fr.ird.akado.observe.result;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.activity.FishingContextInspector;
 import fr.ird.akado.observe.inspector.activity.PositionInspector;
-import fr.ird.akado.observe.inspector.activity.WeightInspector;
 import fr.ird.akado.observe.inspector.activity.WeightingSampleInspector;
 import fr.ird.akado.observe.result.model.ActivityDataSheet;
 import fr.ird.common.OTUtils;
@@ -28,10 +27,10 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 import fr.ird.driver.observe.business.referential.common.Ocean;
 import fr.ird.driver.observe.business.referential.ps.common.ObservedSystem;
-import fr.ird.driver.observe.business.referential.ps.common.SchoolType;
 import io.ultreia.java4all.util.Dates;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,7 +52,8 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
         result.setEngine(trip.getVessel().getVesselType().getLabel2());
         result.setLandingDate(TripResult.formatDate(trip.getEndDate()));
 
-        result.setActivityDate(TripResult.formatDate(Dates.getDateAndTime(route.getDate(), a.getTime(), false, false)));
+        Date dateAndTime = a.getTime() == null ? route.getDate() : Dates.getDateAndTime(route.getDate(), a.getTime(), false, false);
+        result.setActivityDate(TripResult.formatDate(dateAndTime));
         result.setActivityNumber(a.getNumber());
 
         String operation = a.getVesselActivity().getCode();
@@ -61,7 +61,7 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
         result.setOperationCode(operation);
 
         result.setCatchWeight((double) a.getTotalWeight());
-        result.setElementaryCatchesWeight(WeightInspector.totalCatchWeight(a));
+        result.setElementaryCatchesWeight(a.totalCatchWeightFromCatches());
         result.setSampleWeightedWeight(WeightingSampleInspector.sumOfSampleWeightedWeight(trip, a));
 
         String schoolType = "?";
@@ -80,7 +80,7 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
                 //FIXME was fishingContext += fc.getFishingContextType().getCode() + " ";
                 fishingContext.append(fc.getSchoolType().getCode()).append(" ");
             }
-        } else if (Objects.equals(a.getSchoolType().getCode(), SchoolType.ARTIFICIAL_SCHOOL)) {
+        } else if (a.getSchoolType().isArtificial()) {
             fishingContext = new StringBuilder("?");
         }
         result.setFishingContext(fishingContext.toString());
