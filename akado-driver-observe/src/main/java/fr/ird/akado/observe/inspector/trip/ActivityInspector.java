@@ -51,7 +51,7 @@ public class ActivityInspector extends ObserveTripInspector {
         Trip trip = get();
         boolean hasLogbook = trip.hasLogbook();
         boolean withLogbookActivities = trip.withLogbookActivities();
-        if (hasLogbook && withLogbookActivities) {
+        if (hasLogbook && !withLogbookActivities) {
             TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_NO_ACTIVITY, LABEL_TRIP_NO_ACTIVTY, true,
                                         trip.getTopiaId());
             results.add(r);
