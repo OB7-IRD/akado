@@ -94,7 +94,6 @@ public class SampleTest extends TestCase {
 
         if (!GISHandler.getService().exists()) {
             String gisPath = directory.getParent().toString();
-            System.out.println("Create GIS database! " + gisPath);
             GISHandler.getService().init(gisPath,
                                          AAProperties.SHP_COUNTRIES_PATH,
                                          AAProperties.SHP_OCEAN_PATH,
