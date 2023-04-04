@@ -18,7 +18,6 @@
  */
 package fr.ird.akado.observe.inspector.sample;
 
-import com.google.auto.service.AutoService;
 import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
@@ -35,7 +34,8 @@ import java.util.List;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-@AutoService(ObserveSampleInspector.class)
+//FIXME No more used
+//@AutoService(ObserveSampleInspector.class)
 public class SuperSampleNumberConsistentInspector extends ObserveSampleInspector {
 
     public static boolean checkIfHasManySubSampling(Sample s) {

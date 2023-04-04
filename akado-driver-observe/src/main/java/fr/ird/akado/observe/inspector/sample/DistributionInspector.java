@@ -47,7 +47,8 @@ public class DistributionInspector extends ObserveSampleInspector {
             return results;
         }
         if (distributionIsInconsistent(s)) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_DISTRIBUTION_M10_P10, Constant.LABEL_SAMPLE_DISTRIBUTION_M10_P10, true, s.getTopiaId());
+            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_DISTRIBUTION_M10_P10, Constant.LABEL_SAMPLE_DISTRIBUTION_M10_P10, true,
+                                          s.getTopiaId());
             results.add(r);
         }
         return results;

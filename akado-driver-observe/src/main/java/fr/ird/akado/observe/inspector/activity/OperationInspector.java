@@ -18,19 +18,12 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
-import java.util.Objects;
-
-import static fr.ird.akado.observe.Constant.CODE_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE;
-import static fr.ird.akado.observe.Constant.CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY;
 import static fr.ird.akado.observe.Constant.CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT;
-import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE;
-import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY;
 import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT;
 
 /**
@@ -42,21 +35,21 @@ import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_NUMBER_INCO
 @AutoService(ObserveActivityInspector.class)
 public class OperationInspector extends ObserveActivityInspector {
 
-    public static boolean operationNumberConsistent(Activity a) {
-        return a.getVesselActivity() == null && a.getSetCount() > 0;
-    }
-
-    public static boolean activityAndOperationConsistent(Activity a) {
-        float totalCatchWeightExpected = a.getTotalWeight();
-        return totalCatchWeightExpected == 0 && Objects.equals(a.getVesselActivity().getCode(), "1")
-                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "0")
-                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "3")
-                || totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "12") || Objects.equals(a.getVesselActivity().getCode(), "13") || Objects.equals(a.getVesselActivity().getCode(), "14"));
-    }
-
-    public static boolean operationAndSchoolTypeConsistent(Activity a) {
-        return a.getSchoolType() != null && Objects.equals(a.getSchoolType().getCode(), "3") && (Objects.equals(a.getVesselActivity().getCode(), "1") || Objects.equals(a.getVesselActivity().getCode(), "0"));
-    }
+//    public static boolean operationNumberConsistent(Activity a) {
+//        return a.getVesselActivity() == null && a.getSetCount() > 0;
+//    }
+//
+//    public static boolean activityAndOperationConsistent(Activity a) {
+//        float totalCatchWeightExpected = a.getTotalWeight();
+//        return totalCatchWeightExpected == 0 && Objects.equals(a.getVesselActivity().getCode(), "1")
+//                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "0")
+//                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "3")
+//                || totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "12") || Objects.equals(a.getVesselActivity().getCode(), "13") || Objects.equals(a.getVesselActivity().getCode(), "14"));
+//    }
+//
+//    public static boolean operationAndSchoolTypeConsistent(Activity a) {
+//        return a.getSchoolType() != null && Objects.equals(a.getSchoolType().getCode(), "3") && (Objects.equals(a.getVesselActivity().getCode(), "1") || Objects.equals(a.getVesselActivity().getCode(), "0"));
+//    }
 
     public OperationInspector() {
         super();
@@ -68,26 +61,69 @@ public class OperationInspector extends ObserveActivityInspector {
     public Results execute() throws Exception {
         Results results = new Results();
 
-        Activity a = get();
+        Activity activity = get();
 
-        if (operationNumberConsistent(a)) {
-            ActivityResult r = createResult(a, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, true,
-                                            a.getTopiaId(), a.getVesselActivity().getCode(), a.getSetCount());
-            results.add(r);
-        }
-        if (operationAndSchoolTypeConsistent(a)) {
-            ActivityResult r = createResult(a, Message.ERROR, CODE_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, LABEL_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, true,
-                                            a.getTopiaId(), a.getVesselActivity().getCode(), a.getTotalWeight());
-            results.add(r);
+        boolean isFishing = activity.getVesselActivity().getCode().equals("6");
 
-        }
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
-            if (activityAndOperationConsistent(a)) {
-                ActivityResult r = createResult(a, Message.WARNING, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-                                                a.getTopiaId(), a.getVesselActivity().getCode(), a.getTotalWeight());
+        double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
+
+        if (!isFishing) {
+
+            // can not have catch weight
+            if (totalCatchWeightExpected > 0) {
+                //FIXME New message
+                ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
+                                                activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
                 results.add(r);
             }
+        } else {
+
+            if (activity.getReasonForNoFishing() == null) {
+
+                if (activity.getReasonForNullSet() == null) {
+                    //FIXME New message
+                    if (totalCatchWeightExpected == 0) {
+                        ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
+                                                        activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                        results.add(r);
+                    }
+                } else {
+                    if (totalCatchWeightExpected > 5) {
+                        //FIXME New message
+                        ActivityResult r = createResult(activity, Message.WARNING, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
+                                                        activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                        results.add(r);
+                    }
+                }
+
+            } else {
+
+                if (totalCatchWeightExpected > 0) {
+                    //FIXME New message
+                    ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
+                                                    activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                    results.add(r);
+                }
+            }
         }
+//        if (operationNumberConsistent(activity)) {
+//            ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, true,
+//                                            activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getSetCount());
+//            results.add(r);
+//        }
+//        if (operationAndSchoolTypeConsistent(activity)) {
+//            ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, LABEL_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, true,
+//                                            activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getTotalWeight());
+//            results.add(r);
+//
+//        }
+//        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+//            if (activityAndOperationConsistent(activity)) {
+//                ActivityResult r = createResult(activity, Message.WARNING, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
+//                                                activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getTotalWeight());
+//                results.add(r);
+//            }
+//        }
         return results;
     }
 }

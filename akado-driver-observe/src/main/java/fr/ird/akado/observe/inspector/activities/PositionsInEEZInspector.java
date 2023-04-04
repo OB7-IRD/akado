@@ -5,7 +5,6 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
@@ -31,25 +30,21 @@ public class PositionsInEEZInspector extends ObserveActivityListInspector {
             if (!multiPoint.toString().equals("")) {
                 multiPoint.append(",");
             }
-            //FIXME authorize null coordinate only for vessel activity Lost
-            //FIXME See with Pascal
             Float latitude = a.getLatitude();
             Float longitude = a.getLongitude();
-            multiPoint.append("(").append(longitude).append(" ").append(latitude).append(")");
+            if (latitude != null && longitude != null) {
+                multiPoint.append("(").append(longitude).append(" ").append(latitude).append(")");
+            }
         }
         List<String> eezList = GISHandler.getService().getEEZList(multiPoint.toString());
-        int eezIndex = 0;
         for (Activity a : l) {
             if ((a.getFpaZone() == null || a.getFpaZone().getCode().equals("0") || a.getFpaZone().getCountry() == null)) {
                 result.put(a, Boolean.FALSE);
             } else {
                 String eezCountry = a.getFpaZone().getCountry().getIso3Code();
-                LogService.getService(PositionsInEEZInspector.class).logApplicationDebug("eezCountry " + eezCountry);
-                String o = eezList.get(eezIndex);
-                LogService.getService(PositionsInEEZInspector.class).logApplicationDebug("eezFromPosition " + o);
-                result.put(a, (eezCountry != null && o != null && !eezCountry.equals(o)));
+                boolean o = eezList.contains(eezCountry);
+                result.put(a, (eezCountry != null && o));
             }
-            eezIndex += 1;
         }
         return result;
     }

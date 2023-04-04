@@ -28,40 +28,40 @@ public class QuadrantInspector extends ObserveActivityInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Activity activite = get();
-        Double longitude = activite.getLongitude() == null ? null : Double.valueOf(activite.getLongitude());
-        Double latitude = activite.getLatitude() == null ? null : Double.valueOf(activite.getLatitude());
-        if (longitude == null || latitude == null) {
-            return results;
-        }
-        if (latitude == 0 && !(activite.getQuadrant() == 1 || activite.getQuadrant() == 4)) {
+        Activity activity = get();
+        double longitude = activity.getLongitude() == null ? 0 : Double.valueOf(activity.getLongitude());
+        double latitude = activity.getLatitude() == null ? 0 : Double.valueOf(activity.getLatitude());
+        int quadrant = activity.getQuadrant();
+        String activityId = activity.getTopiaId();
 
-            ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_LAT_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_LAT_INCONSISTENCY, true,
-                                            activite.getTopiaId(),
-                                            activite.getQuadrant());
+        if (latitude == 0 && !(quadrant == 1 || quadrant == 4)) {
+
+            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_LAT_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_LAT_INCONSISTENCY, true,
+                                            activityId,
+                                            quadrant);
             results.add(r);
         }
-        if (longitude == 0 && !(activite.getQuadrant() == 2 || activite.getQuadrant() == 1)) {
-            ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_LON_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_LON_INCONSISTENCY, true,
-                                            activite.getTopiaId(),
-                                            activite.getQuadrant());
+        if (longitude == 0 && !(quadrant == 2 || quadrant == 1)) {
+            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_LON_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_LON_INCONSISTENCY, true,
+                                            activityId,
+                                            quadrant);
             results.add(r);
         }
 
-        if ((activite.getQuadrant() == 3 || activite.getQuadrant() == 4)
+        if ((quadrant == 3 || quadrant == 4)
                 && Objects.equals(getTrip().getOcean().getCode(), Ocean.INDIEN)) {
-            ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_INCONSISTENCY, true,
-                                            activite.getTopiaId(),
-                                            activite.getQuadrant());
+            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_INCONSISTENCY, Constant.LABEL_ACTIVITY_QUADRANT_INCONSISTENCY, true,
+                                            activityId,
+                                            quadrant);
             results.add(r);
 
         }
 
-        if ((activite.getQuadrant() == 3 || activite.getQuadrant() == 4)
+        if ((quadrant == 3 || quadrant == 4)
                 && Objects.equals(Ocean.getOcean(longitude, latitude), Ocean.INDIEN)) {
-            ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_INCONSISTENCY_POSITION, Constant.LABEL_ACTIVITY_QUADRANT_INCONSISTENCY_POSITION, true,
-                                            activite.getTopiaId(),
-                                            activite.getQuadrant());
+            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_QUADRANT_INCONSISTENCY_POSITION, Constant.LABEL_ACTIVITY_QUADRANT_INCONSISTENCY_POSITION, true,
+                                            activityId,
+                                            quadrant);
             results.add(r);
         }
         return results;

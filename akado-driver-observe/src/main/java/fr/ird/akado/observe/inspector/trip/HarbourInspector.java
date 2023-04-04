@@ -17,6 +17,7 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.log.LogService;
@@ -25,10 +26,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.service.ObserveService;
 
 import java.util.Objects;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_HAS_DIFFERENT_HARBOUR;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_HAS_DIFFERENT_HARBOUR;
-
 
 /**
  * The HarbourInspector class check if the landing harbour of a previous trip is
@@ -68,7 +65,10 @@ public class HarbourInspector extends ObserveTripInspector {
 
         Trip previous = ObserveService.getService().getDaoSupplier().getPsCommonTripDao().findPreviousTrip(trip.getVessel(), trip.getEndDate());
         if (previous != null && !harbourAreIdentical(previous, trip)) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_HAS_DIFFERENT_HARBOUR, LABEL_TRIP_HAS_DIFFERENT_HARBOUR, true, trip.getTopiaId(), trip.getDepartureHarbour().getCode(), previous.getLandingHarbour().getCode());
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_HAS_DIFFERENT_HARBOUR, Constant.LABEL_TRIP_HAS_DIFFERENT_HARBOUR, true,
+                                        trip.getTopiaId(),
+                                        trip.getDepartureHarbour().getCode(),
+                                        previous.getLandingHarbour().getCode());
             results.add(r);
         }
         return results;

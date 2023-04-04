@@ -17,15 +17,11 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_CAPACITY_OVERRIDE;
-import static fr.ird.akado.observe.Constant.CODE_VESSEL_NO_CAPACITY;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_CAPACITY_OVERRIDE;
-import static fr.ird.akado.observe.Constant.LABEL_VESSEL_NO_CAPACITY;
 
 
 /**
@@ -57,11 +53,11 @@ public class LandingConsistentInspector extends ObserveTripInspector {
         float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
         double catchesWeight = trip.getLandingTotalWeight() + trip.getLocalMarketTotalWeight();
         if (capacityMax == 0) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_VESSEL_NO_CAPACITY, LABEL_VESSEL_NO_CAPACITY, false, trip.getVessel().getLabel2());
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_VESSEL_NO_CAPACITY, Constant.LABEL_VESSEL_NO_CAPACITY, false, trip.getVessel().getLabel2());
             r.setDataInformation(trip.getVessel());
             results.add(r);
         } else if (catchesWeight > capacityMax) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_CAPACITY_OVERRIDE, LABEL_TRIP_CAPACITY_OVERRIDE, false, trip.getTopiaId(), catchesWeight, capacityMax);
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_CAPACITY_OVERRIDE, Constant.LABEL_TRIP_CAPACITY_OVERRIDE, false, trip.getTopiaId(), catchesWeight, capacityMax);
             r.setValueObtained(catchesWeight);
             r.setValueExpected(capacityMax);
             results.add(r);

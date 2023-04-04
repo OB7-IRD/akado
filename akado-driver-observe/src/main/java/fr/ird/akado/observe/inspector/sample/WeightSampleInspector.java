@@ -30,7 +30,10 @@ public class WeightSampleInspector extends ObserveSampleInspector {
         float bigsWeight = s.getBigsWeight();
         float totalWeight = s.getTotalWeight();
         if ((smallsWeight + bigsWeight == 0 && totalWeight == 0) || (smallsWeight + bigsWeight > 0 && totalWeight != 0)) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_WEIGHT_INCONSISTENCY, Constant.LABEL_SAMPLE_WEIGHT_INCONSISTENCY, true, s.getTopiaId(), smallsWeight + bigsWeight, totalWeight);
+            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_WEIGHT_INCONSISTENCY, Constant.LABEL_SAMPLE_WEIGHT_INCONSISTENCY, true,
+                                          s.getTopiaId(),
+                                          smallsWeight + bigsWeight,
+                                          totalWeight);
             results.add(r);
         }
         return results;

@@ -17,14 +17,12 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_FISHING_TIME;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_FISHING_TIME;
 
 
 /**
@@ -76,7 +74,7 @@ public class FishingTimeInspector extends ObserveTripInspector {
         if (!isFishingTimeConsistency(trip)) {
             int fishingTime = trip.getFishingTime();
             int fishingTimeExpected = fishingTimeExpected(trip);
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_FISHING_TIME, LABEL_TRIP_FISHING_TIME, true, trip.getTopiaId(), fishingTime, fishingTimeExpected);
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_FISHING_TIME, Constant.LABEL_TRIP_FISHING_TIME, true, trip.getTopiaId(), fishingTime, fishingTimeExpected);
             r.setValueObtained(fishingTime);
             r.setValueExpected(fishingTimeExpected);
             results.add(r);

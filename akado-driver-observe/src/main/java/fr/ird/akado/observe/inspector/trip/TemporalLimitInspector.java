@@ -17,15 +17,13 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_TEMPORAL_LIMIT;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_TEMPORAL_LIMIT;
 
 /**
  * The TemporalLimitInspector check if the temporal limit of the trip are
@@ -55,13 +53,13 @@ public class TemporalLimitInspector extends ObserveTripInspector {
         Route firstRoute = trip.firstRouteWithActivity();
         Route lastRoute = trip.lastRouteWithActivity();
         if (!DateTimeUtils.dateEqual(trip.getStartDate(), firstRoute.getDate())) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_TEMPORAL_LIMIT, LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(trip.getStartDate()), dateFormat.format(firstRoute.getDate()));
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_TEMPORAL_LIMIT, Constant.LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(trip.getStartDate()), dateFormat.format(firstRoute.getDate()));
             r.setValueObtained(trip.getStartDate());
             r.setValueExpected(firstRoute.getDate());
             results.add(r);
         }
         if (!DateTimeUtils.dateEqual(trip.getEndDate(), lastRoute.getDate())) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_TEMPORAL_LIMIT, LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()),
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_TEMPORAL_LIMIT, Constant.LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()),
                                         dateFormat.format(trip.getStartDate()),
                                         dateFormat.format(firstRoute.getDate()));
             r.setValueObtained(trip.getEndDate());

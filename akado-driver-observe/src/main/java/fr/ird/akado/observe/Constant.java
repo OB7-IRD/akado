@@ -76,6 +76,10 @@ public class Constant {
     public static final String CODE_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY = "1219";
     public static final String LABEL_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY = "message.activity.fishing.context.null";
     public static final String CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_SCHOOL_TYPE = "1220";
+    public static final String CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE = "1220-0";
+    public static final String LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE = "message.activity.fishing.context.inconsistency.artificial.school.type";
+    public static final String CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE = "1220-1";
+    public static final String LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE = "message.activity.fishing.context.inconsistency.free.school.type";
     public static final String LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_SCHOOL_TYPE = "message.activity.fishing.context.inconsistency.school.type";
     public static final String CODE_ACTIVITY_NO_TRACE_VMS = "1221";
     public static final String LABEL_ACTIVITY_NO_TRACE_VMS = "message.activity.no.trace.vms";

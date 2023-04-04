@@ -19,6 +19,7 @@ import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_EEZ_INCONSI
 @AutoService(ObserveActivityInspector.class)
 public class EEZInspector extends ObserveActivityInspector {
     public static boolean operationAndEEZInconsistent(Activity a) {
+        //FIXME vesselActivity code must be translated to ObServe
         return (a.getFpaZone() == null || a.getFpaZone().getCode().equals("0")) && (a.getVesselActivity().getCode().equals("1") || a.getVesselActivity().getCode().equals("1"));
     }
 
@@ -30,13 +31,14 @@ public class EEZInspector extends ObserveActivityInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
+        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            return results;
+        }
         Activity a = get();
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
-            if (operationAndEEZInconsistent(a)) {
-                ActivityResult r = createResult(a, Message.WARNING, CODE_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, true,
-                                                a.getTopiaId(), a.getVesselActivity().getCode(), a.getSetCount());
-                results.add(r);
-            }
+        if (operationAndEEZInconsistent(a)) {
+            ActivityResult r = createResult(a, Message.WARNING, CODE_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, true,
+                                            a.getTopiaId(), a.getVesselActivity().getCode(), a.getSetCount());
+            results.add(r);
         }
         return results;
     }

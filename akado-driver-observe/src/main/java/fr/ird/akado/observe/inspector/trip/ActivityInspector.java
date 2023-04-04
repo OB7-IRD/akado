@@ -52,10 +52,12 @@ public class ActivityInspector extends ObserveTripInspector {
         boolean hasLogbook = trip.hasLogbook();
         boolean withLogbookActivities = trip.withLogbookActivities();
         if (hasLogbook && withLogbookActivities) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_NO_ACTIVITY, LABEL_TRIP_NO_ACTIVTY, true, trip.getTopiaId());
+            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_NO_ACTIVITY, LABEL_TRIP_NO_ACTIVTY, true,
+                                        trip.getTopiaId());
             results.add(r);
         } else if (!hasLogbook && !withLogbookActivities) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_HAS_ACTIVITY_NO_LOGBOOK, LABEL_TRIP_HAS_ACTIVTY_NO_LOGBOOK, true, trip.getTopiaId());
+            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_HAS_ACTIVITY_NO_LOGBOOK, LABEL_TRIP_HAS_ACTIVTY_NO_LOGBOOK, true,
+                                        trip.getTopiaId());
             results.add(r);
         }
         return results;

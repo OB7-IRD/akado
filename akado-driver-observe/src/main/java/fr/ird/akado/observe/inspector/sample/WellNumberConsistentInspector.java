@@ -36,7 +36,7 @@ public class WellNumberConsistentInspector extends ObserveSampleInspector {
         Results results = new Results();
         Sample s = get();
         if (!wellIsConsistent(getTrip(), s)) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.LABEL_SAMPLE_WELL_INCONSISTENCY, Constant.LABEL_SAMPLE_WELL_INCONSISTENCY, true, s.getTopiaId());
+            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_WELL_INCONSISTENCY, Constant.LABEL_SAMPLE_WELL_INCONSISTENCY, true, s.getTopiaId());
             results.add(r);
         }
         return results;

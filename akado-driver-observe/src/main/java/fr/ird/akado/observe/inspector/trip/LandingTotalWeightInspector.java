@@ -17,15 +17,12 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.landing.Landing;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_LANDING_TOTAL_WEIGHT;
-import static fr.ird.akado.observe.Constant.EPSILON;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_LANDING_TOTAL_WEIGHT;
 
 /**
  * Check if the landing total weight is consistent with the elementary landing
@@ -47,8 +44,8 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
      */
     public static double landingTotalWeightExpected(Trip trip) {
         double landingTotalWeightExpected = 0;
-        for (Landing commercial : trip.getLanding()) {
-            float weight = commercial.getWeight();
+        for (Landing landing : trip.getLanding()) {
+            float weight = landing.getWeight();
             landingTotalWeightExpected += weight;
         }
         return landingTotalWeightExpected;
@@ -66,8 +63,8 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
         Trip trip = get();
         double landingTotalWeightExpected = landingTotalWeightExpected(trip);
         float landingTotalWeight = trip.getLandingTotalWeight();
-        if (Math.abs(landingTotalWeight - landingTotalWeightExpected) > EPSILON) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_LANDING_TOTAL_WEIGHT, LABEL_TRIP_LANDING_TOTAL_WEIGHT, false, trip.getTopiaId(), landingTotalWeight, landingTotalWeightExpected);
+        if (Math.abs(landingTotalWeight - landingTotalWeightExpected) > Constant.EPSILON) {
+            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_LANDING_TOTAL_WEIGHT, Constant.LABEL_TRIP_LANDING_TOTAL_WEIGHT, false, trip.getTopiaId(), landingTotalWeight, landingTotalWeightExpected);
             r.setValueObtained(landingTotalWeight);
             r.setValueExpected(landingTotalWeightExpected);
             results.add(r);

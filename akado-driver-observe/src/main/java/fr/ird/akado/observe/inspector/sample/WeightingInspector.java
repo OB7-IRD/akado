@@ -71,10 +71,10 @@ public class WeightingInspector extends ObserveSampleInspector {
                 }
             } else {
                 double lc = 0;
-                for (Landing lotCommercial : trip.getLanding()) {
+                for (Landing landing : trip.getLanding()) {
                     //FIXME
-                    if (lotCommercial.getWeightCategory() != null && Objects.equals(lotCommercial.getWeightCategory().getCode(), "10")) {
-                        lc += lotCommercial.getWeight();
+                    if (landing.getWeightCategory() != null && Objects.equals(landing.getWeightCategory().getCode(), "10")) {
+                        lc += landing.getWeight();
                     }
                 }
                 if (Math.abs(weightedWeight - lc) > 1) {

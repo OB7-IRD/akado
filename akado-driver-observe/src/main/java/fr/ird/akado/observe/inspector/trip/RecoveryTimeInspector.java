@@ -17,6 +17,7 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.DateTimeUtils;
@@ -25,9 +26,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
 import java.util.Date;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_RECOVERY_TIME;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_RECOVERY_TIME;
 
 /**
  * Check if activities are continuous during a trip.
@@ -85,7 +83,7 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
                 continue;
             }
             if (!DateTimeUtils.dateIsTheNextDay(lastRoute.getDate(), routeDate)) {
-                TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_RECOVERY_TIME, LABEL_TRIP_RECOVERY_TIME, true, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(routeDate));
+                TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_RECOVERY_TIME, Constant.LABEL_TRIP_RECOVERY_TIME, true, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(routeDate));
                 results.add(r);
             }
         }

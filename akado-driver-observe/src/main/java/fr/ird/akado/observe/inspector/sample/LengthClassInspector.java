@@ -36,20 +36,21 @@ public class LengthClassInspector extends ObserveSampleInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
-            Sample s = get();
-            for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
-                if (Objects.equals(sampleSpecies.getSizeMeasureType().getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL)) {
-                    Species species = sampleSpecies.getSpecies();
-                    for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
-                        if (lengthClassLimits(species, sampleSpeciesMeasure)) {
-                            SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LENGTH_CLASS, Constant.LABEL_SAMPLE_LENGTH_CLASS, true,
-                                                          s.getTopiaId(),
-                                                          species.getCode(),
-                                                          sampleSpeciesMeasure.getSizeClass());
+        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+            return results;
+        }
+        Sample s = get();
+        for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
+            if (Objects.equals(sampleSpecies.getSizeMeasureType().getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL)) {
+                Species species = sampleSpecies.getSpecies();
+                for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
+                    if (lengthClassLimits(species, sampleSpeciesMeasure)) {
+                        SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LENGTH_CLASS, Constant.LABEL_SAMPLE_LENGTH_CLASS, true,
+                                                      s.getTopiaId(),
+                                                      species.getCode(),
+                                                      sampleSpeciesMeasure.getSizeClass());
 
-                            results.add(r);
-                        }
+                        results.add(r);
                     }
                 }
             }

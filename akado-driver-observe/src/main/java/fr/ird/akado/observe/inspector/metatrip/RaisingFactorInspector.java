@@ -8,7 +8,6 @@ import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.Utils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
@@ -61,8 +60,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
         }
         return totalLandingWeight / totalCatchesWeight;
     }
-//FIXME Do this one
-    //    public static double RaisingFactor1WithLocalMarket(List<Trip> trips) {
+//    public static double RaisingFactor1WithLocalMarket(List<Trip> trips) {
 //
 //        double totalCatchesWeight = 0;
 //        double totalLandingWeight = 0;
@@ -91,62 +89,54 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
     public Results execute() {
         Results results = new Results();
 
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+            return results;
+        }
 
-            double rf1 = 0d;
+        double rf1 = 0d;
 //        double rf1WithLocalMarket = 0d;
 
-            List<Trip> allTrips = get();
-            LogService.getService(RaisingFactorInspector.class).logApplicationDebug("***    ***");
-            for (Trip t : allTrips) {
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug(t.getTopiaId());
-            }
-            LogService.getService(RaisingFactorInspector.class).logApplicationDebug("***    ***");
+        List<Trip> allTrips = get();
 
-            List<List<Trip>> extendedTrips = buildExtendedTrips(allTrips);
-            for (List<Trip> trips : extendedTrips) {
-                double totalCatchesWeight = 0;
-                double totalLandingWeight = 0;
-                boolean hasLogbook = true;
+        List<List<Trip>> extendedTrips = buildExtendedTrips(allTrips);
+        for (List<Trip> trips : extendedTrips) {
+            double totalCatchesWeight = 0;
+            double totalLandingWeight = 0;
+//            boolean hasLogbook = true;
 //            double totalLocalMarketWeight = 0;
-                String tripID = "";
-                Trip previous = null;
-                for (Trip trip : trips) {
-                    hasLogbook &= trip.hasLogbook();
-                    double subTotalCatchesWeight = 0;
-                    if (trip.withLogbookActivities()) {
-                        subTotalCatchesWeight += catchesWeight(trip);
+            String tripID = "";
+            Trip previous = null;
+            for (Trip trip : trips) {
+//                hasLogbook &= trip.hasLogbook();
+                double subTotalCatchesWeight = 0;
+                if (trip.withLogbookActivities()) {
+                    subTotalCatchesWeight += catchesWeight(trip);
+                }
+                if (previous == null || !previous.isPartialLanding()) {
+                    if (subTotalCatchesWeight == 0 && trip.getLandingTotalWeight() != 0) {
+                        TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_NO_CATCH, Constant.LABEL_TRIP_NO_CATCH, true, trip.getTopiaId(), trip.getLandingTotalWeight());
+                        results.add(r);
                     }
-                    if (previous == null || !previous.isPartialLanding()) {
-                        if (subTotalCatchesWeight == 0 && trip.getLandingTotalWeight() != 0) {
-                            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_NO_CATCH, Constant.LABEL_TRIP_NO_CATCH, true, trip.getTopiaId(), trip.getLandingTotalWeight());
-                            results.add(r);
-                        }
-                    }
-                    totalCatchesWeight += subTotalCatchesWeight;
-                    totalLandingWeight += trip.getLandingTotalWeight();
+                }
+                totalCatchesWeight += subTotalCatchesWeight;
+                totalLandingWeight += trip.getLandingTotalWeight();
 //                totalLocalMarketWeight += trip.getLocalMarketWeight();
-                    tripID += "{" + trip.getVessel().getCode() + " " + TripResult.formatDate(trip.getEndDate()) + "}";
+                tripID += "{" + trip.getVessel().getCode() + " " + TripResult.formatDate(trip.getEndDate()) + "}";
 
-                    previous = trip;
-                }
-                try {
-                    rf1 = Utils.round(totalLandingWeight / totalCatchesWeight, 3);
-                } catch (NumberFormatException ex) {
-                    rf1 = 0d;
-                }
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug("******");
-                for (Trip t : trips) {
-                    LogService.getService(RaisingFactorInspector.class).logApplicationDebug(t.getTopiaId());
-                }
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug(tripID);
-                if (!rf1IsConsistent(rf1) && !(totalCatchesWeight == 0 && previous != null && !previous.isPartialLanding())) {
-                    MetaTripResult mtr = createResult(trips, Message.WARNING, Constant.CODE_TRIP_RAISING_FACTOR, Constant.LABEL_TRIP_RAISING_FACTOR, true, tripID, "" + rf1);
-                    mtr.setDataInformation(rf1);
-                    results.add(mtr);
-                }
-
+                previous = trip;
             }
+            try {
+                rf1 = Utils.round(totalLandingWeight / totalCatchesWeight, 3);
+            } catch (NumberFormatException ex) {
+                rf1 = 0d;
+            }
+
+            if (!rf1IsConsistent(rf1) && !(totalCatchesWeight == 0 && previous != null && !previous.isPartialLanding())) {
+                MetaTripResult mtr = createResult(trips, Message.WARNING, Constant.CODE_TRIP_RAISING_FACTOR, Constant.LABEL_TRIP_RAISING_FACTOR, true, tripID, rf1);
+                mtr.setDataInformation(rf1);
+                results.add(mtr);
+            }
+
         }
         return results;
     }
