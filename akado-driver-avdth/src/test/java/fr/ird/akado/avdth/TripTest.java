@@ -16,44 +16,51 @@
  */
 package fr.ird.akado.avdth;
 
-import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.avdth.metatrip.RaisingFactorInspector;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.trip.ActivityInspector;
 import fr.ird.akado.avdth.trip.FishingTimeInspector;
+import fr.ird.akado.avdth.trip.HarbourInspector;
 import fr.ird.akado.avdth.trip.LandingConsistentInspector;
 import fr.ird.akado.avdth.trip.LandingTotalWeightInspector;
 import fr.ird.akado.avdth.trip.RecoveryTimeInspector;
 import fr.ird.akado.avdth.trip.TemporalLimitInspector;
 import fr.ird.akado.avdth.trip.TimeAtSeaInspector;
-import fr.ird.akado.avdth.metatrip.RaisingFactorInspector;
-import fr.ird.akado.avdth.trip.HarbourInspector;
+import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.driver.avdth.business.Trip;
 import fr.ird.driver.avdth.business.Vessel;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.TripDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
 import fr.ird.driver.avdth.service.AvdthService;
-import java.util.List;
+import io.ultreia.java4all.util.sql.conf.JdbcConfigurationBuilder;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
+import org.junit.Assert;
+
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * This test class checks all trips inspectors.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 6 juin 2014
+ * @since 2.0
  */
 public class TripTest extends TestCase {
 
     public final static boolean DELETE = true;
     private static final String AVDTH_DB_TEST = "/akado_avdth_test_350.mdb";
     private static final String JDBC_ACCESS_DRIVER = "com.hxtt.sql.access.AccessDriver";
-    private static final String JDBC_ACCES_PROTOCOL = "jdbc:Access:///";
+    private static final String JDBC_ACCESS_PROTOCOL = "jdbc:Access:///";
     private final String avdthDatabasePath;
 
     public TripTest() {
-        avdthDatabasePath = JDBC_ACCES_PROTOCOL + ActivityTest.class.getResource(AVDTH_DB_TEST).getFile();
+        avdthDatabasePath = JDBC_ACCESS_PROTOCOL + ActivityTest.class.getResource(AVDTH_DB_TEST).getFile();
     }
 
     @Override
@@ -379,4 +386,24 @@ public class TripTest extends TestCase {
         }
         assertEquals(2, results.size());
     }
+
+    public void testInfo() throws Exception {
+        AAProperties.PROTOCOL_JDBC_ACCESS = JDBC_ACCESS_PROTOCOL;
+        AAProperties.WARNING_INSPECTOR = AAProperties.ACTIVE_VALUE;
+        AAProperties.TRIP_INSPECTOR = AAProperties.ACTIVE_VALUE;
+        AAProperties.ACTIVITY_INSPECTOR = AAProperties.ACTIVE_VALUE;
+        AAProperties.SAMPLE_INSPECTOR = AAProperties.ACTIVE_VALUE;
+        AAProperties.WELL_INSPECTOR = AAProperties.ACTIVE_VALUE;
+        Path directory = SampleTest.initStandardDirectory();
+        SampleTest.initGIS(directory);
+        AvdthInspector inspector = new AvdthInspector(new JdbcConfigurationBuilder().forDatabase(avdthDatabasePath, "", "", JDBC_ACCESS_DRIVER));
+        inspector.info();
+        Assert.assertEquals(1, inspector.getAkadoMessages().size());
+        for (AkadoMessage akadoMessage : inspector.getAkadoMessages()) {
+            log.info(akadoMessage.getContent());
+        }
+    }
+
+    private static final Logger log = LogManager.getLogger(TripTest.class);
+
 }
