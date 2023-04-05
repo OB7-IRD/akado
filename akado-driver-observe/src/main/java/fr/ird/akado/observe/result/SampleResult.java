@@ -188,7 +188,7 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                 speciesCode += species.getCode();
 
                 String ldlf = "" + ss.getSizeMeasureType().getLabel2();
-                if (LDLFInspector.ldlfSpeciesInconsistent(species, ss.getSizeMeasureType())) {
+                if (LDLFInspector.ldlfSpeciesInconsistent(ss)) {
                     ldlf = "!!" + ss.getSizeMeasureType().getLabel2() + "!!";
                     hasErrorOnSampleSpecies = true;
                 } else if (LDLFInspector.ldlfP10(sample, ss) || LDLFInspector.ldlfM10(sample, ss)) {

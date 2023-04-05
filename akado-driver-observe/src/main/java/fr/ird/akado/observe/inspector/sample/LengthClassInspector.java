@@ -46,7 +46,7 @@ public class LengthClassInspector extends ObserveSampleInspector {
         }
         Sample sample = get();
         for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
-            if (Objects.equals(sampleSpecies.getSizeMeasureType().getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL)) {
+            if (sampleSpecies.isLd()) {
                 Species species = sampleSpecies.getSpecies();
                 for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
                     if (lengthClassLimits(species, sampleSpeciesMeasure)) {

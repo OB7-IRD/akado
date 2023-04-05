@@ -21,23 +21,20 @@ import java.util.Objects;
 @AutoService(ObserveSampleInspector.class)
 public class LDLFInspector extends ObserveSampleInspector {
 
-    public static boolean ldlfSpeciesInconsistent(Species species, SizeMeasureType ldlf) {
+    public static boolean ldlfSpeciesInconsistent(SampleSpecies sampleSpecies) {
+        Species species = sampleSpecies.getSpecies();
         return (Objects.equals(species.getCode(), "2")
                 || Objects.equals(species.getCode(), "5")
                 || Objects.equals(species.getCode(), "6"))
-                && Objects.equals(ldlf.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL);
+                && sampleSpecies.isLd();
     }
 
     public static boolean ldlfP10(Sample s, SampleSpecies sampleSpecies) {
-        SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
-        return (Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL) || Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL_ONE_CENTIMER_FREQUENCY))
-                && s.getBigsWeight() == 0 && s.getTotalWeight() == 0;
+        return sampleSpecies.isLd() && s.getBigsWeight() == 0 && s.getTotalWeight() == 0;
     }
 
     public static boolean ldlfM10(Sample s, SampleSpecies sampleSpecies) {
-        SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
-        return Objects.equals(sizeMeasureType.getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_FORK)
-                && s.getSmallsWeight() == 0 && s.getTotalWeight() == 0;
+        return sampleSpecies.isLf() && s.getSmallsWeight() == 0 && s.getTotalWeight() == 0;
     }
 
     public LDLFInspector() {
@@ -55,7 +52,7 @@ public class LDLFInspector extends ObserveSampleInspector {
 
             SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
             Species species = sampleSpecies.getSpecies();
-            if (LDLFInspector.ldlfSpeciesInconsistent(species, sizeMeasureType)) {
+            if (LDLFInspector.ldlfSpeciesInconsistent(sampleSpecies)) {
                 SampleResult r = createResult(MessageDescriptions.E_1334_SAMPLE_LDLF_SPECIES_FORBIDDEN, sample,
                                               sample.getID(getTrip()),
                                               species.getCode(),

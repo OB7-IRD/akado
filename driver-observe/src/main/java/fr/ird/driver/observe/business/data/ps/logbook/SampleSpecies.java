@@ -22,8 +22,6 @@ public class SampleSpecies extends DataEntity {
 
     public static String SAMPLE_LENGTH_CLASS_FOR_DORSAL = "fr.ird.referential.common.SizeMeasureType#1433499466774#0.529249255312607";
     public static String SAMPLE_LENGTH_CLASS_FOR_FORK = "fr.ird.referential.common.SizeMeasureType#1433499465700#0.0902433863375336";
-    //FIXME
-    public static String SAMPLE_LENGTH_CLASS_FOR_DORSAL_ONE_CENTIMER_FREQUENCY = "fr.ird.referential.common.SizeMeasureType#1433499465700#0.0902433863375336";
     private String comment;
     private Date startTime;
     private Date endTime;
