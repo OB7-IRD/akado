@@ -1,10 +1,9 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
 import static fr.ird.akado.observe.Constant.EPSILON;
@@ -32,8 +31,8 @@ public class WeightInspector extends ObserveActivityInspector {
         float totalWeight = activity.getTotalWeight();
         double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
         if (Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON) {
-            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_TOTAL_CATCH_WEIGHT, Constant.LABEL_ACTIVITY_TOTAL_CATCH_WEIGHT, false,
-                                            activity.getTopiaId(),
+            ActivityResult r = createResult(MessageDescriptions.E_1210_ACTIVITY_TOTAL_CATCH_WEIGHT, activity,
+                                            activity.getID(getTrip(), getRoute()),
                                             totalWeight,
                                             totalCatchWeightExpected);
             r.setValueObtained(totalWeight);

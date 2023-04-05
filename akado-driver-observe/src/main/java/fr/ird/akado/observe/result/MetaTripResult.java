@@ -60,14 +60,14 @@ public class MetaTripResult extends Result<List<Trip>> {
             metaTripDataSheet.setLandingDate(DateUtils.formatDate(trip.getEndDate()));
             metaTripDataSheet.setDepartureDate(DateUtils.formatDate(trip.getStartDate()));
 
-            Route r = trip.firstRouteWithActivity();
+            Route r = trip.firstRoute();
             if (r != null) {
                 Date d = r.getDate();
 
                 metaTripDataSheet.setFirstActivityDate(DateUtils.formatDate(d));
             }
 
-            r = trip.lastRouteWithActivity();
+            r = trip.lastRoute();
             if (r != null) {
                 Date d = r.getDate();
                 metaTripDataSheet.setLastActivityDate(DateUtils.formatDate(d));

@@ -17,15 +17,10 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_HAS_ACTIVITY_NO_LOGBOOK;
-import static fr.ird.akado.observe.Constant.CODE_TRIP_NO_ACTIVITY;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_HAS_ACTIVTY_NO_LOGBOOK;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_NO_ACTIVTY;
 
 /**
  * The ActivityInspector class check if the trip has at least one activity and
@@ -52,12 +47,12 @@ public class ActivityInspector extends ObserveTripInspector {
         boolean hasLogbook = trip.hasLogbook();
         boolean withLogbookActivities = trip.withLogbookActivities();
         if (hasLogbook && !withLogbookActivities) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_NO_ACTIVITY, LABEL_TRIP_NO_ACTIVTY, true,
-                                        trip.getTopiaId());
+            TripResult r = createResult(MessageDescriptions.E_1018_TRIP_NO_ACTIVITY, trip,
+                                        trip.getID());
             results.add(r);
-        } else if (!hasLogbook && !withLogbookActivities) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_HAS_ACTIVITY_NO_LOGBOOK, LABEL_TRIP_HAS_ACTIVTY_NO_LOGBOOK, true,
-                                        trip.getTopiaId());
+        } else if (!hasLogbook && withLogbookActivities) {
+            TripResult r = createResult(MessageDescriptions.E_1024_TRIP_HAS_ACTIVITY_NO_LOGBOOK, trip,
+                                        trip.getID());
             results.add(r);
         }
         return results;

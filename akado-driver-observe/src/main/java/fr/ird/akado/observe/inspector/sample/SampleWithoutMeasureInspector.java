@@ -19,10 +19,9 @@
 package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 
@@ -44,14 +43,14 @@ public class SampleWithoutMeasureInspector extends ObserveSampleInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
-        if (s.getSampleSpecies().isEmpty()) {
+        Sample sample = get();
+        if (sample.getSampleSpecies().isEmpty()) {
             return results;
         }
-        for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
+        for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             if (sampleSpecies.getSampleSpeciesMeasure().isEmpty()) {
-                SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_NO_SAMPLE_MEASURE, Constant.LABEL_SAMPLE_NO_SAMPLE_MEASURE, true,
-                                              s.getTopiaId(),
+                SampleResult r = createResult(MessageDescriptions.E_1312_SAMPLE_NO_SAMPLE_MEASURE, sample,
+                                              sample.getID(getTrip()),
                                               sampleSpecies.getSubSampleNumber(),
                                               sampleSpecies.getSpecies().getCode(),
                                               sampleSpecies.getSizeMeasureType().getCode());

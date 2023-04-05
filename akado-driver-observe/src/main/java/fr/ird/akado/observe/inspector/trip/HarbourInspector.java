@@ -17,11 +17,10 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.log.LogService;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.service.ObserveService;
 
@@ -65,8 +64,8 @@ public class HarbourInspector extends ObserveTripInspector {
 
         Trip previous = ObserveService.getService().getDaoSupplier().getPsCommonTripDao().findPreviousTrip(trip.getVessel(), trip.getEndDate());
         if (previous != null && !harbourAreIdentical(previous, trip)) {
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_HAS_DIFFERENT_HARBOUR, Constant.LABEL_TRIP_HAS_DIFFERENT_HARBOUR, true,
-                                        trip.getTopiaId(),
+            TripResult r = createResult(MessageDescriptions.E_1023_TRIP_HAS_DIFFERENT_HARBOUR, trip,
+                                        trip.getID(),
                                         trip.getDepartureHarbour().getCode(),
                                         previous.getLandingHarbour().getCode());
             results.add(r);

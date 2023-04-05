@@ -79,13 +79,13 @@ public class TripResult extends Result<Trip> {
         }
         result.setDepartureHarbour(locode);
 
-        Route a = trip.firstRouteWithActivity();
+        Route a = trip.firstRoute();
         Date d = null;
         if (a != null) {
             d = a.getDate();
         }
         result.setFirstActivityDate(DateUtils.formatDate(d));
-        a = trip.lastRouteWithActivity();
+        a = trip.lastRoute();
         d = null;
         if (a != null) {
             d = a.getDate();

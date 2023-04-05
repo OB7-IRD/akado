@@ -17,14 +17,10 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
-import fr.ird.driver.observe.business.data.ps.logbook.Route;
-
-import static fr.ird.akado.observe.Constant.CODE_TRIP_TIME_AT_SEA;
-import static fr.ird.akado.observe.Constant.LABEL_TRIP_TIME_AT_SEA;
 
 /**
  * Check if the time at sea in trip is consistency with all activities.
@@ -37,21 +33,6 @@ import static fr.ird.akado.observe.Constant.LABEL_TRIP_TIME_AT_SEA;
 @AutoService(ObserveTripInspector.class)
 public class TimeAtSeaInspector extends ObserveTripInspector {
 
-    /**
-     * Calculate the time at sea based on activities
-     *
-     * @param trip the trip
-     * @return the time in hour
-     */
-    public static int timeAtSeaExpected(Trip trip) {
-        int timeAtSeaExpected = 0;
-        for (Route route : trip.getLogbookRoute()) {
-            int timeAtSea = route.getTimeAtSea();
-            timeAtSeaExpected += timeAtSea;
-        }
-        return timeAtSeaExpected;
-    }
-
     public TimeAtSeaInspector() {
         super();
         this.name = this.getClass().getName();
@@ -63,9 +44,11 @@ public class TimeAtSeaInspector extends ObserveTripInspector {
         Results results = new Results();
         Trip trip = get();
         int timeAtSea = trip.getTimeAtSea();
-        int timeAtSeaExpected = timeAtSeaExpected(trip);
+        int timeAtSeaExpected = trip.timeAtSeaExpected();
+        //FIXME a séparer en deux messages
         if (0 == trip.getTimeAtSea() || timeAtSeaExpected != trip.getTimeAtSea()) {
-            TripResult r = createResult(trip, Message.ERROR, CODE_TRIP_TIME_AT_SEA, LABEL_TRIP_TIME_AT_SEA, false, trip.getTopiaId(), timeAtSea, timeAtSeaExpected);
+            TripResult r = createResult(MessageDescriptions.E_1011_TRIP_TIME_AT_SEA, trip,
+                                        trip.getID(), timeAtSea, timeAtSeaExpected);
             r.setValueObtained(timeAtSea);
             r.setValueExpected(timeAtSeaExpected);
             results.add(r);

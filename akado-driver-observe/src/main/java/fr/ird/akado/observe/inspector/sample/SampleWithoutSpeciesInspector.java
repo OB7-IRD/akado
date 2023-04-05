@@ -19,10 +19,9 @@
 package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 
 /**
@@ -43,10 +42,10 @@ public class SampleWithoutSpeciesInspector extends ObserveSampleInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
-        if (s.getSampleSpecies().isEmpty()) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_NO_SAMPLE_SPECIES, Constant.LABEL_SAMPLE_NO_SAMPLE_SPECIES, true,
-                                          s.getTopiaId());
+        Sample sample = get();
+        if (sample.getSampleSpecies().isEmpty()) {
+            SampleResult r = createResult(MessageDescriptions.E_1311_SAMPLE_NO_SAMPLE_SPECIES, sample,
+                                          sample.getID(getTrip()));
             results.add(r);
         }
         return results;

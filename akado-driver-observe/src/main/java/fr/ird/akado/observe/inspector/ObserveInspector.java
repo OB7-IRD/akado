@@ -4,7 +4,6 @@ import fr.ird.akado.core.Inspector;
 import fr.ird.akado.observe.result.Result;
 import fr.ird.akado.observe.result.Results;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -24,8 +23,6 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 public abstract class ObserveInspector<T> extends Inspector<T> {
-
-    protected final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
 
     protected static <T, I extends ObserveInspector<T>> List<I> loadInspectors(Class<I> inspectorType) {
         List<I> result = new LinkedList<>();

@@ -17,10 +17,9 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 
 
@@ -38,7 +37,6 @@ public class LandingConsistentInspector extends ObserveTripInspector {
     public static float COEFF_M3_TO_TON = 0.7f;
 
     public LandingConsistentInspector() {
-        super();
         this.name = this.getClass().getName();
         this.description = "Check if the vessel capacity is consistent with the landing total weight.";
     }
@@ -53,11 +51,15 @@ public class LandingConsistentInspector extends ObserveTripInspector {
         float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
         double catchesWeight = trip.getLandingTotalWeight() + trip.getLocalMarketTotalWeight();
         if (capacityMax == 0) {
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_VESSEL_NO_CAPACITY, Constant.LABEL_VESSEL_NO_CAPACITY, false, trip.getVessel().getLabel2());
+            TripResult r = createResult(MessageDescriptions.W_1002_VESSEL_NO_CAPACITY, trip,
+                                        trip.getVessel().getLabel2());
             r.setDataInformation(trip.getVessel());
             results.add(r);
         } else if (catchesWeight > capacityMax) {
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_CAPACITY_OVERRIDE, Constant.LABEL_TRIP_CAPACITY_OVERRIDE, false, trip.getTopiaId(), catchesWeight, capacityMax);
+            TripResult r = createResult(MessageDescriptions.E_1022_TRIP_CAPACITY_OVERRIDE, trip,
+                                        trip.getID(),
+                                        catchesWeight,
+                                        capacityMax);
             r.setValueObtained(catchesWeight);
             r.setValueExpected(capacityMax);
             results.add(r);

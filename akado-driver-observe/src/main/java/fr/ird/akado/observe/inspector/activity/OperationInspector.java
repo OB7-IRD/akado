@@ -18,13 +18,10 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
-
-import static fr.ird.akado.observe.Constant.CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT;
-import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT;
 
 /**
  * Created on 20/03/2023.
@@ -69,39 +66,49 @@ public class OperationInspector extends ObserveActivityInspector {
 
         if (!isFishing) {
 
+            //FIXME ajouter controle sur activity.setCount ==null
+
             // can not have catch weight
             if (totalCatchWeightExpected > 0) {
                 //FIXME New message
-                ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-                                                activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                                                activity.getID(getTrip(), getRoute()),
+                                                activity.getVesselActivity().getCode(),
+                                                totalCatchWeightExpected);
                 results.add(r);
             }
         } else {
 
-            if (activity.getReasonForNoFishing() == null) {
+            //FIXME ajouter controle sur activity.setCount !=null et >0
 
+            if (activity.getReasonForNoFishing() == null) {
                 if (activity.getReasonForNullSet() == null) {
-                    //FIXME New message
                     if (totalCatchWeightExpected == 0) {
-                        ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-                                                        activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                        //FIXME New message
+                        ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                                                        activity.getID(getTrip(), getRoute()),
+                                                        activity.getVesselActivity().getCode(),
+                                                        totalCatchWeightExpected);
                         results.add(r);
                     }
                 } else {
                     if (totalCatchWeightExpected > 5) {
                         //FIXME New message
-                        ActivityResult r = createResult(activity, Message.WARNING, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-                                                        activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                        ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                                                        activity.getID(getTrip(), getRoute()),
+                                                        activity.getVesselActivity().getCode(),
+                                                        totalCatchWeightExpected);
                         results.add(r);
                     }
                 }
 
             } else {
-
                 if (totalCatchWeightExpected > 0) {
                     //FIXME New message
-                    ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-                                                    activity.getTopiaId(), activity.getVesselActivity().getCode(), totalCatchWeightExpected);
+                    ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                                                    activity.getTopiaId(),
+                                                    activity.getVesselActivity().getCode(),
+                                                    totalCatchWeightExpected);
                     results.add(r);
                 }
             }

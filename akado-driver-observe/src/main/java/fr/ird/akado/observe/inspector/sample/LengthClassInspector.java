@@ -2,10 +2,9 @@ package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
@@ -26,6 +25,12 @@ public class LengthClassInspector extends ObserveSampleInspector {
     public static final int LENGTH_CLASS_BET = 90;
     public static final int LENGTH_CLASS_ALB = 42;
 
+    public static boolean lengthClassLimits(Species species, SampleSpeciesMeasure sampleSpeciesFrequency) {
+        return (Objects.equals(species.getCode(), "1") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_YFT)
+                || (Objects.equals(species.getCode(), "3") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_BET)
+                || (Objects.equals(species.getCode(), "4") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_ALB);
+    }
+
     public LengthClassInspector() {
         super();
         this.name = this.getClass().getName();
@@ -39,14 +44,14 @@ public class LengthClassInspector extends ObserveSampleInspector {
         if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
             return results;
         }
-        Sample s = get();
-        for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
+        Sample sample = get();
+        for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             if (Objects.equals(sampleSpecies.getSizeMeasureType().getTopiaId(), SampleSpecies.SAMPLE_LENGTH_CLASS_FOR_DORSAL)) {
                 Species species = sampleSpecies.getSpecies();
                 for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
                     if (lengthClassLimits(species, sampleSpeciesMeasure)) {
-                        SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LENGTH_CLASS, Constant.LABEL_SAMPLE_LENGTH_CLASS, true,
-                                                      s.getTopiaId(),
+                        SampleResult r = createResult(MessageDescriptions.W_1329_SAMPLE_LENGTH_CLASS, sample,
+                                                      sample.getID(getTrip()),
                                                       species.getCode(),
                                                       sampleSpeciesMeasure.getSizeClass());
 
@@ -56,12 +61,5 @@ public class LengthClassInspector extends ObserveSampleInspector {
             }
         }
         return results;
-    }
-
-
-    public static boolean lengthClassLimits(Species species, SampleSpeciesMeasure sampleSpeciesFrequency) {
-        return (Objects.equals(species.getCode(), "1") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_YFT)
-                || (Objects.equals(species.getCode(), "3") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_BET)
-                || (Objects.equals(species.getCode(), "4") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_ALB);
     }
 }

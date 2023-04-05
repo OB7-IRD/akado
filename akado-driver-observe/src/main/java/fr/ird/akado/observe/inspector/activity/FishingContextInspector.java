@@ -1,10 +1,9 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.referential.ps.common.ObservedSystem;
 import fr.ird.driver.observe.business.referential.ps.common.SchoolType;
@@ -46,15 +45,17 @@ public class FishingContextInspector extends ObserveActivityInspector {
 
         if (schoolType.isArtificial()) {
             if (observedSystem.isEmpty()) {
-                ActivityResult r = createResult(a, Message.ERROR, Constant.CODE_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, Constant.LABEL_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, true,
-                                                a.getTopiaId(), schoolType.getCode());
+                ActivityResult r = createResult(MessageDescriptions.E_1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, a,
+                                                a.getID(getTrip(), getRoute()),
+                                                schoolType.getCode());
                 results.add(r);
                 return results;
             }
             Set<String> requiredFadObservedSystem = observedSystem.stream().filter(os -> os.getSchoolType().isArtificial()).map(ObservedSystem::getCode).collect(Collectors.toSet());
             if (requiredFadObservedSystem.isEmpty()) {
-                ActivityResult r = createResult(a, Message.ERROR, Constant.CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, Constant.LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, true,
-                                                a.getTopiaId(), schoolType.getCode());
+                ActivityResult r = createResult(MessageDescriptions.E_1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, a,
+                                                a.getID(getTrip(), getRoute()),
+                                                schoolType.getCode());
                 results.add(r);
             }
             return results;
@@ -62,8 +63,9 @@ public class FishingContextInspector extends ObserveActivityInspector {
         if (schoolType.isFree()) {
             Set<String> forbiddenFadObservedSystem = observedSystem.stream().filter(os -> os.getSchoolType().isArtificial()).map(ObservedSystem::getCode).collect(Collectors.toSet());
             if (!forbiddenFadObservedSystem.isEmpty()) {
-                ActivityResult r = createResult(a, Message.ERROR, Constant.CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, Constant.LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, true,
-                                                a.getTopiaId(), schoolType.getCode());
+                ActivityResult r = createResult(MessageDescriptions.E_1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, a,
+                                                a.getID(getTrip(), getRoute()),
+                                                schoolType.getCode());
                 results.add(r);
             }
         }

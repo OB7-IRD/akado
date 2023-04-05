@@ -2,10 +2,9 @@ package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.referential.common.SizeMeasureType;
@@ -21,12 +20,6 @@ import java.util.Objects;
  */
 @AutoService(ObserveSampleInspector.class)
 public class LDLFInspector extends ObserveSampleInspector {
-
-    public LDLFInspector() {
-        super();
-        this.name = this.getClass().getName();
-        this.description = "Check if the LDLF information for each sample species is consistent.";
-    }
 
     public static boolean ldlfSpeciesInconsistent(Species species, SizeMeasureType ldlf) {
         return (Objects.equals(species.getCode(), "2")
@@ -47,38 +40,44 @@ public class LDLFInspector extends ObserveSampleInspector {
                 && s.getSmallsWeight() == 0 && s.getTotalWeight() == 0;
     }
 
+    public LDLFInspector() {
+        super();
+        this.name = this.getClass().getName();
+        this.description = "Check if the LDLF information for each sample species is consistent.";
+    }
+
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
+        Sample sample = get();
 
-        for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
+        for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
 
             SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
             Species species = sampleSpecies.getSpecies();
             if (LDLFInspector.ldlfSpeciesInconsistent(species, sizeMeasureType)) {
-                SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_LDLF_SPECIES_FORBIDDEN, Constant.LABEL_SAMPLE_LDLF_SPECIES_FORBIDDEN, true,
-                                              s.getTopiaId(),
+                SampleResult r = createResult(MessageDescriptions.E_1334_SAMPLE_LDLF_SPECIES_FORBIDDEN, sample,
+                                              sample.getID(getTrip()),
                                               species.getCode(),
                                               sizeMeasureType.getCode());
                 results.add(r);
             }
 
             if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
-                if (ldlfP10(s, sampleSpecies)) {
-                    SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LDLF_P10, Constant.LABEL_SAMPLE_LDLF_P10, true,
-                                                  s.getTopiaId(),
+                if (ldlfP10(sample, sampleSpecies)) {
+                    SampleResult r = createResult(MessageDescriptions.W_1332_SAMPLE_LDLF_P10, sample,
+                                                  sample.getID(getTrip()),
                                                   sizeMeasureType.getCode(),
-                                                  s.getBigsWeight(),
-                                                  s.getTotalWeight());
+                                                  sample.getBigsWeight(),
+                                                  sample.getTotalWeight());
                     results.add(r);
                 }
-                if (ldlfM10(s, sampleSpecies)) {
-                    SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LDLF_M10, Constant.LABEL_SAMPLE_LDLF_M10, true,
-                                                  s.getTopiaId(),
+                if (ldlfM10(sample, sampleSpecies)) {
+                    SampleResult r = createResult(MessageDescriptions.W_1333_SAMPLE_LDLF_M10, sample,
+                                                  sample.getID(getTrip()),
                                                   sizeMeasureType.getCode(),
-                                                  s.getSmallsWeight(),
-                                                  s.getTotalWeight());
+                                                  sample.getSmallsWeight(),
+                                                  sample.getTotalWeight());
                     results.add(r);
                 }
             }

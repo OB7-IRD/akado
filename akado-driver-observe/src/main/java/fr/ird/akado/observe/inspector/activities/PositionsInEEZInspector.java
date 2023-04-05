@@ -3,17 +3,14 @@ package fr.ird.akado.observe.inspector.activities;
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static fr.ird.akado.observe.Constant.CODE_ACTIVITY_OPERATION_EEZ_INCONSISTENCY;
-import static fr.ird.akado.observe.Constant.LABEL_ACTIVITY_OPERATION_EEZ_INCONSISTENCY;
 
 /**
  * Created on 20/03/2023.
@@ -65,11 +62,11 @@ public class PositionsInEEZInspector extends ObserveActivityListInspector {
         Map<Activity, Boolean> inconsistentActivities = activityPositionAndEEZInconsistent(l);
         for (Map.Entry<Activity, Boolean> entry : inconsistentActivities.entrySet()) {
             if (entry.getValue()) {
-                Activity a = entry.getKey();
-                ActivityResult r = createResult(a, Message.WARNING, CODE_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, true,
-                                                a.getTopiaId(),
-                                                a.getVesselActivity().getCode(),
-                                                a.getSetCount());
+                Activity activity = entry.getKey();
+                ActivityResult r = createResult(MessageDescriptions.W_1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, activity,
+                                                activity.getID(getTrip(), getRoute()),
+                                                activity.getVesselActivity().getCode(),
+                                                activity.getSetCount());
                 results.add(r);
 
             }

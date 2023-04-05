@@ -2,11 +2,10 @@ package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.OTUtils;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.referential.common.Ocean;
 
@@ -55,10 +54,11 @@ public class PositionInspector extends ObserveActivityInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Activity activite = get();
-        Double longitude = activite.getLongitude() == null ? null : Double.valueOf(activite.getLongitude());
-        Double latitude = activite.getLatitude() == null ? null : Double.valueOf(activite.getLatitude());
+        Activity activity = get();
+        Double longitude = activity.getLongitude() == null ? null : Double.valueOf(activity.getLongitude());
+        Double latitude = activity.getLatitude() == null ? null : Double.valueOf(activity.getLatitude());
         if (longitude == null || latitude == null) {
+            //FIXME tester ce cas là https://gitlab.com/ultreiaio/ird-observe/-/issues/2663
             return results;
         }
         boolean inIO = GISHandler.getService().inIndianOcean(
@@ -78,20 +78,20 @@ public class PositionInspector extends ObserveActivityInspector {
             String country = GISHandler.getService().inLand(longitude, latitude);
 
             if (country != null) {
-                ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_POSITION_NOT_IN_OCEAN, Constant.LABEL_ACTIVITY_POSITION_NOT_IN_OCEAN, false,
-                                                activite.getTopiaId(),
+                ActivityResult r = createResult(MessageDescriptions.E_1214_ACTIVITY_POSITION_NOT_IN_OCEAN, activity,
+                                                activity.getID(getTrip(), getRoute()),
                                                 "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")",
                                                 country);
                 results.add(r);
             } else {
-                ActivityResult r = createResult(activite, Message.WARNING, Constant.CODE_ACTIVITY_POSITION_WEIRD, Constant.LABEL_ACTIVITY_POSITION_WEIRD, false,
-                                                activite.getTopiaId(),
+                ActivityResult r = createResult(MessageDescriptions.W_1217_ACTIVITY_POSITION_WEIRD, activity,
+                                                activity.getID(getTrip(), getRoute()),
                                                 "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")");
                 results.add(r);
             }
         } else if ((Objects.equals(getTrip().getOcean().getCode(), Ocean.INDIEN) && !inIO) || (Objects.equals(getTrip().getOcean().getCode(), Ocean.ATLANTIQUE) && !inAO)) {
-            ActivityResult r = createResult(activite, Message.ERROR, Constant.CODE_ACTIVITY_OCEAN_INCONSISTENCY, Constant.LABEL_ACTIVITY_OCEAN_INCONSISTENCY, false,
-                                            activite.getTopiaId(),
+            ActivityResult r = createResult(MessageDescriptions.E_1212_ACTIVITY_OCEAN_INCONSISTENCY, activity,
+                                            activity.getID(getTrip(), getRoute()),
                                             getTrip().getOcean().getCode(),
                                             Ocean.getOcean(longitude, latitude));
 

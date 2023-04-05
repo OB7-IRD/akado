@@ -17,11 +17,11 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.DateTimeUtils;
-import fr.ird.common.message.Message;
+import fr.ird.common.DateUtils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
@@ -50,18 +50,24 @@ public class TemporalLimitInspector extends ObserveTripInspector {
         if (!trip.withLogbookActivities()) {
             return results;
         }
-        Route firstRoute = trip.firstRouteWithActivity();
-        Route lastRoute = trip.lastRouteWithActivity();
+        Route firstRoute = trip.firstRoute();
+        Route lastRoute = trip.lastRoute();
         if (!DateTimeUtils.dateEqual(trip.getStartDate(), firstRoute.getDate())) {
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_TEMPORAL_LIMIT, Constant.LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(trip.getStartDate()), dateFormat.format(firstRoute.getDate()));
+            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_TEMPORAL_LIMIT, trip,
+                                        trip.getID(),
+                                        DateUtils.formatDate(lastRoute.getDate()),
+                                        DateUtils.formatDate(trip.getStartDate()),
+                                        DateUtils.formatDate(firstRoute.getDate()));
             r.setValueObtained(trip.getStartDate());
             r.setValueExpected(firstRoute.getDate());
             results.add(r);
         }
         if (!DateTimeUtils.dateEqual(trip.getEndDate(), lastRoute.getDate())) {
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_TEMPORAL_LIMIT, Constant.LABEL_TRIP_TEMPORAL_LIMIT, false, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()),
-                                        dateFormat.format(trip.getStartDate()),
-                                        dateFormat.format(firstRoute.getDate()));
+            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_TEMPORAL_LIMIT, trip,
+                                        trip.getID(),
+                                        DateUtils.formatDate(lastRoute.getDate()),
+                                        DateUtils.formatDate(trip.getStartDate()),
+                                        DateUtils.formatDate(firstRoute.getDate()));
             r.setValueObtained(trip.getEndDate());
             r.setValueExpected(lastRoute.getDate());
             results.add(r);

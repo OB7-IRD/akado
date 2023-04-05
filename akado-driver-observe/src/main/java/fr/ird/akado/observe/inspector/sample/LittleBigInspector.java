@@ -2,10 +2,9 @@ package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
@@ -152,23 +151,23 @@ public class LittleBigInspector extends ObserveSampleInspector {
         if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
             return results;
         }
-        Sample s = get();
-        double little = littleFish(s);
-        double big = bigFish(s);
-        double ld1 = ld1Measure(s);
-        double lf = lfMeasure(s);
-        if (littleIsInfThreshold(s, little, lf, ld1)) {
-            SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_LITTLE_INF_THRESHOLD, Constant.LABEL_SAMPLE_LITTLE_INF_THRESHOLD, true,
-                                          s.getTopiaId(),
+        Sample sample = get();
+        double little = littleFish(sample);
+        double big = bigFish(sample);
+        double ld1 = ld1Measure(sample);
+        double lf = lfMeasure(sample);
+        if (littleIsInfThreshold(sample, little, lf, ld1)) {
+            SampleResult r = createResult(MessageDescriptions.W_1330_SAMPLE_LITTLE_INF_THRESHOLD, sample,
+                                          sample.getID(getTrip()),
                                           little,
                                           THRESHOLD,
                                           lf,
                                           ld1);
             results.add(r);
         }
-        if (bigIsInfThreshold(s, big, lf, ld1)) {
-            SampleResult r = createResult(s, Message.WARNING, Constant.CODE_SAMPLE_BIG_INF_THRESHOLD, Constant.LABEL_SAMPLE_BIG_INF_THRESHOLD, true,
-                                          s.getTopiaId(),
+        if (bigIsInfThreshold(sample, big, lf, ld1)) {
+            SampleResult r = createResult(MessageDescriptions.W_1337_SAMPLE_BIG_INF_THRESHOLD, sample,
+                                          sample.getID(getTrip()),
                                           big,
                                           THRESHOLD,
                                           lf,

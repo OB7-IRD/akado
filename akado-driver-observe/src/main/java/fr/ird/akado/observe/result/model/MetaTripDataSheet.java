@@ -32,7 +32,7 @@ public final class MetaTripDataSheet {
     private String departureDate;
     private String firstActivityDate;
     private String lastActivityDate;
-    private int partialLandingIndicator;
+    private boolean partialLandingIndicator;
     private double raisingFactor;
     //    private double raisingFactor1WithLocalMarket;
     private boolean hasCatches;
@@ -86,11 +86,11 @@ public final class MetaTripDataSheet {
         this.lastActivityDate = lastActivityDate;
     }
 
-    public int getPartialLandingIndicator() {
+    public boolean isPartialLandingIndicator() {
         return partialLandingIndicator;
     }
 
-    public void setPartialLandingIndicator(int partialLandingIndicator) {
+    public void setPartialLandingIndicator(boolean partialLandingIndicator) {
         this.partialLandingIndicator = partialLandingIndicator;
     }
 

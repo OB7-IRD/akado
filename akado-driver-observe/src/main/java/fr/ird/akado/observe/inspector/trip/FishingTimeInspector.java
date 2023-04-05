@@ -17,12 +17,10 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
-import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
 
 /**
@@ -36,31 +34,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Route;
 @AutoService(ObserveTripInspector.class)
 public class FishingTimeInspector extends ObserveTripInspector {
 
-    /**
-     * Calculate the fishing time based on activities
-     *
-     * @param trip the trip
-     * @return the time in hour
-     */
-    public static int fishingTimeExpected(Trip trip) {
-        int fishingTimeExpected = 0;
-        for (Route route : trip.getLogbookRoute()) {
-            int fishingTime = route.getFishingTime();
-            fishingTimeExpected += fishingTime;
-        }
-        return fishingTimeExpected;
-    }
-
-    /**
-     * Check if the fishing time in trip is consistency with all activities.
-     *
-     * @param trip the trip
-     * @return true if the value are same
-     */
-    public static boolean isFishingTimeConsistency(Trip trip) {
-        return trip.getFishingTime() == fishingTimeExpected(trip);
-    }
-
     public FishingTimeInspector() {
         super();
         this.name = this.getClass().getName();
@@ -71,10 +44,11 @@ public class FishingTimeInspector extends ObserveTripInspector {
     public Results execute() {
         Results results = new Results();
         Trip trip = get();
-        if (!isFishingTimeConsistency(trip)) {
-            int fishingTime = trip.getFishingTime();
-            int fishingTimeExpected = fishingTimeExpected(trip);
-            TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_FISHING_TIME, Constant.LABEL_TRIP_FISHING_TIME, true, trip.getTopiaId(), fishingTime, fishingTimeExpected);
+        int fishingTime = trip.getFishingTime();
+        int fishingTimeExpected = trip.fishingTimeExpected();
+        if (fishingTime != fishingTimeExpected) {
+            TripResult r = createResult(MessageDescriptions.E_1017_TRIP_FISHING_TIME, trip,
+                                        trip.getID(), fishingTime, fishingTimeExpected);
             r.setValueObtained(fishingTime);
             r.setValueExpected(fishingTimeExpected);
             results.add(r);

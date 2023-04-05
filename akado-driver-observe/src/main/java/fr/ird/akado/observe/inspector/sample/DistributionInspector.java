@@ -1,10 +1,9 @@
 package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 
 /**
@@ -15,11 +14,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Sample;
  */
 @AutoService(ObserveSampleInspector.class)
 public class DistributionInspector extends ObserveSampleInspector {
-    public DistributionInspector() {
-        this.name = getClass().getName();
-        this.description = "Compare la somme des +10/-10 saisie dans les plans de cuve avec celle saisie dans l'échantillon.";
-    }
-
     public static boolean distributionIsInconsistent(Sample s) {
         Float m10Weight = 0f;
         Float p10Weight = 0f;
@@ -39,16 +33,21 @@ public class DistributionInspector extends ObserveSampleInspector {
         return !m10Weight.equals(s.getSmallsWeight()) || !p10Weight.equals(s.getBigsWeight());
     }
 
+    public DistributionInspector() {
+        this.name = getClass().getName();
+        this.description = "Compare la somme des +10/-10 saisie dans les plans de cuve avec celle saisie dans l'échantillon.";
+    }
+
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
-        if (s.getWell() == null) {
+        Sample sample = get();
+        if (sample.getWell() == null) {
             return results;
         }
-        if (distributionIsInconsistent(s)) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_DISTRIBUTION_M10_P10, Constant.LABEL_SAMPLE_DISTRIBUTION_M10_P10, true,
-                                          s.getTopiaId());
+        if (distributionIsInconsistent(sample)) {
+            SampleResult r = createResult(MessageDescriptions.E_1335_SAMPLE_DISTRIBUTION_M10_P10, sample,
+                                          sample.getID(getTrip()));
             results.add(r);
         }
         return results;

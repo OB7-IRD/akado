@@ -17,11 +17,11 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.common.DateTimeUtils;
-import fr.ird.common.message.Message;
+import fr.ird.common.DateUtils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
@@ -76,6 +76,7 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
         Route lastRoute = null;
         for (Route route : trip.getLogbookRoute()) {
 
+            //FIXME check if there is one activity in each route
             Date routeDate = route.getDate();
 
             if (lastRoute == null || DateTimeUtils.dateEqual(routeDate, lastRoute.getDate())) {
@@ -83,7 +84,10 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
                 continue;
             }
             if (!DateTimeUtils.dateIsTheNextDay(lastRoute.getDate(), routeDate)) {
-                TripResult r = createResult(trip, Message.ERROR, Constant.CODE_TRIP_RECOVERY_TIME, Constant.LABEL_TRIP_RECOVERY_TIME, true, trip.getTopiaId(), dateFormat.format(lastRoute.getDate()), dateFormat.format(routeDate));
+                TripResult r = createResult(MessageDescriptions.E_1013_TRIP_RECOVERY_TIME, trip,
+                                            trip.getID(),
+                                            DateUtils.formatDate(lastRoute.getDate()),
+                                            DateUtils.formatDate(routeDate));
                 results.add(r);
             }
         }

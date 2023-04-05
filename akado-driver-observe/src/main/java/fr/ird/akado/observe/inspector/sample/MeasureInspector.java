@@ -19,10 +19,9 @@
 package fr.ird.akado.observe.inspector.sample;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
@@ -35,12 +34,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
  */
 @AutoService(ObserveSampleInspector.class)
 public class MeasureInspector extends ObserveSampleInspector {
-
-    public MeasureInspector() {
-        super();
-        this.name = this.getClass().getName();
-        this.description = "Check if the sample species number is consistent with the measure number.";
-    }
 
     public static double sampleSpeciesMeasuredCount(Sample s) {
         double sampleSpeciesMeasuredCount = 0;
@@ -60,13 +53,19 @@ public class MeasureInspector extends ObserveSampleInspector {
         return sampleSpeciesFrequencyCount;
     }
 
+    public MeasureInspector() {
+        super();
+        this.name = this.getClass().getName();
+        this.description = "Check if the sample species number is consistent with the measure number.";
+    }
+
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
+        Sample sample = get();
         int sampleSpeciesFrequencyCount = 0;
         int sampleSpeciesMeasuredCount = 0;
-        for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
+        for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             sampleSpeciesMeasuredCount += sampleSpecies.getMeasuredCount();
             for (SampleSpeciesMeasure sampleSpeciesFrequency : sampleSpecies.getSampleSpeciesMeasure()) {
                 sampleSpeciesFrequencyCount += sampleSpeciesFrequency.getCount();
@@ -74,8 +73,8 @@ public class MeasureInspector extends ObserveSampleInspector {
         }
 
         if (sampleSpeciesFrequencyCount != sampleSpeciesMeasuredCount) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_MEASURE_COUNT, Constant.LABEL_SAMPLE_MEASURE_COUNT, true,
-                                          s.getTopiaId(),
+            SampleResult r = createResult(MessageDescriptions.E_1323_SAMPLE_MEASURE_COUNT, sample,
+                                          sample.getID(getTrip()),
                                           sampleSpeciesMeasuredCount,
                                           sampleSpeciesFrequencyCount);
             results.add(r);

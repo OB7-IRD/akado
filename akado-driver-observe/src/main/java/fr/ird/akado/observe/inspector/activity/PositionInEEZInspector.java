@@ -20,14 +20,11 @@ package fr.ird.akado.observe.inspector.activity;
 import com.google.auto.service.AutoService;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.log.LogService;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
-
-import java.util.Objects;
 
 /**
  * Created on 20/03/2023.
@@ -39,7 +36,7 @@ import java.util.Objects;
 public class PositionInEEZInspector extends ObserveActivityInspector {
 
     public static boolean activityPositionAndEEZInconsistent(Activity a) {
-        if (a.getFpaZone() == null || Objects.equals(a.getFpaZone().getCode(), "0") || a.getFpaZone().getCountry() == null) {
+        if (a.getFpaZone() == null) {
             return false;
         }
         String eezCountry = a.getFpaZone().getCountry().getIso3Code();
@@ -64,15 +61,17 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
         if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
             return results;
         }
-        Activity a = get();
-        if (activityPositionAndEEZInconsistent(a)) {
+        Activity activity = get();
+        if (activityPositionAndEEZInconsistent(activity)) {
 
             String eez = "-";
-            if (a.getFpaZone() != null && a.getFpaZone().getCountry() != null) {
-                eez = "" + a.getFpaZone().getCountry().getIso3Code();
+            if (activity.getFpaZone() != null && activity.getFpaZone().getCountry() != null) {
+                eez = "" + activity.getFpaZone().getCountry().getIso3Code();
             }
-            ActivityResult r = createResult(a, Message.WARNING, Constant.CODE_ACTIVITY_POSITION_EEZ_INCONSISTENCY, Constant.LABEL_ACTIVITY_POSITION_EEZ_INCONSISTENCY, true,
-                                            a.getTopiaId(), a.getLongitude() + " " + a.getLatitude(), eez);
+            ActivityResult r = createResult(MessageDescriptions.W_1234_ACTIVITY_POSITION_EEZ_INCONSISTENCY, activity,
+                                            activity.getID(getTrip(), getRoute()),
+                                            activity.getLongitude() + " " + activity.getLatitude(),
+                                            eez);
             results.add(r);
         }
         return results;

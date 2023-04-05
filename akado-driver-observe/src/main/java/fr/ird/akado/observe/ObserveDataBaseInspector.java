@@ -45,7 +45,6 @@ import fr.ird.akado.observe.task.SampleTask;
 import fr.ird.akado.observe.task.TripTask;
 import fr.ird.akado.observe.task.WellTask;
 import fr.ird.common.log.LogService;
-import fr.ird.common.message.Message;
 import fr.ird.driver.anapo.common.exception.ANAPODriverException;
 import fr.ird.driver.anapo.service.ANAPOService;
 import fr.ird.driver.observe.business.ObserveVersion;
@@ -170,10 +169,9 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         r.setLastDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookActivityDao().lastActivityDate()));
         r.setSampleCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookSampleDao().count());
         r.setWellCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookWellDao().count());
-        InfoResult info = new InfoResult();
-        info.set(r);
+        InfoResult info = new InfoResult(r, MessageDescriptions.I_0001_INFO_DATABASE);
 
-        ArrayList<Object> infos = new ArrayList<>();
+        List<Object> infos = new ArrayList<>();
         infos.add(r.getTripCount());
         infos.add(DATE_FORMATTER.print(r.getFirstDateOfTrip()));
         infos.add(DATE_FORMATTER.print(r.getLastDateOfTrip()));
@@ -182,9 +180,6 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         infos.add(DATE_FORMATTER.print(r.getLastDateOfActivity()));
         infos.add(r.getSampleCount());
         infos.add(r.getWellCount());
-        info.setMessageType(Message.INFO);
-        info.setMessageCode(Constant.CODE_INFO_DATABASE);
-        info.setMessageLabel(Constant.LABEL_INFO_DATABASE);
         info.setMessageParameters(infos);
         getAkadoMessages().add(info.getMessage());
         log.info(r);
@@ -200,7 +195,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
     public void validate() throws Exception {
         Version observeVersion = ObserveService.getService().getDaoSupplier().getVersionDao().getVersionNumber();
         if (!observeVersion.equals(ObserveVersion.VERSION_OBSERVE_COMPATIBILITY)) {
-            ObserveMessage message = new ObserveMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, ObserveVersion.VERSION_OBSERVE_COMPATIBILITY), Message.ERROR);
+            ObserveMessage message = new ObserveMessage(MessageDescriptions.E_0002_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, ObserveVersion.VERSION_OBSERVE_COMPATIBILITY));
             throw new AkadoException(message.getContent());
         }
         List<Trip> tripList = getTripsToValidate();

@@ -1,10 +1,9 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Catch;
@@ -66,8 +65,8 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         double sumOfSampleWeightedWeight = sumOfSampleWeightedWeight(getTrip(), activity);
 
         if (sumOfSampleWeightedWeight != 0 && Math.abs(sumOfElementaryCatches - sumOfSampleWeightedWeight) > EPSILON) {
-            ActivityResult r = createResult(activity, Message.ERROR, Constant.CODE_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, Constant.LABEL_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, false,
-                                            activity.getTopiaId(),
+            ActivityResult r = createResult(MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,
+                                            activity.getID(getTrip(), getRoute()),
                                             sumOfElementaryCatches,
                                             sumOfSampleWeightedWeight);
             r.setValueObtained(sumOfElementaryCatches);

@@ -18,10 +18,9 @@
  */
 package fr.ird.akado.observe.inspector.sample;
 
-import fr.ird.akado.observe.Constant;
+import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
-import fr.ird.common.message.Message;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 
@@ -76,32 +75,31 @@ public class SuperSampleNumberConsistentInspector extends ObserveSampleInspector
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        Sample s = get();
+        Sample sample = get();
 
-
-        if (s.getSampleSpecies().isEmpty()) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES, Constant.LABEL_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES, true,
-                                          s.getTopiaId(),
-                                          s.isSuperSample(),
-                                          count(s.getSampleSpecies()));
+        if (sample.getSampleSpecies().isEmpty()) {
+            SampleResult r = createResult(MessageDescriptions.E_1338_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES, sample,
+                                          sample.getID(getTrip()),
+                                          sample.isSuperSample(),
+                                          count(sample.getSampleSpecies()));
             results.add(r);
             return results;
         }
-        boolean onlyOneSubSampling = !s.isSuperSample() && checkIfHasOnlyOneSubSampling(s);
-        boolean manySubSampling = s.isSuperSample() && checkIfHasManySubSampling(s);
+        boolean onlyOneSubSampling = !sample.isSuperSample() && checkIfHasOnlyOneSubSampling(sample);
+        boolean manySubSampling = sample.isSuperSample() && checkIfHasManySubSampling(sample);
         if (!(onlyOneSubSampling || manySubSampling)) {
-            SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SAMPLE_SUBSAMPLE_FLAG, Constant.LABEL_SAMPLE_SUBSAMPLE_FLAG, true,
-                                          s.getTopiaId(),
-                                          s.isSuperSample(),
-                                          count(s.getSampleSpecies())
+            SampleResult r = createResult(MessageDescriptions.E_1331_SAMPLE_SUBSAMPLE_FLAG, sample,
+                                          sample.getID(getTrip()),
+                                          sample.isSuperSample(),
+                                          count(sample.getSampleSpecies())
             );
             results.add(r);
         }
-        for (SampleSpecies ss : s.getSampleSpecies()) {
-            int count = count(s.getSampleSpecies());
+        for (SampleSpecies ss : sample.getSampleSpecies()) {
+            int count = count(sample.getSampleSpecies());
             if (count == 1 && ss.getSubSampleNumber() == 1) {
-                SampleResult r = createResult(s, Message.ERROR, Constant.CODE_SUBSAMPLE_NUMBER_INCONSISTENCY, Constant.LABEL_SUBSAMPLE_NUMBER_INCONSISTENCY, true,
-                                              s.getTopiaId(),
+                SampleResult r = createResult(MessageDescriptions.E_1315_SUBSAMPLE_NUMBER_INCONSISTENCY, sample,
+                                              sample.getID(getTrip()),
                                               ss.getSubSampleNumber(),
                                               ss.getSpecies().getFaoCode());
                 results.add(r);
