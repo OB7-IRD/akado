@@ -276,4 +276,8 @@ public class Vessel extends I18nReferentialEntity {
     public void setShipOwner(Supplier<ShipOwner> shipOwner) {
         this.shipOwner = Objects.requireNonNull(shipOwner);
     }
+
+    public String getID() {
+        return "" + getCode();
+    }
 }

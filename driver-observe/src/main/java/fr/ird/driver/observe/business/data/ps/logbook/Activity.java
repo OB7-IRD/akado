@@ -1,6 +1,8 @@
 package fr.ird.driver.observe.business.data.ps.logbook;
 
+import fr.ird.common.DateUtils;
 import fr.ird.driver.observe.business.data.DataEntity;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.referential.common.DataQuality;
 import fr.ird.driver.observe.business.referential.common.FpaZone;
 import fr.ird.driver.observe.business.referential.common.Wind;
@@ -12,6 +14,7 @@ import fr.ird.driver.observe.business.referential.ps.common.VesselActivity;
 import fr.ird.driver.observe.business.referential.ps.logbook.InformationSource;
 import fr.ird.driver.observe.business.referential.ps.logbook.SetSuccessStatus;
 import fr.ird.driver.observe.common.ObserveUtils;
+import io.ultreia.java4all.util.Dates;
 import io.ultreia.java4all.util.SingletonSupplier;
 
 import java.util.Date;
@@ -294,5 +297,10 @@ public class Activity extends DataEntity {
      */
     public double totalCatchWeightFromCatches() {
         return getCatches().stream().mapToDouble(Catch::getWeight).sum();
+    }
+
+    public String getID(Trip trip, Route route) {
+        String fullDate = getTime() == null ? DateUtils.formatDate(route.getDate()) + " heure non définie" : DateUtils.formatDateAndTime(Dates.getDateAndTime(route.getDate(), getTime(), false, false));
+        return String.format("%s %s %s", trip.getID(), fullDate, getNumber());
     }
 }

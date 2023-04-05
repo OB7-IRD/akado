@@ -1,6 +1,7 @@
 package fr.ird.driver.observe.business.data.ps.logbook;
 
 import fr.ird.driver.observe.business.data.DataEntity;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.referential.common.SizeMeasureType;
 import fr.ird.driver.observe.business.referential.common.Species;
 import io.ultreia.java4all.util.SingletonSupplier;
@@ -36,6 +37,7 @@ public class SampleSpecies extends DataEntity {
     public boolean isLd() {
         return getSizeMeasureType().getTopiaId().equals(SAMPLE_LENGTH_CLASS_FOR_DORSAL);
     }
+
     public boolean isLf() {
         return getSizeMeasureType().getTopiaId().equals(SAMPLE_LENGTH_CLASS_FOR_FORK);
     }
@@ -110,5 +112,13 @@ public class SampleSpecies extends DataEntity {
 
     public void setSampleSpeciesMeasure(Supplier<Set<SampleSpeciesMeasure>> sampleSpeciesMeasure) {
         this.sampleSpeciesMeasure = Objects.requireNonNull(sampleSpeciesMeasure);
+    }
+
+    public String getID(Trip trip, Sample sample) {
+        return String.format("%s %s %s %s",
+                             sample.getID(trip),
+                             getSubSampleNumber(),
+                             getSpecies().getCode(),
+                             getSizeMeasureType().getCode());
     }
 }

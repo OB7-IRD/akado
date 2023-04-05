@@ -1,6 +1,7 @@
 package fr.ird.driver.observe.business.data.ps.logbook;
 
 import fr.ird.driver.observe.business.data.DataEntity;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.referential.ps.common.SampleType;
 import fr.ird.driver.observe.business.referential.ps.logbook.SampleQuality;
 import io.ultreia.java4all.util.SingletonSupplier;
@@ -118,5 +119,9 @@ public class Sample extends DataEntity {
 
     public void setSampleSpecies(Supplier<List<SampleSpecies>> sampleSpecies) {
         this.sampleSpecies = Objects.requireNonNull(sampleSpecies);
+    }
+
+    public String getID(Trip trip) {
+        return String.format("%s %s", trip.getID(), getNumber());
     }
 }

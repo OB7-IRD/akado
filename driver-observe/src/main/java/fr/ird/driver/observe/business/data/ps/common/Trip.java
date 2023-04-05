@@ -1,5 +1,6 @@
 package fr.ird.driver.observe.business.data.ps.common;
 
+import fr.ird.common.DateUtils;
 import fr.ird.driver.observe.business.data.DataEntity;
 import fr.ird.driver.observe.business.data.ps.landing.Landing;
 import fr.ird.driver.observe.business.data.ps.localmarket.Batch;
@@ -395,15 +396,8 @@ public class Trip extends DataEntity {
         return routes.get(0);
     }
 
-    public Route lastRouteWithActivity() {
-        List<Route> routes = new ArrayList<>(getLogbookRoute());
-        Collections.reverse(routes);
-        for (Route route : routes) {
-            if (route.getActivity().size() > 1) {
-                return route;
-            }
-        }
-        return null;
+    public String getID() {
+        return String.format("%s %s", getVessel().getID(), DateUtils.formatDate(getEndDate()));
     }
 
     public boolean isPartialLanding() {
