@@ -382,13 +382,17 @@ public class Trip extends DataEntity {
         return false;
     }
 
-    public Route firstRouteWithActivity() {
-        for (Route route : getLogbookRoute()) {
-            if (route.getActivity().size() > 1) {
-                return route;
-            }
+    public Route firstRoute() {
+        return getLogbookRoute().isEmpty() ? null : getLogbookRoute().iterator().next();
+    }
+
+    public Route lastRoute() {
+        if (getLogbookRoute().isEmpty()) {
+            return null;
         }
-        return null;
+        List<Route> routes = new ArrayList<>(getLogbookRoute());
+        Collections.reverse(routes);
+        return routes.get(0);
     }
 
     public Route lastRouteWithActivity() {
@@ -405,5 +409,32 @@ public class Trip extends DataEntity {
     public boolean isPartialLanding() {
         //FIXME getLandingWellContentStatus() ne devrait pas etre null, ajouter un nouveau controle sur le sujet
         return getLandingWellContentStatus() != null && getLandingWellContentStatus().getTopiaId().equals("fr.ird.referential.ps.logbook.WellContentStatus#1464000000000#02");
+    }
+
+    /**
+     * Calculate the fishing time based on activities
+     *
+     * @return the time in hour
+     */
+    public int fishingTimeExpected() {
+        return getLogbookRoute().stream().mapToInt(Route::getFishingTime).sum();
+    }
+
+    /**
+     * Calculate the weight of landings.
+     *
+     * @return he weight of landings in tons
+     */
+    public double landingTotalWeightExpected() {
+        return getLanding().stream().mapToDouble(Landing::getWeight).sum();
+    }
+
+    /**
+     * Calculate the time at sea based on activities
+     *
+     * @return the time in hour
+     */
+    public int timeAtSeaExpected() {
+        return getLogbookRoute().stream().mapToInt(Route::getTimeAtSea).sum();
     }
 }

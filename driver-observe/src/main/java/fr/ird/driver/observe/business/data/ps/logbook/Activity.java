@@ -293,11 +293,6 @@ public class Activity extends DataEntity {
      * @return the sum of catches weight.
      */
     public double totalCatchWeightFromCatches() {
-        double totalCatchWeight = 0d;
-        for (Catch aCatch : getCatches()) {
-            float weight = aCatch.getWeight();
-            totalCatchWeight += weight;
-        }
-        return totalCatchWeight;
+        return getCatches().stream().mapToDouble(Catch::getWeight).sum();
     }
 }

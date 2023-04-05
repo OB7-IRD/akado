@@ -87,8 +87,7 @@ public class TripDao extends AbstractDataDao<Trip> {
         List<Trip> result = new ArrayList<>();
         List<Vessel> vesselsForCountries = new ArrayList<>();
         if (countries != null && !countries.isEmpty()) {
-            //FIXME on FlagCountry or FleetCountry ?
-            vesselsForCountries = referentialCache().getSome(Vessel.class, v -> countries.contains(v.getFlagCountry()));
+            vesselsForCountries = referentialCache().getSome(Vessel.class, v -> countries.contains(v.getFleetCountry()));
         }
         if (vessels == null || vessels.isEmpty()) {
             vessels = referentialCache().getAll(Vessel.class);
