@@ -16,38 +16,32 @@
  */
 package fr.ird.akado.avdth.result;
 
-import static fr.ird.akado.avdth.Constant.AKADO_AVDTH_BUNDLE_PROPERTIES;
-import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.common.message.Message;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Locale;
 
+import static fr.ird.akado.avdth.Constant.AKADO_AVDTH_BUNDLE_PROPERTIES;
+
 /**
- *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0.1
  * @date 4 mars 2015
- *
+ * @since 2.0.1
  */
 public class AVDTHMessage extends AkadoMessage {
 
-    Message message;
+    private final Message message;
 
-    public AVDTHMessage(String messageCode, String messageLabel, ArrayList list, String messageType) {
-        message = new Message(messageCode, messageLabel, list, messageType);
-    }
-
-    public AVDTHMessage(String messageCode, String messageLabel, Object param, String messageType) {
-        ArrayList list = new ArrayList();
-        list.add(param);
+    public AVDTHMessage(String messageCode, String messageLabel, List<?> list, String messageType) {
         message = new Message(messageCode, messageLabel, list, messageType);
     }
 
     @Override
     public String getContent() {
         return message.displayMessage(AKADO_AVDTH_BUNDLE_PROPERTIES,
-                Locale.forLanguageTag(AAProperties.L10N));//System.getProperty("user.language")));
+                                      Locale.forLanguageTag(AAProperties.L10N));//System.getProperty("user.language")));
 
     }
 

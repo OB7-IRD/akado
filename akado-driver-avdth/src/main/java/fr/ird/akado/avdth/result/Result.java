@@ -17,110 +17,21 @@
 package fr.ird.akado.avdth.result;
 
 import fr.ird.akado.core.common.AbstractResult;
-import fr.ird.akado.core.common.AkadoMessage;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
  * Définit la classe de résultat d'une analyse d'Akado pour AVDTH.
  *
- * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  * @param <T> le type de la donnée analysée
- * @since 2.0
+ * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  * @date 4 mars 2015
- *
+ * @since 2.0
  */
 public abstract class Result<T> extends AbstractResult<T> {
 
-    public abstract List extractResults();
-    protected Object valueExpected;
-    protected Object valueObtained;
-    protected Object dataInformation;
-
-    protected String messageCode;
-    protected String messageType;
-    protected String messageLabel;
-    protected ArrayList messageParameters = null;
-    protected boolean inconsistent = false;
-
-    public boolean isInconsistent() {
-        return inconsistent;
-    }
-
-    public void setInconsistent(boolean inconsistent) {
-        this.inconsistent = inconsistent;
-    }
-
-    public void setMessageParameters(ArrayList messageParameters) {
-        this.messageParameters = messageParameters;
-    }
-
-    public ArrayList getMessageParameters() {
-        if (messageParameters == null) {
-            return new ArrayList();
-        }
-        return messageParameters;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
-    }
-
-    public void setMessageCode(String messageCode) {
-        this.messageCode = messageCode;
-    }
-
-    public void setMessageLabel(String messageLabel) {
-        this.messageLabel = messageLabel;
-    }
-
-    public void setValueExpected(Object valueExpected) {
-        this.valueExpected = valueExpected;
-    }
-
-    public void setValueObtained(Object valueObtained) {
-        this.valueObtained = valueObtained;
-    }
-
-    public Object getValueExpected() {
-        return valueExpected;
-    }
-
-    public String getMessageCode() {
-        return messageCode;
-    }
-
-    public String getMessageLabel() {
-        return messageLabel;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public Object getValueObtained() {
-        return valueObtained;
-    }
-
-    public Object getDataInformation() {
-        return dataInformation;
-    }
-
-    public void setDataInformation(Object dataInformation) {
-        this.dataInformation = dataInformation;
-    }
-
     @Override
-    public AkadoMessage getMessage() {
-        if (message == null) {
-            ArrayList tmp = getMessageParameters();
-            String type = "E";
-            if (messageType != null && !"".equals(messageType)) {
-                type = messageType.toUpperCase().substring(0, 1);
-            }
-            tmp.add(0, type + messageCode);
-            message = new AVDTHMessage(messageCode, messageLabel, tmp, messageType);
-        }
-        return message;
+    protected AVDTHMessage createMessage(String messageCode, String messageLabel, List<?> list, String messageType) {
+        return new AVDTHMessage(messageCode, messageLabel, list, messageType);
     }
 }

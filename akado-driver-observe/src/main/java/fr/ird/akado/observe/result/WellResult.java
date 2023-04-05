@@ -16,6 +16,7 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithTrip;
 import fr.ird.akado.observe.result.model.WellDataSheet;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
@@ -32,7 +33,34 @@ import java.util.List;
  */
 public class WellResult extends Result<Well> implements WithTrip {
 
-    public static List<WellDataSheet> factory(Well well) {
+    private Trip trip;
+
+    public WellResult(Well datum, MessageDescription messageDescription) {
+        super(datum, messageDescription);
+    }
+
+    @Override
+    public Trip getTrip() {
+        return trip;
+    }
+
+    @Override
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    @Override
+    public List<WellDataSheet> extractResults() {
+        List<WellDataSheet> list = new ArrayList<>();
+        Well well = get();
+        if (well == null) {
+            return list;
+        }
+        list.addAll(factory(well));
+        return list;
+    }
+
+    public List<WellDataSheet> factory(Well well) {
         List<WellDataSheet> list = new ArrayList<>();
 //        Trip trip = (new TripDAO()).findTripByVesselIdAndDate(well.getVessel(), well.getLandingDate());
 //        WellDataSheet wellDTO;
@@ -62,36 +90,4 @@ public class WellResult extends Result<Well> implements WithTrip {
 
         return list;
     }
-
-    public WellResult() {
-        super();
-    }
-
-    public WellResult(Well datum) {
-        set(datum);
-    }
-
-    @Override
-    public List<WellDataSheet> extractResults() {
-        List<WellDataSheet> list = new ArrayList<>();
-        Well well = get();
-        if (well == null) {
-            return list;
-        }
-        list.addAll(factory(well));
-        return list;
-    }
-
-    private Trip trip;
-
-    @Override
-    public Trip getTrip() {
-        return trip;
-    }
-
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
 }

@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.sample;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithTrip;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.SampleResult;
@@ -17,14 +18,6 @@ import java.util.Set;
  * @since 1.0.0
  */
 public abstract class ObserveSampleInspector extends ObserveInspector<Sample> implements WithTrip {
-    public static List<ObserveSampleInspector> loadInspectors() {
-        return loadInspectors(ObserveSampleInspector.class);
-    }
-
-    public static List<ObserveSampleInspector> filterInspectors(List<Inspector<?>> inspectors) {
-        return filterInspectors(ObserveSampleInspector.class, inspectors);
-    }
-
     public static final Set<String> SPECIES_FOR_SAMPLE = Set.of(
             "1",
             "2",
@@ -36,12 +29,19 @@ public abstract class ObserveSampleInspector extends ObserveInspector<Sample> im
             "10",
             "11"
     );
+    private Trip trip;
+
+    public static List<ObserveSampleInspector> loadInspectors() {
+        return loadInspectors(ObserveSampleInspector.class);
+    }
+
+    public static List<ObserveSampleInspector> filterInspectors(List<Inspector<?>> inspectors) {
+        return filterInspectors(ObserveSampleInspector.class, inspectors);
+    }
 
     public static boolean specieMustBeSampled(String code) {
         return SPECIES_FOR_SAMPLE.contains(code);
     }
-
-    private Trip trip;
 
     @Override
     public Trip getTrip() {
@@ -53,13 +53,13 @@ public abstract class ObserveSampleInspector extends ObserveInspector<Sample> im
         this.trip = trip;
     }
 
-    protected SampleResult createResult(Sample datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        SampleResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected SampleResult createResult(MessageDescription messageDescription, Sample datum, Object... parameters) {
+        SampleResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private SampleResult createResult(Sample datum) {
-        return WithTrip.copy(new SampleResult(datum), this);
+    private SampleResult createResult(Sample datum, MessageDescription messageDescription) {
+        return WithTrip.copy(new SampleResult(datum, messageDescription), this);
     }
 }

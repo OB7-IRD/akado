@@ -16,11 +16,13 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.activity.FishingContextInspector;
 import fr.ird.akado.observe.inspector.activity.PositionInspector;
 import fr.ird.akado.observe.inspector.activity.WeightingSampleInspector;
 import fr.ird.akado.observe.result.model.ActivityDataSheet;
+import fr.ird.common.DateUtils;
 import fr.ird.common.OTUtils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
@@ -45,93 +47,12 @@ import java.util.Objects;
  */
 public class ActivityResult extends Result<Activity> implements WithRoute {
 
-    public static ActivityDataSheet factory(Trip trip, Route route, Activity a) {
-        ActivityDataSheet result = new ActivityDataSheet();
-
-        result.setVesselCode(trip.getVessel().getCode());
-        result.setEngine(trip.getVessel().getVesselType().getLabel2());
-        result.setLandingDate(TripResult.formatDate(trip.getEndDate()));
-
-        Date dateAndTime = a.getTime() == null ? route.getDate() : Dates.getDateAndTime(route.getDate(), a.getTime(), false, false);
-        result.setActivityDate(TripResult.formatDate(dateAndTime));
-        result.setActivityNumber(a.getNumber());
-
-        String operation = a.getVesselActivity().getCode();
-
-        result.setOperationCode(operation);
-
-        result.setCatchWeight((double) a.getTotalWeight());
-        result.setElementaryCatchesWeight(a.totalCatchWeightFromCatches());
-        result.setSampleWeightedWeight(WeightingSampleInspector.sumOfSampleWeightedWeight(trip, a));
-
-        String schoolType = "?";
-        if (a.getSchoolType() != null) {
-            schoolType = a.getSchoolType().getCode() + " " + a.getSchoolType().getLabel2();
-        }
-
-        result.setSchoolType(schoolType);
-        StringBuilder fishingContext = new StringBuilder();
-        if (a.getObservedSystem() != null && !a.getObservedSystem().isEmpty()) {
-            for (ObservedSystem fc : a.getObservedSystem()) {
-                fishingContext.append(" | ");
-                if (!FishingContextInspector.fishingContextIsConsistentWithArtificialSchool(fc)) {
-                    fishingContext.append("? ");
-                }
-                //FIXME was fishingContext += fc.getFishingContextType().getCode() + " ";
-                fishingContext.append(fc.getSchoolType().getCode()).append(" ");
-            }
-        } else if (a.getSchoolType().isArtificial()) {
-            fishingContext = new StringBuilder("?");
-        }
-        result.setFishingContext(fishingContext.toString());
-
-        result.setQuadrant(a.getQuadrant());
-
-        String ocean = "-";
-        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.ATLANTIQUE)) {
-            ocean = "AO";
-        }
-        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.INDIEN)) {
-            ocean = "IO";
-        }
-        result.setOceanCode(ocean);
-
-        String inLand = "";
-        boolean inAtlanticOcean = PositionInspector.inAtlanticOcean(a);
-        boolean inIndianOcean = PositionInspector.inIndianOcean(a);
-        if (!inAtlanticOcean && !inIndianOcean) {
-            inLand = PositionInspector.inLand(a);
-        }
-        ocean = "-";
-        if (inAtlanticOcean) {
-            ocean = "AO";
-        }
-        if (inIndianOcean) {
-            ocean = "IO";
-        }
-
-        result.setInOcean(ocean);
-        result.setInLand(inLand);
-
-        result.setTemperature((double) a.getSeaSurfaceTemperature());
-
-        if (a.getLatitude() != null) {
-            result.setLatitude(OTUtils.degreesDecimalToStringDegreesMinutes(
-                    Double.valueOf(a.getLatitude()), true) + " [" + a.getLatitude() + "]");
-        }
-        if (a.getLongitude() != null) {
-            result.setLongitude(OTUtils.degreesDecimalToStringDegreesMinutes(
-                    Double.valueOf(a.getLongitude()), false) + " [" + a.getLongitude() + "]");
-        }
-        return result;
-    }
-
-    public ActivityResult(Activity datum) {
-        set(datum);
-    }
-
     private Trip trip;
     private Route route;
+
+    public ActivityResult(Activity datum, MessageDescription messageDescription) {
+        super(datum, messageDescription);
+    }
 
     @Override
     public Trip getTrip() {
@@ -157,12 +78,92 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
     public List<ActivityDataSheet> extractResults() {
         List<ActivityDataSheet> list = new ArrayList<>();
         Activity a = get();
-        if (a == null) {
-            return list;
+//        if (a == null) {
+//            return list;
+//        }
+        list.add(factory(a));
+        return list;
+    }
+
+    public ActivityDataSheet factory(Activity activity) {
+        ActivityDataSheet result = new ActivityDataSheet();
+
+        result.setVesselCode(trip.getVessel().getCode());
+        result.setEngine(trip.getVessel().getVesselType().getLabel2());
+        result.setLandingDate(DateUtils.formatDate(trip.getEndDate()));
+
+        Date dateAndTime = activity.getTime() == null ? route.getDate() : Dates.getDateAndTime(route.getDate(), activity.getTime(), false, false);
+        result.setActivityDate(DateUtils.formatDate(dateAndTime));
+        result.setActivityNumber(activity.getNumber());
+
+        String operation = activity.getVesselActivity().getCode();
+
+        result.setOperationCode(operation);
+
+        result.setCatchWeight((double) activity.getTotalWeight());
+        result.setElementaryCatchesWeight(activity.totalCatchWeightFromCatches());
+        result.setSampleWeightedWeight(WeightingSampleInspector.sumOfSampleWeightedWeight(trip, activity));
+
+        String schoolType = "?";
+        if (activity.getSchoolType() != null) {
+            schoolType = activity.getSchoolType().getCode() + " " + activity.getSchoolType().getLabel2();
         }
 
-        list.add(factory(getTrip(), getRoute(), a));
-        return list;
+        result.setSchoolType(schoolType);
+        StringBuilder fishingContext = new StringBuilder();
+        if (activity.getObservedSystem() != null && !activity.getObservedSystem().isEmpty()) {
+            for (ObservedSystem fc : activity.getObservedSystem()) {
+                fishingContext.append(" | ");
+                if (!FishingContextInspector.fishingContextIsConsistentWithArtificialSchool(fc)) {
+                    fishingContext.append("? ");
+                }
+                //FIXME was fishingContext += fc.getFishingContextType().getCode() + " ";
+                fishingContext.append(fc.getSchoolType().getCode()).append(" ");
+            }
+        } else if (activity.getSchoolType() != null && activity.getSchoolType().isArtificial()) {
+            fishingContext = new StringBuilder("?");
+        }
+        result.setFishingContext(fishingContext.toString());
+
+        result.setQuadrant(activity.getQuadrant());
+
+        String ocean = "-";
+        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.ATLANTIQUE)) {
+            ocean = "AO";
+        }
+        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.INDIEN)) {
+            ocean = "IO";
+        }
+        result.setOceanCode(ocean);
+
+        String inLand = "";
+        boolean inAtlanticOcean = PositionInspector.inAtlanticOcean(activity);
+        boolean inIndianOcean = PositionInspector.inIndianOcean(activity);
+        if (!inAtlanticOcean && !inIndianOcean) {
+            inLand = PositionInspector.inLand(activity);
+        }
+        ocean = "-";
+        if (inAtlanticOcean) {
+            ocean = "AO";
+        }
+        if (inIndianOcean) {
+            ocean = "IO";
+        }
+
+        result.setInOcean(ocean);
+        result.setInLand(inLand);
+
+        result.setTemperature((double) activity.getSeaSurfaceTemperature());
+
+        if (activity.getLatitude() != null) {
+            result.setLatitude(OTUtils.degreesDecimalToStringDegreesMinutes(
+                    Double.valueOf(activity.getLatitude()), true) + " [" + activity.getLatitude() + "]");
+        }
+        if (activity.getLongitude() != null) {
+            result.setLongitude(OTUtils.degreesDecimalToStringDegreesMinutes(
+                    Double.valueOf(activity.getLongitude()), false) + " [" + activity.getLongitude() + "]");
+        }
+        return result;
     }
 
 }

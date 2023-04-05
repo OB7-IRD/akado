@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.well;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithTrip;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.WellResult;
@@ -16,6 +17,8 @@ import java.util.List;
  * @since 1.0.0
  */
 public abstract class ObserveWellInspector extends ObserveInspector<Well> implements WithTrip {
+    private Trip trip;
+
     public static List<ObserveWellInspector> loadInspectors() {
         return loadInspectors(ObserveWellInspector.class);
     }
@@ -23,8 +26,6 @@ public abstract class ObserveWellInspector extends ObserveInspector<Well> implem
     public static List<ObserveWellInspector> filterInspectors(List<Inspector<?>> inspectors) {
         return filterInspectors(ObserveWellInspector.class, inspectors);
     }
-
-    private Trip trip;
 
     @Override
     public Trip getTrip() {
@@ -36,13 +37,13 @@ public abstract class ObserveWellInspector extends ObserveInspector<Well> implem
         this.trip = trip;
     }
 
-    protected WellResult createResult(Well datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        WellResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected WellResult createResult(MessageDescription messageDescription, Well datum, Object... parameters) {
+        WellResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private WellResult createResult(Well datum) {
-        return WithTrip.copy(new WellResult(datum), this);
+    private WellResult createResult(Well datum, MessageDescription messageDescription) {
+        return WithTrip.copy(new WellResult(datum, messageDescription), this);
     }
 }

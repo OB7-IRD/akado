@@ -18,10 +18,11 @@ package fr.ird.akado.observe.result;
 
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoMessage;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.Constant;
 import fr.ird.common.message.Message;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -32,16 +33,14 @@ import java.util.Locale;
  */
 public class ObserveMessage extends AkadoMessage {
 
-    Message message;
+    private final Message message;
 
-    public ObserveMessage(String messageCode, String messageLabel, ArrayList list, String messageType) {
+    public ObserveMessage(String messageCode, String messageLabel, List<?> list, String messageType) {
         message = new Message(messageCode, messageLabel, list, messageType);
     }
 
-    public ObserveMessage(String messageCode, String messageLabel, Object param, String messageType) {
-        ArrayList list = new ArrayList();
-        list.add(param);
-        message = new Message(messageCode, messageLabel, list, messageType);
+    public ObserveMessage(MessageDescription messageDescription, List<?> list) {
+        message = new Message(messageDescription.getMessageCode(), messageDescription.getMessageLabel(), list, messageDescription.getMessageType());
     }
 
     @Override

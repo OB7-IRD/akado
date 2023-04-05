@@ -17,6 +17,7 @@
 package fr.ird.akado.observe.result;
 
 
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.result.object.Resume;
 
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ import java.util.List;
  * @since 1.0.0
  */
 public class InfoResult extends Result<Resume> {
+    public InfoResult(Resume resume, MessageDescription messageDescription) {
+        super(resume, messageDescription);
+    }
 
     @Override
     public List<Resume> extractResults() {

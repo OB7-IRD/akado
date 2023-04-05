@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.anapo;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.AnapoResult;
@@ -49,13 +50,13 @@ public abstract class ObserveAnapoActivityInspector extends ObserveInspector<Act
         this.route = route;
     }
 
-    protected AnapoResult createResult(Anapo datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        AnapoResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected AnapoResult createResult(MessageDescription messageDescription, Anapo datum, Object... parameters) {
+        AnapoResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private AnapoResult createResult(Anapo datum) {
-        return WithRoute.copy(new AnapoResult(datum), this);
+    private AnapoResult createResult(Anapo datum, MessageDescription messageDescription) {
+        return WithRoute.copy(new AnapoResult(datum, messageDescription), this);
     }
 }

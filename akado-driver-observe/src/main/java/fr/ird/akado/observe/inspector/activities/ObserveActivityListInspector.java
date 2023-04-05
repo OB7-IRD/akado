@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.activities;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.ActivityResult;
@@ -19,6 +20,9 @@ import java.util.List;
 public abstract class ObserveActivityListInspector extends ObserveInspector<List<Activity>> implements WithRoute {
 
 
+    private Trip trip;
+    private Route route;
+
     public static List<ObserveActivityListInspector> loadInspectors() {
         return loadInspectors(ObserveActivityListInspector.class);
     }
@@ -26,8 +30,6 @@ public abstract class ObserveActivityListInspector extends ObserveInspector<List
     public static List<ObserveActivityListInspector> filterInspectors(List<Inspector<?>> inspectors) {
         return filterInspectors(ObserveActivityListInspector.class, inspectors);
     }
-    private Trip trip;
-    private Route route;
 
     @Override
     public Trip getTrip() {
@@ -49,13 +51,13 @@ public abstract class ObserveActivityListInspector extends ObserveInspector<List
         this.route = route;
     }
 
-    protected ActivityResult createResult(Activity datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        ActivityResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected ActivityResult createResult(MessageDescription messageDescription, Activity datum, Object... parameters) {
+        ActivityResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private ActivityResult createResult(Activity datum) {
-        return WithRoute.copy(new ActivityResult(datum), this);
+    private ActivityResult createResult(Activity datum, MessageDescription messageDescription) {
+        return WithRoute.copy(new ActivityResult(datum, messageDescription), this);
     }
 }

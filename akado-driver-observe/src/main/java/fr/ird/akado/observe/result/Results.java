@@ -146,7 +146,7 @@ public class Results extends AbstractResults<Result<?>> {
         writeInSheet("anapos", adtos, template, SHEET_NAME_ANAPO, filename);
     }
 
-    private void writeInSheet(String dataVarname, List data, String templateName, String sheetName, String directoryPath) throws IOException {
+    private void writeInSheet(String dataVarname, List<?> data, String templateName, String sheetName, String directoryPath) throws IOException {
         InputStream is = Results.class.getResourceAsStream(templateName);
         Context context = new Context();
         context.putVar(dataVarname, data);

@@ -400,7 +400,7 @@ public class AvdthInspector extends DataBaseInspector {
     public void validate() throws Exception {
         int avdthVersion = new VersionDAO().getVersionNumber();
         if (avdthVersion != VERSION_AVDTH_COMPATIBILITY) {
-            AVDTHMessage message = new AVDTHMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, VERSION_AVDTH_COMPATIBILITY, Message.ERROR);
+            AVDTHMessage message = new AVDTHMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, List.of(VERSION_AVDTH_COMPATIBILITY), Message.ERROR);
             throw new AkadoException(message.getContent());
         }
         List tasks = new ArrayList<>();

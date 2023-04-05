@@ -18,6 +18,7 @@ package fr.ird.common.message;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -39,19 +40,19 @@ public class Message {
     protected String code;
     protected String label;
     protected String type;
-    protected ArrayList<Object> params;
+    protected List<?> params;
 
     /**
      * Initializes a newly created Message object so that it represents an
      * message with a specific code and many parameters and a type of message
      * (ERROR, WARNING, INFO, SUCCESS).
      *
-     * @param code the code of the message
-     * @param label the key of the locale properties
+     * @param code   the code of the message
+     * @param label  the key of the locale properties
      * @param params parameters to be applied to the message
-     * @param type the type of the message
+     * @param type   the type of the message
      */
-    public Message(String code, String label, ArrayList<Object> params, String type) {
+    public Message(String code, String label, List<?> params, String type) {
         this.code = code;
         this.label = label;
         this.params = params;
@@ -63,23 +64,23 @@ public class Message {
      * message with a specific code and a type of message (ERROR, WARNING, INFO,
      * SUCCESS).
      *
-     * @param code the code of the message
+     * @param code  the code of the message
      * @param label the key of the locale properties
-     * @param type the type of the message
+     * @param type  the type of the message
      */
     public Message(String code, String label, String type) {
-        this(code, label, new ArrayList(), type);
+        this(code, label, new ArrayList<>(), type);
     }
 
     /**
      * Initializes a newly created Message object so that it represents an
      * message with a specific code and many parameters.
      *
-     * @param code the code of the message
-     * @param label the key of the locale properties
+     * @param code   the code of the message
+     * @param label  the key of the locale properties
      * @param params parameters to be applied to the message
      */
-    public Message(String code, String label, ArrayList<Object> params) {
+    public Message(String code, String label, List<?> params) {
         this(code, label, params, INFO);
     }
 
@@ -87,11 +88,11 @@ public class Message {
      * Initializes a newly created Message object so that it represents an
      * message with a specific code.
      *
-     * @param code the code of the message
+     * @param code  the code of the message
      * @param label the key of the locale properties
      */
     public Message(String code, String label) {
-        this(code, label, new ArrayList(), INFO);
+        this(code, label, new ArrayList<>(), INFO);
     }
 
     /**
@@ -108,7 +109,7 @@ public class Message {
      *
      * @return the list of message parameters
      */
-    public ArrayList<Object> getParams() {
+    public List<?> getParams() {
         return params;
     }
 
@@ -134,8 +135,8 @@ public class Message {
      * Displays the message with the parameters in the selected language.
      *
      * @param baseName the base name of the resource bundle, a fully qualified
-     * class name
-     * @param locale the message's language to display
+     *                 class name
+     * @param locale   the message's language to display
      * @return the String message
      */
     public String displayMessage(String baseName, Locale locale) {

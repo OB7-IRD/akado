@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.activity;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.ActivityResult;
@@ -44,13 +45,13 @@ public abstract class ObserveActivityInspector extends ObserveInspector<Activity
         this.route = route;
     }
 
-    protected ActivityResult createResult(Activity datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        ActivityResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected ActivityResult createResult(MessageDescription messageDescription, Activity datum, Object... parameters) {
+        ActivityResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private ActivityResult createResult(Activity datum) {
-        return WithRoute.copy(new ActivityResult(datum), this);
+    private ActivityResult createResult(Activity datum, MessageDescription messageDescription) {
+        return WithRoute.copy(new ActivityResult(datum, messageDescription), this);
     }
 }

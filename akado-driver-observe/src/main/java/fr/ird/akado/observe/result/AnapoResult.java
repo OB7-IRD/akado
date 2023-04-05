@@ -16,6 +16,7 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.result.model.AnapoDataSheet;
 import fr.ird.akado.observe.result.object.Anapo;
@@ -39,10 +40,12 @@ import java.util.Map;
  */
 public class AnapoResult extends Result<Anapo> implements WithRoute {
 
+    private Trip trip;
+    private Route route;
+
     public static Map<String, Results> filter(Results anapoResults) {
         Map<String, Results> anapoResultsByCFR = new HashMap<>();
-
-        for (Result r : anapoResults) {
+        for (Result<?> r : anapoResults) {
             AnapoResult ar = (AnapoResult) r;
             Anapo anapo = ar.get();
             Results results = anapoResultsByCFR.get(anapo.getCfrVessel());
@@ -55,13 +58,54 @@ public class AnapoResult extends Result<Anapo> implements WithRoute {
         return anapoResultsByCFR;
     }
 
+    public AnapoResult(Anapo datum, MessageDescription messageDescription) {
+        super(datum, messageDescription);
+    }
+
+    @Override
+    public Trip getTrip() {
+        return trip;
+    }
+
+    @Override
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    @Override
+    public Route getRoute() {
+        return route;
+    }
+
+    @Override
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    @Override
+    public List<AnapoDataSheet> extractResults() {
+        List<AnapoDataSheet> list = new ArrayList<>();
+        Anapo anapo = get();
+        if (anapo == null) {
+            return list;
+        }
+        list.addAll(factory(anapo));
+
+        return list;
+    }
+
+    @Override
+    public String toString() {
+        return "AnapoResult{" + "cfrVessel=" + get().getCfrVessel() + '}';
+    }
+
     /**
      * Extrait les données ayant généré une erreur dans l'analyse métier.
      *
      * @param anapo
      * @return la liste de donnée structurée
      */
-    public static List<AnapoDataSheet> factory(Anapo anapo) {
+    public List<AnapoDataSheet> factory(Anapo anapo) {
         LogService.getService(AnapoResult.class).logApplicationDebug(" # 1 #");
         List<AnapoDataSheet> list = new ArrayList<>();
 //        AnapoDataSheet anapoDataSheet;
@@ -150,49 +194,6 @@ public class AnapoResult extends Result<Anapo> implements WithRoute {
 //        }
 
         return list;
-    }
-    private Trip trip;
-    private Route route;
-
-    @Override
-    public Trip getTrip() {
-        return trip;
-    }
-
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    @Override
-    public Route getRoute() {
-        return route;
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
-    public AnapoResult(Anapo datum) {
-        set(datum);
-    }
-
-    @Override
-    public List extractResults() {
-        List<Object> list = new ArrayList<>();
-        Anapo anapo = get();
-        if (anapo == null) {
-            return list;
-        }
-        list.addAll(factory(anapo));
-
-        return list;
-    }
-
-    @Override
-    public String toString() {
-        return "AnapoResult{" + "cfrVessel=" + get().getCfrVessel() + '}';
     }
 
 }

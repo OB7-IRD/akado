@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.metatrip;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.MetaTripResult;
 import fr.ird.akado.observe.result.TripResult;
@@ -23,24 +24,23 @@ public abstract class ObserveTripListInspector extends ObserveInspector<List<Tri
         return filterInspectors(ObserveTripListInspector.class, inspectors);
     }
 
-    protected MetaTripResult createResult(List<Trip> datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        MetaTripResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected MetaTripResult createResult(MessageDescription messageDescription, List<Trip> datum, Object... parameters) {
+        MetaTripResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private MetaTripResult createResult(List<Trip> datum) {
-        return new MetaTripResult(datum);
+    private MetaTripResult createResult(List<Trip> datum, MessageDescription messageDescription) {
+        return new MetaTripResult(datum, messageDescription);
     }
 
-
-    protected TripResult createResult(Trip datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        TripResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected TripResult createResult(MessageDescription messageDescription, Trip datum, Object... parameters) {
+        TripResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private TripResult createResult(Trip datum) {
-        return new TripResult(datum);
+    private TripResult createResult(Trip datum, MessageDescription messageDescription) {
+        return new TripResult(datum, messageDescription);
     }
 }

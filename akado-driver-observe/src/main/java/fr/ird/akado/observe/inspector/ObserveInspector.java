@@ -40,11 +40,7 @@ public abstract class ObserveInspector<T> extends Inspector<T> {
         return (List) inspectors.stream().filter(i -> inspectorType.isAssignableFrom(i.getClass())).collect(Collectors.toList());
     }
 
-    protected static Result<?> createResult(Result<?> r, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        r.setMessageType(messageLevel);
-        r.setMessageCode(messageCode);
-        r.setMessageLabel(messageLabel);
-        r.setInconsistent(inconsistent);
+    protected static Result<?> createResult(Result<?> r, Object... parameters) {
         if (parameters.length > 0) {
             ArrayList<Object> parametersList = new ArrayList<>();
             Collections.addAll(parametersList, parameters);

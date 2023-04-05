@@ -1,6 +1,7 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import fr.ird.akado.core.Inspector;
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.TripResult;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
@@ -22,13 +23,13 @@ public abstract class ObserveTripInspector extends ObserveInspector<Trip> {
         return filterInspectors(ObserveTripInspector.class, inspectors);
     }
 
-    protected TripResult createResult(Trip datum, String messageLevel, String messageCode, String messageLabel, boolean inconsistent, Object... parameters) {
-        TripResult r = createResult(datum);
-        createResult(r, messageLevel, messageCode, messageLabel, inconsistent, parameters);
+    protected TripResult createResult(MessageDescription messageDescription, Trip datum, Object... parameters) {
+        TripResult r = createResult(datum, messageDescription);
+        createResult(r, parameters);
         return r;
     }
 
-    private TripResult createResult(Trip datum) {
-        return new TripResult(datum);
+    private TripResult createResult(Trip datum, MessageDescription messageDescription) {
+        return new TripResult(datum, messageDescription);
     }
 }

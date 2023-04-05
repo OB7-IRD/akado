@@ -16,6 +16,7 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.core.common.MessageDescription;
 import fr.ird.akado.observe.WithTrip;
 import fr.ird.akado.observe.inspector.sample.DistributionInspector;
 import fr.ird.akado.observe.inspector.sample.LDLFInspector;
@@ -25,6 +26,7 @@ import fr.ird.akado.observe.inspector.sample.MeasureInspector;
 import fr.ird.akado.observe.inspector.sample.ObserveSampleInspector;
 import fr.ird.akado.observe.inspector.sample.WeightingInspector;
 import fr.ird.akado.observe.result.model.SampleDataSheet;
+import fr.ird.common.DateUtils;
 import fr.ird.common.Utils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
@@ -47,12 +49,39 @@ import static fr.ird.akado.observe.inspector.sample.WellNumberConsistentInspecto
  */
 public class SampleResult extends Result<Sample> implements WithTrip {
 
-    public static List<SampleDataSheet> factory(Trip trip, Sample sample) {
+    private Trip trip;
+
+    public SampleResult(Sample datum, MessageDescription messageDescription) {
+        super(datum, messageDescription);
+    }
+
+    @Override
+    public Trip getTrip() {
+        return trip;
+    }
+
+    @Override
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    @Override
+    public List<SampleDataSheet> extractResults() {
+        List<SampleDataSheet> list = new ArrayList<>();
+        Sample sample = get();
+        if (sample == null) {
+            return list;
+        }
+        list.addAll(factory(sample));
+        return list;
+    }
+
+    public List<SampleDataSheet> factory(Sample sample) {
         List<SampleDataSheet> list = new ArrayList<>();
         SampleDataSheet sampleDTO;
         String vesselCode = trip.getVessel().getCode();
         String engine = trip.getVessel().getVesselType().getLabel2();
-        String landingDate = TripResult.formatDate(trip.getEndDate());
+        String landingDate = DateUtils.formatDate(trip.getEndDate());
         boolean hasLogbook = trip.hasLogbook();
         String harbourCode = trip.getLandingHarbour().getCode();
         String sampleType = "?";
@@ -60,25 +89,13 @@ public class SampleResult extends Result<Sample> implements WithTrip {
             sampleType = sample.getSampleType().getCode() + " " + sample.getSampleType().getLabel2();
         }
 
-        Float smallsWeight = sample.getSmallsWeight();
-        if (smallsWeight == null) {
-            smallsWeight = 0f;
-        }
-        double minus10Weight = smallsWeight;
-        Float bigsWeight = sample.getBigsWeight();
-        if (bigsWeight == null) {
-            bigsWeight = 0f;
-        }
-        double plus10Weight = bigsWeight;
-        Float totalWeight = sample.getTotalWeight();
-        if (totalWeight == null) {
-            totalWeight = 0f;
-        }
-        double globalWeight = totalWeight;
+        double minus10Weight = sample.getSmallsWeight();
+        float bigsWeight = sample.getBigsWeight();
+        float totalWeight = sample.getTotalWeight();
 
-        double sPoids = globalWeight;
+        double sPoids = totalWeight;
         if (totalWeight == 0) {
-            sPoids = minus10Weight + plus10Weight;
+            sPoids = minus10Weight + (double) bigsWeight;
         }
         double weightedWeight = WeightingInspector.weightedWeight(sample);
 
@@ -147,8 +164,8 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                                             sampleSpeciesMeasuredCount,
                                             weightedWeight,
                                             sPoids,
-                                            globalWeight,
-                                            plus10Weight,
+                                            totalWeight,
+                                            bigsWeight,
                                             minus10Weight,
                                             sampleType,
                                             hasWell,
@@ -179,7 +196,7 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                     hasErrorOnSampleSpecies = true;
                 }
                 if (ss.getSampleSpeciesMeasure().isEmpty()) {
-                    sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode);
+                    sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, totalWeight, bigsWeight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode);
                     temporaryList.add(sampleDTO);
                 } else {
                     boolean sampleIsAdded = false;
@@ -201,14 +218,14 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                         }
 
                         if (hasErrorOnSampleSpeciesFrequency) {
-                            sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, ssfSpeciesCode, lengthClassCount, ldlf);
+                            sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, totalWeight, bigsWeight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, ssfSpeciesCode, lengthClassCount, ldlf);
                             temporaryList.add(sampleDTO);
                             sampleIsAdded = true;
                         }
                     }
                     if (!sampleIsAdded) {
                         lengthClassCount = "-";
-                        sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode, lengthClassCount, ldlf);
+                        sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, totalWeight, bigsWeight, minus10Weight, sampleType, hasWell, sampleNumber, distribution, subSampleNumber, speciesCode, lengthClassCount, ldlf);
                         temporaryList.add(sampleDTO);
                     }
                 }
@@ -216,7 +233,7 @@ public class SampleResult extends Result<Sample> implements WithTrip {
             if (hasErrorOnSampleSpecies) {
                 list.addAll(temporaryList);
             } else {
-                sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, globalWeight, plus10Weight, minus10Weight, sampleType, hasWell, sampleNumber, distribution);
+                sampleDTO = new SampleDataSheet(vesselCode, engine, landingDate, hasLogbook, harbourCode, bigFish, littleFish, activityConsistent, positionConsistent, sampleSpeciesFrequencyCount, sampleSpeciesMeasuredCount, weightedWeight, sPoids, totalWeight, bigsWeight, minus10Weight, sampleType, hasWell, sampleNumber, distribution);
                 sampleDTO.setSpeciesCode("-");
                 sampleDTO.setLengthClassCount("-");
                 sampleDTO.setLdlf("-");
@@ -226,33 +243,6 @@ public class SampleResult extends Result<Sample> implements WithTrip {
         }
 
         return list;
-    }
-
-    public SampleResult(Sample datum) {
-        set(datum);
-    }
-
-    @Override
-    public List<SampleDataSheet> extractResults() {
-        List<SampleDataSheet> list = new ArrayList<>();
-        Sample sample = get();
-        if (sample == null) {
-            return list;
-        }
-        list.addAll(factory(getTrip(), sample));
-        return list;
-    }
-
-    private Trip trip;
-
-    @Override
-    public Trip getTrip() {
-        return trip;
-    }
-
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
     }
 
 }
