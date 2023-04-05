@@ -28,6 +28,7 @@ import fr.ird.akado.core.common.AkadoMessages;
 import fr.ird.akado.core.common.MessageListener;
 import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.ui.swing.view.p.InfoBar;
+import fr.ird.akado.ui.swing.view.p.ToolsBar;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.log.LogService;
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +78,7 @@ public class TaskView extends JPanel implements ActionListener {
     private final DatePicker dpStartDate;
     private final DatePicker dpEndDate;
     private final TaskController vtc;
+    private final ToolsBar toolbar;
     final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     final JLabel elapsedLabel = new JLabel("", SwingUtilities.CENTER);
     private Task task;
@@ -87,10 +89,11 @@ public class TaskView extends JPanel implements ActionListener {
         elapsedLabel.setText(UIManager.getString("ui.swing.elapsed.time", new Locale(AAProperties.L10N)) + " = " + formattedDate);
     });
 
-    public TaskView(TaskController controller) {
+    public TaskView(TaskController controller, ToolsBar toolbar) {
         super(new BorderLayout());
 
         this.vtc = controller;
+        this.toolbar = toolbar;
 
         DatePickerSettings dateSettings;
         dateSettings = new DatePickerSettings();
@@ -190,6 +193,7 @@ public class TaskView extends JPanel implements ActionListener {
             ref = System.currentTimeMillis();
             timer.start();
             startProcess = new DateTime();
+            toolbar.setEnabled(false);
             akado.execute();
             return null;
         }
@@ -201,6 +205,7 @@ public class TaskView extends JPanel implements ActionListener {
             } catch (Exception e) {
                 log.error("Could not close inspector", e);
             } finally {
+                toolbar.setEnabled(true);
                 inspector.getAkadoMessages().removeMessageListener(messageListener);
             }
             timer.stop();

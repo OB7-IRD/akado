@@ -20,6 +20,7 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.ui.AkadoAvdthProperties;
 import fr.ird.akado.ui.swing.DatabaseType;
 import fr.ird.akado.ui.swing.listener.InfoListeners;
+import fr.ird.akado.ui.swing.view.p.ToolsBar;
 import fr.ird.driver.observe.service.ObserveService;
 import io.ultreia.java4all.lang.Objects2;
 import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
@@ -50,7 +51,7 @@ public class TaskController {
         return listeners;
     }
 
-    public TaskController(DatabaseType databaseType, File file, InfoListeners listeners) {
+    public TaskController(DatabaseType databaseType, File file, InfoListeners listeners, ToolsBar toolbar) {
         this.databaseType = Objects.requireNonNull(databaseType);
         this.file = Objects.requireNonNull(file);
         switch (databaseType) {
@@ -67,17 +68,17 @@ public class TaskController {
         }
         System.out.println("TaskController " + listeners);
         this.listeners = listeners;
-        this.taskView = new TaskView(this);
+        this.taskView = new TaskView(this, toolbar);
     }
 
-    public TaskController(DatabaseType databaseType, JdbcConfiguration jdbcConfiguration, InfoListeners listeners) {
+    public TaskController(DatabaseType databaseType, JdbcConfiguration jdbcConfiguration, InfoListeners listeners, ToolsBar toolbar) {
         this.databaseType = Objects.requireNonNull(databaseType);
         this.baseDirectory = Path.of(AAProperties.STANDARD_DIRECTORY);
         this.file = null;
         this.jdbcConfiguration = jdbcConfiguration;
         System.out.println("TaskController " + listeners);
         this.listeners = listeners;
-        this.taskView = new TaskView(this);
+        this.taskView = new TaskView(this, toolbar);
     }
 
     /**

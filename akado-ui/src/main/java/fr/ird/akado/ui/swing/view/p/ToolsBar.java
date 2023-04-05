@@ -58,6 +58,10 @@ public class ToolsBar extends JMenuBar implements Constant {
     private final VesselSelectorDialog vesselSelectorDialog;
     private final AkadoController akadoController;
     private final InfoListeners listeners;
+    private final JMenu inspectorMenu;
+    private final JMenu fileMenu;
+    private final JMenu vmsMenu;
+    private final JMenu optionMenu;
 
     public ToolsBar(AkadoController akadoController, InfoListeners listeners) {
         this.listeners = listeners;
@@ -70,7 +74,7 @@ public class ToolsBar extends JMenuBar implements Constant {
         vesselSelectorDialog = new VesselSelectorDialog(null, UIManager.getString("ui.swing.selector.vessel.tracked", new Locale(AAProperties.L10N)), AAProperties.VESSEL_SELECTED);
         vesselSelectorDialog.pack();
 
-        JMenu fileMenu = new JMenu(UIManager.getString("ui.swing.file", new Locale(AAProperties.L10N)));
+        fileMenu = new JMenu(UIManager.getString("ui.swing.file", new Locale(AAProperties.L10N)));
         fileMenu.setActionCommand("file");
 
         JMenuItem openAvdthMenuItem = new JMenuItem(UIManager.getString("ui.swing.open.avdth", new Locale(AAProperties.L10N)), 'A');
@@ -110,18 +114,18 @@ public class ToolsBar extends JMenuBar implements Constant {
         fileMenu.add(quitMenuItem);
 
         //Creation du menu Option
-        JMenu inspectorMenu = new JMenu(UIManager.getString("ui.swing.inspectors", new Locale(AAProperties.L10N)));
+        inspectorMenu = new JMenu(UIManager.getString("ui.swing.inspectors", new Locale(AAProperties.L10N)));
         inspectorMenu.setActionCommand("inspectors");
 
         addInspectorSelector(inspectorMenu);
 
         //Creation du menu gérant les VMS
-        JMenu vmsMenu = new JMenu(UIManager.getString("ui.swing.vms", new Locale(AAProperties.L10N)));
+        vmsMenu = new JMenu(UIManager.getString("ui.swing.vms", new Locale(AAProperties.L10N)));
         vmsMenu.setActionCommand("vms");
         addVMSMenuItem(vmsMenu);
 
         //Creation du menu Option
-        JMenu optionMenu = new JMenu(UIManager.getString("ui.swing.option", new Locale(AAProperties.L10N)));
+        optionMenu = new JMenu(UIManager.getString("ui.swing.option", new Locale(AAProperties.L10N)));
         optionMenu.setActionCommand("option");
 
         JMenuItem gisMenuItem = new JMenuItem(UIManager.getString("ui.swing.gis", new Locale(AAProperties.L10N)), 'G');
@@ -161,6 +165,15 @@ public class ToolsBar extends JMenuBar implements Constant {
         this.add(vmsMenu);
         this.add(optionMenu);
         this.add(helpMenu);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        fileMenu.setEnabled(enabled);
+        inspectorMenu.setEnabled(enabled);
+        vmsMenu.setEnabled(enabled);
+        optionMenu.setEnabled(enabled);
     }
 
     /**

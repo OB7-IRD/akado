@@ -110,7 +110,7 @@ public class AkadoView extends JFrame implements Constant {
      * @param file the file
      */
     public void prepareAvdthValidating(File file) {
-        vtc = new TaskController(DatabaseType.AVDTH, file, listeners);
+        vtc = new TaskController(DatabaseType.AVDTH, file, listeners, getToolbar());
         this.setContentPane(vtc.getTaskView());
         this.validate();
     }
@@ -123,7 +123,7 @@ public class AkadoView extends JFrame implements Constant {
      * @param file the file
      */
     public void prepareObserveValidating(File file) {
-        vtc = new TaskController(DatabaseType.OBSERVE, file, listeners);
+        vtc = new TaskController(DatabaseType.OBSERVE, file, listeners, getToolbar());
         this.setContentPane(vtc.getTaskView());
         this.validate();
     }
@@ -137,7 +137,7 @@ public class AkadoView extends JFrame implements Constant {
      * @param jdbcConfiguration jdbc configuration
      */
     public void prepareObserveValidating(JdbcConfiguration jdbcConfiguration) {
-        vtc = new TaskController(DatabaseType.OBSERVE, jdbcConfiguration, listeners);
+        vtc = new TaskController(DatabaseType.OBSERVE, jdbcConfiguration, listeners, getToolbar());
         this.setContentPane(vtc.getTaskView());
         this.validate();
     }
@@ -167,5 +167,9 @@ public class AkadoView extends JFrame implements Constant {
      */
     public TaskController getTaskController() {
         return vtc;
+    }
+
+    public ToolsBar getToolbar() {
+        return toolbar;
     }
 }
