@@ -16,8 +16,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 public class WeightSampleInspector extends ObserveSampleInspector {
 
     public WeightSampleInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the sample weight (m10 and p10) is consistent with the global weight sample.";
     }
 

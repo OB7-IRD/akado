@@ -37,7 +37,6 @@ public class LandingConsistentInspector extends ObserveTripInspector {
     public static float COEFF_M3_TO_TON = 0.7f;
 
     public LandingConsistentInspector() {
-        this.name = this.getClass().getName();
         this.description = "Check if the vessel capacity is consistent with the landing total weight.";
     }
 

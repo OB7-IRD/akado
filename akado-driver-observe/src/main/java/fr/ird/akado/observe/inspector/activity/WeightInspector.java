@@ -18,8 +18,6 @@ import static fr.ird.akado.observe.Constant.EPSILON;
 public class WeightInspector extends ObserveActivityInspector {
 
     public WeightInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the total catch weight is consistent with elementary catches.";
     }
 

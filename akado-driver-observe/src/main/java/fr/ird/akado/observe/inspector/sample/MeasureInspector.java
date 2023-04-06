@@ -54,8 +54,6 @@ public class MeasureInspector extends ObserveSampleInspector {
     }
 
     public MeasureInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the sample species number is consistent with the measure number.";
     }
 

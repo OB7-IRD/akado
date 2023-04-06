@@ -25,8 +25,6 @@ public class WellNumberConsistentInspector extends ObserveSampleInspector {
     }
 
     public WellNumberConsistentInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the well number is consistent with the sample.";
     }
 

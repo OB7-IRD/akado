@@ -141,7 +141,6 @@ public class LittleBigInspector extends ObserveSampleInspector {
     }
 
     public LittleBigInspector() {
-        this.name = this.getClass().getName();
         this.description = "Check if the percentage of little and big fish sampled is consistent.";
     }
 

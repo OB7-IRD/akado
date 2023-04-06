@@ -43,8 +43,6 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
     }
 
     public WeightingSampleInspector() {
-        this.name = this.getClass().getName();
-        //FIXME
         this.description = "";
     }
 

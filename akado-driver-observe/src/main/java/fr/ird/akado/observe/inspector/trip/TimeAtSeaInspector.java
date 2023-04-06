@@ -34,8 +34,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 public class TimeAtSeaInspector extends ObserveTripInspector {
 
     public TimeAtSeaInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the time at sea in trip is consistency with all activities.";
     }
 

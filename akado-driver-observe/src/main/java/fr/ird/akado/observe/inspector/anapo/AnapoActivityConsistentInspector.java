@@ -33,8 +33,6 @@ import fr.ird.akado.observe.result.Results;
 public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListInspector {
 
     public AnapoActivityConsistentInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check for each VMS position if an activity exists.";
     }
 

@@ -30,8 +30,6 @@ public class WeightingInspector extends ObserveSampleInspector {
     }
 
     public WeightingInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the weighting information for each sample well is consistent.";
     }
 

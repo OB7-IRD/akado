@@ -32,8 +32,6 @@ public class LengthClassInspector extends ObserveSampleInspector {
     }
 
     public LengthClassInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the length class is consistent with each "
                 + "length class of species (L=90cm for YFT and BET and L=42cm for ALB) and LD1.";
     }

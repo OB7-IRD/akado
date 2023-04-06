@@ -25,8 +25,6 @@ public class FishingContextInspector extends ObserveActivityInspector {
     }
 
     public FishingContextInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the school type and the fishing context are consistent.";
     }
 

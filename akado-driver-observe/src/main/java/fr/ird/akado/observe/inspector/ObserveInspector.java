@@ -46,6 +46,10 @@ public abstract class ObserveInspector<T> extends Inspector<T> {
         return r;
     }
 
+    public ObserveInspector() {
+        this.name = this.getClass().getName();
+    }
+
     @Override
     public abstract Results execute() throws Exception;
 }

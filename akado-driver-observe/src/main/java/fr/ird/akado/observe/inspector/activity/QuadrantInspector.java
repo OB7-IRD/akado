@@ -19,8 +19,6 @@ import java.util.Objects;
 public class QuadrantInspector extends ObserveActivityInspector {
 
     public QuadrantInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the quadrant and the position activity are consistency.";
     }
 

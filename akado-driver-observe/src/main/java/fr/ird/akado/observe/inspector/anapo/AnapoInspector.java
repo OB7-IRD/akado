@@ -38,8 +38,6 @@ public class AnapoInspector extends ObserveAnapoActivityInspector {
     public static int NB_POSITIONS_VMS_MIN = 20;
 
     public AnapoInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if an activity is consistent with the VMS trace.";
     }
 

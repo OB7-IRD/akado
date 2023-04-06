@@ -34,7 +34,6 @@ public class DistributionInspector extends ObserveSampleInspector {
     }
 
     public DistributionInspector() {
-        this.name = getClass().getName();
         this.description = "Compare la somme des +10/-10 saisie dans les plans de cuve avec celle saisie dans l'échantillon.";
     }
 

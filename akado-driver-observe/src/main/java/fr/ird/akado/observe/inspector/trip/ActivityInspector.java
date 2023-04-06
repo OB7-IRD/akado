@@ -35,8 +35,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 public class ActivityInspector extends ObserveTripInspector {
 
     public ActivityInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the trip has at least one activity and the logbook has been gotten";
     }
 

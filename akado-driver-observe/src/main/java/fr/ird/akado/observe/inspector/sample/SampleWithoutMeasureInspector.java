@@ -35,8 +35,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 public class SampleWithoutMeasureInspector extends ObserveSampleInspector {
 
     public SampleWithoutMeasureInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the sample has at least one measure.";
     }
 

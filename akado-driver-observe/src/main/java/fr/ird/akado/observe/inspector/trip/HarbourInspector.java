@@ -52,8 +52,6 @@ public class HarbourInspector extends ObserveTripInspector {
     }
 
     public HarbourInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the landing harbour of a previous trip is the same as the departure harbour.";
     }
 

@@ -38,8 +38,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Route;
 public class TemporalLimitInspector extends ObserveTripInspector {
 
     public TemporalLimitInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the temporal limit of the trip are consistent with activities.";
     }
 

@@ -49,8 +49,6 @@ public class OperationInspector extends ObserveActivityInspector {
 //    }
 
     public OperationInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the operation associated with activity is consistent with other information.";
     }
 

@@ -47,7 +47,6 @@ public class PositionsInEEZInspector extends ObserveActivityListInspector {
     }
 
     public PositionsInEEZInspector() {
-        this.name = this.getClass().getName();
         this.description = "Check if the EEZ reported is consistent with the eez calculated from the position activity.";
     }
 

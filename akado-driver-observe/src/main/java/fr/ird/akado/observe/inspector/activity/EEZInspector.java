@@ -21,7 +21,6 @@ public class EEZInspector extends ObserveActivityInspector {
     }
 
     public EEZInspector() {
-        this.name = this.getClass().getName();
         this.description = "Check if the EEZ reported is consistent with operation.";
     }
 

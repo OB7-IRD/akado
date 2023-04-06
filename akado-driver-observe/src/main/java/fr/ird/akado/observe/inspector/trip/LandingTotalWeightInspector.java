@@ -36,8 +36,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 public class LandingTotalWeightInspector extends ObserveTripInspector {
 
     public LandingTotalWeightInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the landing total weight is consistent with the elementary landing weight.";
     }
 

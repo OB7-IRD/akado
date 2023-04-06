@@ -45,8 +45,6 @@ public class PositionInspector extends ObserveActivityInspector {
     }
 
     public PositionInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the position activity are in ocean or inland, "
                 + "and if the position activity and ocean are consistent.";
     }

@@ -34,8 +34,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 public class SampleWithoutSpeciesInspector extends ObserveSampleInspector {
 
     public SampleWithoutSpeciesInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the sample has at least one specie.";
     }
 

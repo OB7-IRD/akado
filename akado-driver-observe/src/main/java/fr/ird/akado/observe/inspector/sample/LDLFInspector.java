@@ -38,8 +38,6 @@ public class LDLFInspector extends ObserveSampleInspector {
     }
 
     public LDLFInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the LDLF information for each sample species is consistent.";
     }
 

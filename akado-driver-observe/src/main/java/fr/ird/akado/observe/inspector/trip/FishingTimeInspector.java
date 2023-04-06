@@ -35,8 +35,6 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 public class FishingTimeInspector extends ObserveTripInspector {
 
     public FishingTimeInspector() {
-        super();
-        this.name = this.getClass().getName();
         this.description = "Check if the fishing time in trip is consistency with all activities.";
     }
 

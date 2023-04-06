@@ -184,8 +184,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
     }
 
     public RaisingFactorInspector() {
-        this.name = this.getClass().getName();
-        this.description = "Calculate the raising factor, " + "with and without the local market, for all trips " + "(included trip with partial landings).";
+        this.description = "Calculate the raising factor, with and without the local market, for all trips (included trip with partial landings).";
     }
 
     @Override
