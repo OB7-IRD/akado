@@ -138,7 +138,7 @@ public class ToolsBar extends JMenuBar implements Constant {
 
         JMenuItem exportMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.results.output.enable", new Locale(AAProperties.L10N)));
         exportMenuItem.setMnemonic(KeyEvent.VK_X);
-        exportMenuItem.setSelected(AAProperties.RESULTS_OUTPUT.equals(AAProperties.ACTIVE_VALUE));
+        exportMenuItem.setSelected(AAProperties.isResultsEnabled());
         exportMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.RESULTS_OUTPUT = AAProperties.ACTIVE_VALUE;
@@ -245,8 +245,8 @@ public class ToolsBar extends JMenuBar implements Constant {
 
         activityMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.activity.inspector.enable", new Locale(AAProperties.L10N)));
         activityMenuItem.setMnemonic(KeyEvent.VK_A);
-        activityMenuItem.setSelected(AAProperties.ACTIVITY_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
-        activityMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        activityMenuItem.setSelected(AAProperties.isActivityInspectorEnabled());
+        activityMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         activityMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
                                                                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
         activityMenuItem.addItemListener(e -> {
@@ -259,11 +259,11 @@ public class ToolsBar extends JMenuBar implements Constant {
         });
 
         activityPositionMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.activity.position.inspector.enable", new Locale(AAProperties.L10N)));
-        activityPositionMenuItem.setSelected(AAProperties.POSITION_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        activityPositionMenuItem.setSelected(AAProperties.isPositionInspectorEnabled());
         activityPositionMenuItem.setMnemonic(KeyEvent.VK_P);
         activityPositionMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
                                                                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
-        activityPositionMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        activityPositionMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         activityPositionMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.POSITION_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -274,11 +274,11 @@ public class ToolsBar extends JMenuBar implements Constant {
         });
 
         tripMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.trip.inspector.enable", new Locale(AAProperties.L10N)));
-        tripMenuItem.setSelected(AAProperties.TRIP_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        tripMenuItem.setSelected(AAProperties.isTripInspectorEnabled());
 //        configMenuItem.setMnemonic(KeyEvent.VK_T);
         tripMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
                                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
-        tripMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        tripMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         tripMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.TRIP_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -289,10 +289,10 @@ public class ToolsBar extends JMenuBar implements Constant {
         });
 
         sampleMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.sample.inspector.enable", new Locale(AAProperties.L10N)));
-        sampleMenuItem.setSelected(AAProperties.SAMPLE_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        sampleMenuItem.setSelected(AAProperties.isSampleInspectorEnabled());
         sampleMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
                                                              Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
-        sampleMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        sampleMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         sampleMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.SAMPLE_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -303,10 +303,10 @@ public class ToolsBar extends JMenuBar implements Constant {
         });
 
         wellMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.well.inspector.enable", new Locale(AAProperties.L10N)));
-        wellMenuItem.setSelected(AAProperties.WELL_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        wellMenuItem.setSelected(AAProperties.isWellInspectorEnabled());
         wellMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
                                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
-        wellMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        wellMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         wellMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.WELL_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -317,10 +317,10 @@ public class ToolsBar extends JMenuBar implements Constant {
         });
 
         warningMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.warning.inspector.enable", new Locale(AAProperties.L10N)));
-        warningMenuItem.setSelected(AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        warningMenuItem.setSelected(AAProperties.isWarningInspectorEnabled());
         warningMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
                                                               Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), true));
-        warningMenuItem.setEnabled(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        warningMenuItem.setEnabled(AAProperties.isAkadoInspectorEnabled());
         warningMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.WARNING_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -332,7 +332,7 @@ public class ToolsBar extends JMenuBar implements Constant {
 
         akadoMenuItem = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.akado.inspector.enable", new Locale(AAProperties.L10N)));
 
-        akadoMenuItem.setSelected(AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        akadoMenuItem.setSelected(AAProperties.isAkadoInspectorEnabled());
         akadoMenuItem.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 AAProperties.AKADO_INSPECTOR = AAProperties.ACTIVE_VALUE;
@@ -380,7 +380,7 @@ public class ToolsBar extends JMenuBar implements Constant {
     private void addVMSMenuItem(JMenu menu) {
         JMenuItem mi;
         mi = new JCheckBoxMenuItem(UIManager.getString("ui.swing.config.anapo.inspector.enable", new Locale(AAProperties.L10N)));
-        mi.setSelected(AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE));
+        mi.setSelected(AAProperties.isAnapoInspectorEnabled());
 //        mi.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 //                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(), true));
         mi.addItemListener(e -> {

@@ -60,8 +60,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
         Results results = new Results();
 
         LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug(name + " " + description);
-        if (AAProperties.ANAPO_INSPECTOR != null
-                && AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isAnapoInspectorEnabled()) {
             return results;
         }
         String[] countriesCodeString = AAProperties.ANAPO_VMS_COUNTRY.split("\\s*\\|\\s*");

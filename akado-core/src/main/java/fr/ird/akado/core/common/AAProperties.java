@@ -16,6 +16,8 @@
  */
 package fr.ird.akado.core.common;
 
+import java.util.Objects;
+
 /**
  * The AkadoProperties class represents a persistent set of properties. This
  * properties are stored in the file "akado-config.xml".
@@ -86,5 +88,41 @@ public class AAProperties {
     public static String RESULTS_OUTPUT = "active";
     public static int NB_PROC = 1;
     public static String AKADO_INSPECTOR;
+
+    public static boolean isAkadoInspectorEnabled() {
+        return Objects.equals(AKADO_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isWarningInspectorEnabled() {
+        return Objects.equals(WARNING_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isPositionInspectorEnabled() {
+        return Objects.equals(POSITION_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isSampleInspectorEnabled() {
+        return Objects.equals(SAMPLE_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isWellInspectorEnabled() {
+        return Objects.equals(WELL_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isTripInspectorEnabled() {
+        return Objects.equals(TRIP_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isActivityInspectorEnabled() {
+        return Objects.equals(ACTIVITY_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isAnapoInspectorEnabled() {
+        return Objects.equals(ANAPO_INSPECTOR, ACTIVE_VALUE);
+    }
+
+    public static boolean isResultsEnabled() {
+        return Objects.equals(RESULTS_OUTPUT, ACTIVE_VALUE);
+    }
 
 }

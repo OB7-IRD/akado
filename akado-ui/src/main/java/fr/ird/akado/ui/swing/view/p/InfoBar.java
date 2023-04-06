@@ -70,7 +70,7 @@ public class InfoBar extends JPanel implements InfoListener {
         anapoInfo.add(label);
 
         label = new JLabel();
-        if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isAnapoInspectorEnabled()) {
             label.setText("ACTIVE");
             label.setForeground(Color.GREEN);
         } else {
@@ -103,7 +103,7 @@ public class InfoBar extends JPanel implements InfoListener {
         JLabel label = new JLabel("AKaDo :");
         akadoInfo.add(label);
         label = new JLabel();
-        if (AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isAkadoInspectorEnabled()) {
             label.setText("ACTIVE");
             label.setForeground(Color.GREEN);
         } else {
@@ -112,12 +112,12 @@ public class InfoBar extends JPanel implements InfoListener {
         }
         akadoInfo.add(label);
 
-        if (AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isAkadoInspectorEnabled()) {
 
             label = new JLabel("[");
             akadoInfo.add(label);
             label = new JLabel("T");
-            if (AAProperties.TRIP_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isTripInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);
@@ -127,7 +127,7 @@ public class InfoBar extends JPanel implements InfoListener {
             akadoInfo.add(label);
 
             label = new JLabel("A");
-            if (AAProperties.ACTIVITY_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isActivityInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);
@@ -137,7 +137,7 @@ public class InfoBar extends JPanel implements InfoListener {
             akadoInfo.add(label);
 
             label = new JLabel("P");
-            if (AAProperties.POSITION_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isPositionInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);
@@ -147,7 +147,7 @@ public class InfoBar extends JPanel implements InfoListener {
             akadoInfo.add(label);
 
             label = new JLabel("W");
-            if (AAProperties.WELL_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isWellInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);
@@ -157,7 +157,7 @@ public class InfoBar extends JPanel implements InfoListener {
             akadoInfo.add(label);
 
             label = new JLabel("S");
-            if (AAProperties.SAMPLE_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isSampleInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);
@@ -167,7 +167,7 @@ public class InfoBar extends JPanel implements InfoListener {
             akadoInfo.add(label);
 
             label = new JLabel("Wa");
-            if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isWarningInspectorEnabled()) {
                 label.setForeground(Color.GREEN);
             } else {
                 label.setForeground(Color.RED);

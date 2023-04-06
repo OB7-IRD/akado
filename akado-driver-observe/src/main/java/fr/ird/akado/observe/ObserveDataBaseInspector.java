@@ -94,7 +94,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
 
     public ObserveDataBaseInspector(JdbcConfiguration configuration, Path baseDirectory) throws Exception {
         DateTime currentDateTime = DateTime.now();
-        if (!AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+        if (AAProperties.isResultsEnabled()) {
             exportDirectoryPath = baseDirectory.resolve("_akado_result_" + currentDateTime.getYear() + currentDateTime.getMonthOfYear() + currentDateTime.getDayOfMonth() + "_" + currentDateTime.getHourOfDay() + currentDateTime.getMinuteOfHour()).toString();
             if (!(new File(exportDirectoryPath)).exists()) {
                 new File(exportDirectoryPath).mkdirs();
@@ -117,7 +117,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
             }
         }
         boolean anapoConfigurationEnabled = AAProperties.ANAPO_DB_URL != null && !"".equals(AAProperties.ANAPO_DB_URL);
-        boolean anapoEnabled = AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE);
+        boolean anapoEnabled = AAProperties.isAnapoInspectorEnabled();
         ObserveService.getService().init(configuration);
         ObserveService.getService().open();
         if (anapoEnabled) {
@@ -129,13 +129,13 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         r.setDatabaseName(configuration.getJdbcConnectionUrl());
 
         List<Inspector<?>> inspectors = new LinkedList<>();
-        if (AAProperties.TRIP_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isTripInspectorEnabled()) {
             inspectors.addAll(ObserveTripInspector.loadInspectors());
             inspectors.addAll(ObserveTripListInspector.loadInspectors());
         }
-        if (AAProperties.ACTIVITY_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isActivityInspectorEnabled()) {
             List<ObserveActivityInspector> activityInspectors = ObserveActivityInspector.loadInspectors();
-            if (AAProperties.POSITION_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+            if (!AAProperties.isPositionInspectorEnabled()) {
                 // Remove PositionInspector
                 activityInspectors.removeIf(i -> i instanceof PositionInspector);
                 // Remove PositionInEEZInspector
@@ -148,10 +148,10 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
             inspectors.addAll(ObserveAnapoActivityInspector.loadInspectors());
             inspectors.addAll(ObserveAnapoActivityListInspector.loadInspectors());
         }
-        if (AAProperties.SAMPLE_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isSampleInspectorEnabled()) {
             inspectors.addAll(ObserveSampleInspector.loadInspectors());
         }
-        if (AAProperties.WELL_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWellInspectorEnabled()) {
             inspectors.addAll(ObserveWellInspector.loadInspectors());
         }
         log.info("Found {} inspector(s) to apply.", inspectors.size());
@@ -200,7 +200,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         }
         List<Trip> tripList = getTripsToValidate();
         List<ObserveDataBaseInspectorTask<?>> tasks = new ArrayList<>();
-        if (AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isAkadoInspectorEnabled()) {
             tasks.add(new TripTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
             tasks.add(new ActivityTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
             tasks.add(new WellTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
@@ -222,8 +222,8 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         return ObserveService.getService().getDaoSupplier().getPsCommonTripDao().findTrips(
                 vesselSelectors.stream().map(VesselSelector::get).collect(Collectors.toList()),
                 flagSelectors.stream().map(FlagSelector::get).collect(Collectors.toList()),
-                temporalSelector.getStart() == null ? null : temporalSelector.getStart().toDate(),
-                temporalSelector.getEnd() == null ? null : temporalSelector.getEnd().toDate()
+                getTemporalSelector().getStart() == null ? null : getTemporalSelector().getStart().toDate(),
+                getTemporalSelector().getEnd() == null ? null : getTemporalSelector().getEnd().toDate()
         );
     }
 
@@ -260,7 +260,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
 
             AAProperties.SAMPLE_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_SAMPLE_INSPECTOR);
             AAProperties.WELL_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_WELL_INSPECTOR);
-            AAProperties.TRIP_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_WELL_INSPECTOR);
+            AAProperties.TRIP_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_TRIP_INSPECTOR);
             AAProperties.POSITION_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_POSITION_INSPECTOR);
             AAProperties.ACTIVITY_INSPECTOR = CONFIGURATION_PROPERTIES.getProperty(AAProperties.KEY_ACTIVITY_INSPECTOR);
 

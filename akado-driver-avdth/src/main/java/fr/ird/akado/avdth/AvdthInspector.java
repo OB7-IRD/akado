@@ -125,7 +125,7 @@ public class AvdthInspector extends DataBaseInspector {
         String pathExport = new File(databasePath).getParent();
         String dbName = FilenameUtils.removeExtension(new File(databasePath).getName());
         DateTime currentDateTime = DateTime.now();
-        if (!AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+        if (AAProperties.isResultsEnabled()) {
             exportDirectoryPath = pathExport + File.separator + dbName + "_akado_result_" + currentDateTime.getYear() + currentDateTime.getMonthOfYear() + currentDateTime.getDayOfMonth() + "_" + currentDateTime.getHourOfDay() + currentDateTime.getMinuteOfHour();
             if (!(new File(exportDirectoryPath)).exists()) {
                 new File(exportDirectoryPath).mkdirs();
@@ -142,7 +142,7 @@ public class AvdthInspector extends DataBaseInspector {
         vesselSelectors = new ArrayList<>();
         try {
             AvdthService.getService().init(configuration.getJdbcConnectionUrl(), JDBC_ACCESS_DRIVER, configuration.getJdbcConnectionUser(), configuration.getJdbcConnectionPassword());
-            if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isAnapoInspectorEnabled()) {
 
                 if (AAProperties.ANAPO_DB_URL == null || "".equals(AAProperties.ANAPO_DB_URL)) {
                     throw new ANAPODriverException("The connection to ANAPO database has failed. The database isn't set correctly.");
@@ -156,23 +156,23 @@ public class AvdthInspector extends DataBaseInspector {
             LogService.getService(AvdthInspector.class).logApplicationError(Arrays.toString(ex.getStackTrace()));
         }
         r.setDatabaseName(url.substring(url.lastIndexOf(File.separator) + 1));
-        if (AAProperties.TRIP_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isTripInspectorEnabled()) {
             this.inspectors.addAll(AvdthInspector.ALL_TRIP_INSPECTORS);
             this.inspectors.addAll(AvdthInspector.ALL_METATRIP_INSPECTORS);
         }
 
-        if (AAProperties.ACTIVITY_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isActivityInspectorEnabled()) {
             this.inspectors.addAll(AvdthInspector.ALL_ACTIVITY_INSPECTORS);
 //            this.inspectors.addAll(AvdthInspector.ALL_ACTIVITIES_INSPECTORS);
         }
-        if (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isAnapoInspectorEnabled()) {
             this.inspectors.addAll(AvdthInspector.ALL_ANAPO_INSPECTORS);
             this.inspectors.addAll(AvdthInspector.ALL_ANAPO_VMS_INSPECTORS);
         }
-        if (AAProperties.SAMPLE_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isSampleInspectorEnabled()) {
             this.inspectors.addAll(AvdthInspector.ALL_SAMPLE_INSPECTORS);
         }
-        if (AAProperties.WELL_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWellInspectorEnabled()) {
             this.inspectors.addAll(AvdthInspector.ALL_WELL_INSPECTORS);
         }
     }
@@ -206,7 +206,7 @@ public class AvdthInspector extends DataBaseInspector {
         info.setMessageType(Message.INFO);
         info.setMessageCode(Constant.CODE_INFO_DATABASE);
         info.setMessageLabel(Constant.LABEL_INFO_DATABASE);
-        info.setMessageParameters((ArrayList<Object>) infos);
+        info.setMessageParameters(infos);
         getAkadoMessages().add(info.getMessage());
         LogService.getService(AvdthInspector.class).logApplicationInfo(r.toString());
 
@@ -216,7 +216,7 @@ public class AvdthInspector extends DataBaseInspector {
      * Write all results in the excel file.
      */
     private void writeResultsInFile() {
-        if (AAProperties.RESULTS_OUTPUT != null && AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isResultsEnabled()) {
             return;
         }
         if (!getResults().isEmpty()) {
@@ -248,7 +248,7 @@ public class AvdthInspector extends DataBaseInspector {
 //            System.out.println(getClass().getName() + " ActivityInspector=" + a);
                     for (Inspector i : getInspectors()) {
                         if (ALL_ACTIVITY_INSPECTORS.contains(i)) {
-                            if (!(AAProperties.POSITION_INSPECTOR.equals(AAProperties.DISABLE_VALUE) && ((i instanceof PositionInspector) || (i instanceof PositionInEEZInspector)))) {
+                            if (AAProperties.isPositionInspectorEnabled() || !((i instanceof PositionInspector) || (i instanceof PositionInEEZInspector))) {
                                 i.set(a);
                                 results.addAll(i.execute());
                             }
@@ -322,7 +322,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 LogService.getService(this.getClass()).logApplicationInfo("Anapo processing...");
                 for (Inspector i : ALL_ANAPO_INSPECTORS) {
-                    if (!(AAProperties.ANAPO_DB_URL == null || (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)))) {
+                    if (AAProperties.ANAPO_DB_URL != null && AAProperties.isAnapoInspectorEnabled()) {
                         for (Activity activity : getActivitiesToValidate()) {
                             i.set(activity);
                             this.getResults().addAll(i.execute());
@@ -330,7 +330,7 @@ public class AvdthInspector extends DataBaseInspector {
                     }
                 }
                 for (Inspector i : ALL_ANAPO_VMS_INSPECTORS) {
-                    if (!(AAProperties.ANAPO_DB_URL == null || (AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)))) {
+                    if (AAProperties.ANAPO_DB_URL != null && !AAProperties.isAnapoInspectorEnabled()) {
                         i.set(getActivitiesToValidate());
                         this.getResults().addAll(i.execute());
                     }

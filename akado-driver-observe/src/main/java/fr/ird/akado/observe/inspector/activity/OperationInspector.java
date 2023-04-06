@@ -113,24 +113,6 @@ public class OperationInspector extends ObserveActivityInspector {
                 }
             }
         }
-//        if (operationNumberConsistent(activity)) {
-//            ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY, true,
-//                                            activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getSetCount());
-//            results.add(r);
-//        }
-//        if (operationAndSchoolTypeConsistent(activity)) {
-//            ActivityResult r = createResult(activity, Message.ERROR, CODE_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, LABEL_ACTIVITY_OPERATION_INCONSISTENCY_WITH_SCHOOL_TYPE, true,
-//                                            activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getTotalWeight());
-//            results.add(r);
-//
-//        }
-//        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
-//            if (activityAndOperationConsistent(activity)) {
-//                ActivityResult r = createResult(activity, Message.WARNING, CODE_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, LABEL_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, true,
-//                                                activity.getTopiaId(), activity.getVesselActivity().getCode(), activity.getTotalWeight());
-//                results.add(r);
-//            }
-//        }
         return results;
     }
 }

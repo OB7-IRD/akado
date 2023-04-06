@@ -106,7 +106,7 @@ public class PositionsInEEZInspector extends Inspector<List<Activity>> {
         List<Activity> l = get();
 
         ActivityResult r;
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
             Map<Activity, Boolean> inconsistentActivities = activityPositionAndEEZInconsistent(l);
             for (Entry<Activity, Boolean> entry : inconsistentActivities.entrySet()) {
                 if (entry.getValue()) {

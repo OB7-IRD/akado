@@ -112,7 +112,7 @@ public class RaisingFactorInspector extends Inspector<List<Trip>> {
     public Results execute() {
         Results results = new Results();
 
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
 
             ArrayList parameters = null;
             double rf1 = 0d;

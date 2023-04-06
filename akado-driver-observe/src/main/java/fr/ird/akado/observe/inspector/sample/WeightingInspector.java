@@ -47,7 +47,7 @@ public class WeightingInspector extends ObserveSampleInspector {
             weight = smallsWeight + bigsWeight;
         }
         double weightedWeight = weightedWeight(sample);
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
             if (trip.getVessel().isPurseSeine()) {
                 if (weight > 100) {
                     SampleResult r = createResult(MessageDescriptions.W_1320_SAMPLE_WEIGHTING_SUP_100, sample,

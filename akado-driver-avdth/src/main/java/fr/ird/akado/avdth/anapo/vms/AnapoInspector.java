@@ -79,8 +79,7 @@ public class AnapoInspector extends Inspector<Activity> {
         Results results = new Results();
         LogService.getService(AnapoInspector.class).logApplicationDebug(name + " " + description);
 
-        if (AAProperties.ANAPO_INSPECTOR != null
-                && AAProperties.ANAPO_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isAnapoInspectorEnabled()) {
             return results;
         }
 

@@ -28,7 +28,7 @@ public class EEZInspector extends ObserveActivityInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (!AAProperties.isWarningInspectorEnabled()) {
             return results;
         }
         Activity activity = get();

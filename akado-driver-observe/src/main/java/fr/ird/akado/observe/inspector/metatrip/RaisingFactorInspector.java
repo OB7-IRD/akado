@@ -192,7 +192,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
     public Results execute() {
         Results results = new Results();
 
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isWarningInspectorEnabled()) {
             return results;
         }
 

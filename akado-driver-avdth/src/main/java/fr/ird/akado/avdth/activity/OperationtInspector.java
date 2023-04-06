@@ -111,7 +111,7 @@ public class OperationtInspector extends Inspector<Activity> {
             results.add(r);
 
         }
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
             if (activityAndOperationConsistent(a)) {
                 r = new ActivityResult();
                 r.set(a);

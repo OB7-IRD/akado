@@ -55,7 +55,7 @@ public class PositionsInEEZInspector extends ObserveActivityListInspector {
     public Results execute() throws Exception {
         Results results = new Results();
 
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (!AAProperties.isWarningInspectorEnabled()) {
             return results;
         }
         List<Activity> l = get();

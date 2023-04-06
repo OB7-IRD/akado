@@ -148,7 +148,7 @@ public class LittleBigInspector extends ObserveSampleInspector {
     @Override
     public Results execute() throws Exception {
         Results results = new Results();
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isWarningInspectorEnabled()) {
             return results;
         }
         Sample sample = get();

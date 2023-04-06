@@ -90,7 +90,7 @@ public class LDLFInspector extends Inspector<Sample> {
                 results.add(r);
             }
 
-            if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+            if (AAProperties.isWarningInspectorEnabled()) {
                 if (ldlfP10(s, sampleSpecies)) {
 //                System.out.println("Sample Species " + sampleSpecies);
                     r = new SampleResult();

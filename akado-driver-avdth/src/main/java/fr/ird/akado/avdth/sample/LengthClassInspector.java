@@ -53,7 +53,7 @@ public class LengthClassInspector extends Inspector<Sample> {
     @Override
     public Results execute() {
         Results results = new Results();
-        if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
             Sample s = get();
             SampleResult r;
             for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {

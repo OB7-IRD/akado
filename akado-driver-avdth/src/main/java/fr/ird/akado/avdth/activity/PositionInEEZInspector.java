@@ -68,7 +68,7 @@ public class PositionInEEZInspector extends Inspector<Activity> {
         Results results = new Results();
         Activity a = get();
         ActivityResult r;
-        if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        if (AAProperties.isWarningInspectorEnabled()) {
             if (activityPositionAndEEZInconsistent(a)) {
                 r = new ActivityResult();
                 r.set(a);

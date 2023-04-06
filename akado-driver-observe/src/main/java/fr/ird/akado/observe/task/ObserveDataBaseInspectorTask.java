@@ -71,7 +71,7 @@ public abstract class ObserveDataBaseInspectorTask<T> extends DataBaseInspectorT
      * Write all results in the excel file.
      */
     public void writeResultsInFile() {
-        if (AAProperties.RESULTS_OUTPUT != null && AAProperties.RESULTS_OUTPUT.equals(AAProperties.DISABLE_VALUE)) {
+        if (!AAProperties.isResultsEnabled()) {
             return;
         }
         if (!getResults().isEmpty()) {

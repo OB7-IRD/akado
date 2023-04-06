@@ -60,7 +60,7 @@ public class LDLFInspector extends ObserveSampleInspector {
                 results.add(r);
             }
 
-            if (!AAProperties.WARNING_INSPECTOR.equals(AAProperties.DISABLE_VALUE)) {
+            if (AAProperties.isWarningInspectorEnabled()) {
                 if (ldlfP10(sample, sampleSpecies)) {
                     SampleResult r = createResult(MessageDescriptions.W_1332_SAMPLE_LDLF_P10, sample,
                                                   sample.getID(getTrip()),

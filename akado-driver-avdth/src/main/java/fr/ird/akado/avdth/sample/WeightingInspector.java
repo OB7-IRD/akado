@@ -81,7 +81,7 @@ public class WeightingInspector extends Inspector<Sample> {
                 weight = s.getMinus10Weight() + s.getPlus10Weight();
             }
             double weightedWeight = weightedWeight(s);
-            if (AAProperties.WARNING_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+            if (AAProperties.isWarningInspectorEnabled()) {
 
                 if (trip.getVessel().isPurseSeine()) {
                     if (weight > 100) {
