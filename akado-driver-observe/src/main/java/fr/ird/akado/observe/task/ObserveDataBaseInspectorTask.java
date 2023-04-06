@@ -54,7 +54,9 @@ public abstract class ObserveDataBaseInspectorTask<T> extends DataBaseInspectorT
             for (ObserveInspector<T> inspector : getInspectors()) {
                 inspector.set(datum);
                 Results results = inspector.execute();
-                getResults().addAll(results);
+                if (results != null && !results.isEmpty()) {
+                    getResults().addAll(results);
+                }
             }
         }
         if (listInspectors != null) {
@@ -62,7 +64,9 @@ public abstract class ObserveDataBaseInspectorTask<T> extends DataBaseInspectorT
             for (ObserveInspector<List<T>> inspector : getListInspectors()) {
                 inspector.set(list);
                 Results results = inspector.execute();
-                getResults().addAll(results);
+                if (results != null && !results.isEmpty()) {
+                    getResults().addAll(results);
+                }
             }
         }
     }
