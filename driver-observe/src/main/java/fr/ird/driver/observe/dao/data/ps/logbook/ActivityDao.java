@@ -17,6 +17,7 @@ import fr.ird.driver.observe.dao.data.AbstractDataDao;
 import fr.ird.driver.observe.dao.referential.ReferentialCache;
 import io.ultreia.java4all.util.sql.SqlQuery;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -103,14 +104,16 @@ public class ActivityDao extends AbstractDataDao<Activity> {
         result.setObservedSystem(lazyReferentialSet(activityId, "ps_logbook", "activity_observedSystem", "activity", "observedSystem", ObservedSystem.class));
     }
 
-    public Date firstActivityDate() {
-        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r WHERE (SELECT count(*) FROM ps_logbook.Activity a WHERE a.route = r.topiaId) > 0 ORDER BY r.date ASC", rs -> rs.getDate(1));
-        return findFirstOrNull(query);
-
-    }
-
-    public Date lastActivityDate() {
-        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r WHERE (SELECT count(*) FROM ps_logbook.Activity a WHERE a.route = r.topiaId) > 0 ORDER BY r.date DESC", rs -> rs.getDate(1));
-        return findFirstOrNull(query);
+    public boolean isExistAnActivityFor(String vesselId, Date date) {
+        SqlQuery<Long> query = SqlQuery.wrap(c -> {
+            PreparedStatement statement = c.prepareStatement("SELECT COUNT(a.*) FROM ps_logbook.Activity a" +
+                                                                     " INNER JOIN ps_logbook.Route r ON r.topiaId = a.route" +
+                                                                     " INNER JOIN ps_common.Trip t ON t.topiaId = r.trip" +
+                                                                     " WHERE t.vessel = ? AND r.date = ?");
+            statement.setString(1, vesselId);
+            statement.setDate(2, new java.sql.Date(date.getTime()));
+            return statement;
+        }, rs -> rs.getLong(1));
+        return count(query) > 0;
     }
 }

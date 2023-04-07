@@ -17,6 +17,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>driver-anapo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.ultreia.java4all</groupId>
       <artifactId>java-util</artifactId>
     </dependency>

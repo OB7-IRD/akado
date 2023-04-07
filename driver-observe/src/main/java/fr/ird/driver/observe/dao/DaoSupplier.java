@@ -1,5 +1,6 @@
 package fr.ird.driver.observe.dao;
 
+import fr.ird.driver.anapo.dao.PosVMSDAO;
 import fr.ird.driver.observe.dao.referential.AbstractReferentialDao;
 import io.ultreia.java4all.util.SingletonSupplier;
 
@@ -15,6 +16,7 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class DaoSupplier {
+    private final SingletonSupplier<fr.ird.driver.anapo.dao.PosVMSDAO> vmsDao = SingletonSupplier.of(fr.ird.driver.anapo.dao.PosVMSDAO::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.VersionDao> versionDao = SingletonSupplier.of(fr.ird.driver.observe.dao.VersionDao::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.referential.common.CountryDao> commonCountryDao = SingletonSupplier.of(fr.ird.driver.observe.dao.referential.common.CountryDao::new);
     private final SingletonSupplier<fr.ird.driver.observe.dao.referential.common.DataQualityDao> commonDtaQualityDao = SingletonSupplier.of(fr.ird.driver.observe.dao.referential.common.DataQualityDao::new);
@@ -149,6 +151,10 @@ public class DaoSupplier {
         result.add(getPsLogbookWellSamplingStatusDao());
 
         return result;
+    }
+
+    public fr.ird.driver.anapo.dao.PosVMSDAO getVmsDao() {
+        return vmsDao.get();
     }
 
     public fr.ird.driver.observe.dao.VersionDao getVersionDao() {

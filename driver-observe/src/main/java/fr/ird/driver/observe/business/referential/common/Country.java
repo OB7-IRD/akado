@@ -10,8 +10,19 @@ import fr.ird.driver.observe.business.referential.I18nReferentialEntity;
  */
 public class Country extends I18nReferentialEntity {
 
-    public static String AVDTH_CODE_COUNTRY_FRANCE = "1";
-    public static String AVDTH_CODE_COUNTRY_SPAIN = "4";
+    /**
+     * @return {@code true} if country is France (code 1)
+     */
+    public boolean isFrance() {
+        return "fr.ird.referential.common.Country#1239832675583#0.9493110781716075".equals(getTopiaId());
+    }
+
+    /**
+     * @return {@code true} if country is Spain (code 4)
+     */
+    public boolean isSpain() {
+        return "fr.ird.referential.common.Country#1239832675584#0.0783072255559325".equals(getTopiaId());
+    }
 
     private String iso2Code;
     private String iso3Code;
@@ -31,4 +42,9 @@ public class Country extends I18nReferentialEntity {
     public void setIso3Code(String iso3Code) {
         this.iso3Code = iso3Code;
     }
+
+    public int getCodeAsInt() {
+        return Integer.parseInt(getCode());
+    }
+
 }

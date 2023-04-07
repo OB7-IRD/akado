@@ -7983,54 +7983,7 @@ CREATE CACHED TABLE COMMON.VESSEL
 ALTER TABLE COMMON.VESSEL
     ADD CONSTRAINT COMMON.CONSTRAINT_9 PRIMARY KEY (TOPIAID);
 -- 1250 +/- SELECT COUNT(*) FROM COMMON.VESSEL;
-
-INSERT INTO COMMON.VESSEL(TOPIAID, TOPIAVERSION, TOPIACREATEDATE, LASTUPDATEDATE, CODE, URI, HOMEID, NEEDCOMMENT,
-                          STATUS, LABEL1, LABEL2, LABEL3, LABEL4, LABEL5, LABEL6, LABEL7, LABEL8, VESSELSIZECATEGORY,
-                          VESSELTYPE, FLAGCOUNTRY, KEELCODE, FLEETCOUNTRY, CHANGEDATE, YEARSERVICE, LENGTH, CAPACITY,
-                          POWERCV, POWERKW, SEARCHMAXIMUM, COMMENT, SOURCE, ICCATID, IOTCID, NATIONALID, COMID, TUVIID,
-                          IMOID, RADIOCALLSIGNID, LLOYDID, CFRID, WELLREGEX, STARTDATE, ENDDATE, SHIPOWNER)
-VALUES ('fr.ird.referential.common.Vessel#1239832679425#0.9136908731720471', 21, TIMESTAMP '2009-04-15 00:00:00.611',
-        TIMESTAMP '2021-09-17 00:00:00.0', '483', NULL, NULL, FALSE, 1, 'CAP BOJADOR', 'CAP BOJADOR', 'CAP BOJADOR',
-        NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675542#0.750774668545597',
-        'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357',
-        'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', 419,
-        'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', NULL, 1990, 61, 1072, 3340, NULL, 12,
-        STRINGDECODE('Nouveau abidjan en 12/90 pour mar\u00e9e d_essai puis Seychelles.'), NULL, 'ATEU0FRA00012', NULL,
-        'CC752550', NULL, NULL, '8908026', NULL, NULL, NULL, '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$',
-        NULL, NULL, NULL),
-       ('fr.ird.referential.common.Vessel#1239832679442#0.7108892528872649', 22, TIMESTAMP '2009-04-15 00:00:00.613',
-        TIMESTAMP '2021-09-17 00:00:00.0', '485', NULL, NULL, FALSE, 0, 'DUC DE PRASLIN', 'DUC DE PRASLIN',
-        'DUC DE PRASLIN', NULL, NULL, NULL, NULL, NULL,
-        'fr.ird.referential.common.VesselSizeCategory#1239832675542#0.13575801400098586',
-        'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357',
-        'fr.ird.referential.common.Country#1239832675593#0.3601938043845213', 51,
-        'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', NULL, 1969, 47, 510, 1800, NULL, NULL,
-        STRINGDECODE('Ex VIA FOEHN - Vendu \u00e0 l_Equateur en 1992'), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, NULL),
-       ('fr.ird.referential.common.Vessel#1239832679449#0.9875327800610685', 22, TIMESTAMP '2009-04-15 00:00:00.614',
-        TIMESTAMP '2021-09-17 00:00:00.0', '486', NULL, NULL, FALSE, 0, 'ALBACORA', 'ALBACORA', 'ALBACORA', NULL, NULL,
-        NULL, NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675543#0.35095194502894267',
-        'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357',
-        'fr.ird.referential.common.Country#1239832675584#0.0783072255559325', 421,
-        'fr.ird.referential.common.Country#1239832675584#0.0783072255559325', NULL, 1990, 105, 3500, 8157, NULL, 17.5,
-        'Seul classe 8 en 1991', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, NULL),
-       ('fr.ird.referential.common.Vessel#1239832679457#0.7507489037163033', 22, TIMESTAMP '2009-04-15 00:00:00.615',
-        TIMESTAMP '2021-09-17 00:00:00.0', '487', NULL, NULL, FALSE, 0, 'GOLD COAST', 'GOLD COAST', 'GOLD COAST', NULL,
-        NULL, NULL, NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675543#0.18210832858904613',
-        'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357',
-        'fr.ird.referential.common.Country#1239832675594#0.8561205682417258', 284,
-        'fr.ird.referential.common.Country#1239832675590#0.8642150406061876', NULL, 1973, 66.5, 1250, 3600, NULL, NULL,
-        'Ex Gold Coast 313', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, NULL),
-       ('fr.ird.referential.common.Vessel#1239832679472#0.867319585479984', 21, TIMESTAMP '2009-04-15 00:00:00.616',
-        TIMESTAMP '2021-09-17 00:00:00.0', '488', NULL, NULL, FALSE, 0, 'TXORI BERRI', 'TXORI BERRI', 'TXORI BERRI',
-        NULL, NULL, NULL, NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675543#0.18210832858904613',
-        'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357',
-        'fr.ird.referential.common.Country#1239832675584#0.0783072255559325', 422,
-        'fr.ird.referential.common.Country#1239832675584#0.0783072255559325', NULL, 1991, 81, 1850, 4500, NULL, NULL,
-        'Neuf vers juin 91', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, NULL);
+INSERT INTO common.vessel(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, keelCode, changeDate, yearService, length, capacity, powerCv, powerKW, searchMaximum, comment, source, iccatId, iotcId, nationalId, comId, tuviId, imoId, radioCallSignId, lloydId, cfrId, wellRegex, startDate, endDate, vesselSizeCategory, vesselType, flagCountry, fleetCountry, shipOwner) VALUES ('fr.ird.referential.common.Vessel#1239832679425#0.9136908731720471', '2009-04-15 00:00:00.611', 22, '2023-02-14 00:00:00.0', '483', NULL, NULL, false, 1, 'CAP BOJADOR', 'CAP BOJADOR', 'CAP BOJADOR', NULL, NULL, NULL, NULL, NULL, 419, NULL, 1990, 61, 1072, 3340, NULL, 12, 'Nouveau abidjan en 12/90 pour marée d_essai puis Seychelles.', NULL, 'ATEU0FRA00012', NULL, 'CC752550', NULL, NULL, '8908026', NULL, NULL, 'FRA000752550', '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675542#0.750774668545597', 'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', NULL);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_FLAGCOUNTRY ON COMMON.VESSEL (FLAGCOUNTRY);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_FLEETCOUNTRY ON COMMON.VESSEL (FLEETCOUNTRY);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_LASTUPDATEDATE ON COMMON.VESSEL (LASTUPDATEDATE);

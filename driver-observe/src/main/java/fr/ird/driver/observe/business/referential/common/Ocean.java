@@ -12,9 +12,31 @@ public class Ocean extends I18nReferentialEntity {
 
     public static final String ATLANTIQUE = "1";
     public static final String INDIEN = "2";
-    public static final String PACIFIQUE_OUEST = "3";
-    public static final String PACIFIQUE_EST = "4";
-
+    public static final String PACIFIQUE = "3";
+    /**
+     * @return {@code true} if ocean is atlantic (code 1)
+     */
+    public boolean isAtlantic() {
+        return "fr.ird.referential.common.Ocean#1239832686151#0.17595105505051245".equals(getTopiaId());
+    }
+    /**
+     * @return {@code true} if ocean is indian (code 2)
+     */
+    public boolean isIndian() {
+        return "fr.ird.referential.common.Ocean#1239832686152#0.8325731048817705".equals(getTopiaId());
+    }
+    /**
+     * @return {@code true} if ocean is pacific (code 3)
+     */
+    public boolean isPacific() {
+        return "fr.ird.referential.common.Ocean#1239832686152#0.7039171539191688".equals(getTopiaId());
+    }
+    /**
+     * @return {@code true} if ocean is multiple (code 99)
+     */
+    public boolean isMultiple() {
+        return "fr.ird.referential.common.Ocean#1651650345031#0.44320492543276846".equals(getTopiaId());
+    }
     /**
      * Returns the ocean in which the coordinates is located.
      *
@@ -33,10 +55,10 @@ public class Ocean extends I18nReferentialEntity {
 //        if(longitude >= -180 && longitude < -67.271667 &&
 //                longitude >= 146.031389 && longitude <= 180) return Ocean.PACIFIQUE;
         if (longitude >= 146.031389 && longitude <= 180) {
-            return Ocean.PACIFIQUE_EST;
+            return Ocean.PACIFIQUE;
         }
         if (longitude >= -180 && longitude < -67.271667) {
-            return Ocean.PACIFIQUE_OUEST;
+            return Ocean.PACIFIQUE;
         }
         return null;
     }

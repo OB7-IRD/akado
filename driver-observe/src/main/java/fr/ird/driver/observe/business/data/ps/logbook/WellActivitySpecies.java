@@ -20,6 +20,16 @@ public class WellActivitySpecies extends DataEntity {
     private int count;
     private int setSpeciesNumber;
 
+    public boolean isWeightCategoryMinus10() {
+        return getWeightCategory().getTopiaId().equals("fr.ird.referential.ps.common.WeightCategory#1464000000000#00001");
+    }
+    public boolean isWeightCategoryPlus10() {
+        return getWeightCategory().getTopiaId().equals("fr.ird.referential.ps.common.WeightCategory#1464000000000#00002");
+    }
+    public boolean isWeightCategoryUnknown() {
+        return getWeightCategory().getTopiaId().equals("fr.ird.referential.ps.common.WeightCategory#1464000000000#00004");
+    }
+
     public Species getSpecies() {
         return species.get();
     }

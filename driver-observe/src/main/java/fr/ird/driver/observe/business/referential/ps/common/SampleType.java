@@ -17,6 +17,10 @@ public class SampleType extends I18nReferentialEntity {
     private Date startDate;
     private Date endDate;
 
+    public boolean isAtLandingFreshFishBaitBoat() {
+        return "fr.ird.referential.ps.common.SampleType#1464000000000#11".equals(getTopiaId());
+    }
+
     public boolean isLocalMarket() {
         return localMarket;
     }

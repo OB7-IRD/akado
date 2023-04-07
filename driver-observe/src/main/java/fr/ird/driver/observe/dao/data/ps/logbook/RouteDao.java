@@ -3,9 +3,11 @@ package fr.ird.driver.observe.dao.data.ps.logbook;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 import fr.ird.driver.observe.common.ObserveDriverException;
 import fr.ird.driver.observe.dao.data.AbstractDataDao;
+import io.ultreia.java4all.util.sql.SqlQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * Created on 18/03/2023.
@@ -37,4 +39,16 @@ public class RouteDao extends AbstractDataDao<Route> {
         result.setFishingTime(rs.getInt(9));
         result.setActivity(daoSupplier().getPsLogbookActivityDao().lazySetByParentId(result.getTopiaId()));
     }
+
+    public Date firstDate() {
+        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r ORDER BY r.date ASC", rs -> rs.getDate(1));
+        return findFirstOrNull(query);
+
+    }
+
+    public Date lastDate() {
+        SqlQuery<Date> query = SqlQuery.wrap("SELECT DISTINCT(r.date) FROM ps_logbook.Route r ORDER BY r.date DESC", rs -> rs.getDate(1));
+        return findFirstOrNull(query);
+    }
+
 }

@@ -61,6 +61,10 @@ public class Vessel extends I18nReferentialEntity {
         return BAIT_VESSEL_TYPE.contains(getVesselType().getTopiaId());
     }
 
+    public int getCodeAsInt() {
+        return Integer.parseInt(getCode());
+    }
+
     public Integer getKeelCode() {
         return keelCode;
     }

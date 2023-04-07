@@ -5,6 +5,7 @@ import fr.ird.driver.observe.business.data.DataEntity;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.referential.common.DataQuality;
 import fr.ird.driver.observe.business.referential.common.FpaZone;
+import fr.ird.driver.observe.business.referential.common.Vessel;
 import fr.ird.driver.observe.business.referential.common.Wind;
 import fr.ird.driver.observe.business.referential.ps.common.ObservedSystem;
 import fr.ird.driver.observe.business.referential.ps.common.ReasonForNoFishing;
@@ -61,6 +62,36 @@ public class Activity extends DataEntity {
     private Supplier<List<Catch>> catches = SingletonSupplier.of(LinkedList::new);
     private Supplier<Set<FloatingObject>> floatingObject = SingletonSupplier.of(LinkedHashSet::new);
     private Supplier<Set<ObservedSystem>> observedSystem = SingletonSupplier.of(LinkedHashSet::new);
+
+    /**
+     * Used by anapo (this is the trip.vessel).
+     */
+    private Vessel vessel;
+    /**
+     * Used by anapo (this is the trip.endDate).
+     */
+    private Date landingDate;
+    /**
+     * Used by anapo (this is the route date).
+     */
+    private Date date;
+    /**
+     * Used by anapo (this this the full date of the activity).
+     */
+    private Date fullDate;
+
+    /**
+     * Is position in indian ocean? (cache of gis request).
+     */
+    private Supplier<Boolean> positionInIndianOcean;
+    /**
+     * Is position in atlantic ocean? (cache of gis request).
+     */
+    private Supplier<Boolean> positionInAtlanticOcean;
+    /**
+     * in land country (cache of gis request).
+     */
+    private Supplier<String> positionInLand;
 
     public String getComment() {
         return comment;
@@ -287,6 +318,9 @@ public class Activity extends DataEntity {
     }
 
     public int getQuadrant() {
+        if (withoutCoordinate()) {
+            return 0;
+        }
         return ObserveUtils.getQuadrant(getLongitude(), getLatitude());
     }
 
@@ -300,7 +334,132 @@ public class Activity extends DataEntity {
     }
 
     public String getID(Trip trip, Route route) {
-        String fullDate = getTime() == null ? DateUtils.formatDate(route.getDate()) + " heure non définie" : DateUtils.formatDateAndTime(Dates.getDateAndTime(route.getDate(), getTime(), false, false));
+        String fullDate = getTime() == null ? DateUtils.formatDate(route.getDate()) + " ??:??" : DateUtils.formatDateAndTime(Dates.getDateAndTime(route.getDate(), getTime(), false, false));
         return String.format("%s %s %s", trip.getID(), fullDate, getNumber());
+    }
+
+    public String getID() {
+        String fullDate = getTime() == null ? DateUtils.formatDate(getDate()) + " ??:??" : DateUtils.formatDateAndTime(Dates.getDateAndTime(getDate(), getTime(), false, false));
+        String tripID = String.format("%s %s", getVessel().getID(), DateUtils.formatDate(getLandingDate()));
+        return String.format("%s %s %s", tripID, fullDate, getNumber());
+    }
+
+    public boolean withoutCoordinate() {
+        return getLatitude() == null || getLongitude() == null;
+    }
+
+    public boolean withoutFpaZone() {
+        return getFpaZone() == null;
+    }
+
+    public boolean withoutTime() {
+        return getTime() == null;
+    }
+
+    public boolean withoutSchoolType() {
+        return getSchoolType() == null;
+    }
+
+    public boolean requiresCoordinate() {
+        if (!withoutCoordinate()) {
+            return false;
+        }
+        boolean activityRequiresCoordinate = !getVesselActivity().isPureFadOperation();
+        if (!activityRequiresCoordinate) {
+            // state: on a pure FAD operation (code 13)
+            activityRequiresCoordinate = getFloatingObject().isEmpty();
+            if (!activityRequiresCoordinate) {
+                // state: with at least one FAD
+                for (FloatingObject floatingObject : getFloatingObject()) {
+                    activityRequiresCoordinate = floatingObjectRequireCoordinate(floatingObject);
+                    if (activityRequiresCoordinate) {
+                        // as soon as one floatingObject is on error quit
+                        break;
+                    }
+                }
+            }
+        }
+        return activityRequiresCoordinate;
+    }
+
+    public boolean floatingObjectRequireCoordinate(FloatingObject floatingObject) {
+        if (floatingObject.getTransmittingBuoy().isEmpty()) {
+            return true;
+        }
+        for (TransmittingBuoy transmittingBuoy : floatingObject.getTransmittingBuoy()) {
+            if (transmittingBuoyRequireCoordinate(transmittingBuoy)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean transmittingBuoyRequireCoordinate(TransmittingBuoy transmittingBuoy) {
+        return !transmittingBuoy.getTransmittingBuoyOperation().isLost()
+                && transmittingBuoy.getTransmittingBuoyOperation().isEndOfUse();
+    }
+
+    public boolean containsFishingBaitsObservedSystem() {
+        return getObservedSystem().stream().anyMatch(ObservedSystem::isFishingBaits);
+    }
+
+    public void setVessel(Vessel vessel) {
+        this.vessel = vessel;
+    }
+
+    public Vessel getVessel() {
+        return vessel;
+    }
+
+    public Date getLandingDate() {
+        return landingDate;
+    }
+
+    public void setLandingDate(Date landingDate) {
+        this.landingDate = landingDate;
+    }
+
+    public Date getFullDate() {
+        if (fullDate == null) {
+            if (getTime() == null) {
+                fullDate = getDate();
+            } else {
+                fullDate = Dates.getDateAndTime(getDate(), getTime(), false, false);
+            }
+        }
+        return fullDate;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+        this.fullDate = null;
+    }
+
+    public Supplier<Boolean> getPositionInIndianOcean() {
+        return positionInIndianOcean;
+    }
+
+    public Supplier<Boolean> getPositionInAtlanticOcean() {
+        return positionInAtlanticOcean;
+    }
+
+    public Supplier<String> getPositionInLand() {
+        return positionInLand;
+    }
+
+    public void setPositionInIndianOcean(Supplier<Boolean> positionInIndianOcean) {
+        this.positionInIndianOcean = positionInIndianOcean;
+    }
+
+    public void setPositionInAtlanticOcean(Supplier<Boolean> positionInAtlanticOcean) {
+        this.positionInAtlanticOcean = positionInAtlanticOcean;
+    }
+
+    public void setPositionInLand(Supplier<String> positionInLand) {
+        this.positionInLand = positionInLand;
     }
 }

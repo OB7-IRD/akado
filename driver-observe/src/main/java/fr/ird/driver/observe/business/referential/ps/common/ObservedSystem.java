@@ -40,4 +40,11 @@ public class ObservedSystem extends I18nReferentialEntity {
     public void setAllowLogbook(boolean allowLogbook) {
         this.allowLogbook = allowLogbook;
     }
+
+    /**
+     * @return {@code true} if baits fishing (code 102).
+     */
+    public boolean isFishingBaits() {
+        return "fr.ird.referential.common.ObservedSystem#1464000000000#102".equals(getTopiaId());
+    }
 }
