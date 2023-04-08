@@ -22,7 +22,6 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.core.selector.TemporalSelector;
 import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.akado.observe.inspector.activities.ObserveActivityListInspector;
 import fr.ird.akado.observe.inspector.activity.ObserveActivityInspector;
 import fr.ird.akado.observe.inspector.activity.PositionInEEZInspector;
 import fr.ird.akado.observe.inspector.activity.PositionInspector;
@@ -142,7 +141,6 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
                 activityInspectors.removeIf(i -> i instanceof PositionInEEZInspector);
             }
             inspectors.addAll(activityInspectors);
-            inspectors.addAll(ObserveActivityListInspector.loadInspectors());
         }
         if (anapoEnabled && anapoConfigurationEnabled) {
             inspectors.addAll(ObserveAnapoActivityInspector.loadInspectors());

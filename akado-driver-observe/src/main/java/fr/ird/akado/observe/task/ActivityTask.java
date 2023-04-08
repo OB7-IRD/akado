@@ -1,7 +1,6 @@
 package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.observe.inspector.activities.ObserveActivityListInspector;
 import fr.ird.akado.observe.inspector.activity.ObserveActivityInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.common.log.LogService;
@@ -24,7 +23,7 @@ public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
     private static final Logger log = LogManager.getLogger(ActivityTask.class);
 
     public ActivityTask(String exportDirectoryPath, List<Trip> tripList, List<Inspector<?>> inspectors, Results r) {
-        super(exportDirectoryPath, tripList, r, ObserveActivityInspector.filterInspectors(inspectors), ObserveActivityListInspector.filterInspectors(inspectors));
+        super(exportDirectoryPath, tripList, r, ObserveActivityInspector.filterInspectors(inspectors), null);
     }
 
     @SuppressWarnings("unchecked")
@@ -33,23 +32,14 @@ public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
         return (List<ObserveActivityInspector>) super.getInspectors();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<ObserveActivityListInspector> getListInspectors() {
-        return (List<ObserveActivityListInspector>) super.getListInspectors();
-    }
-
     @Override
     public void run() {
         try {
             LogService.getService(this.getClass()).logApplicationInfo("Activity processing...");
             for (Trip trip : getTripList()) {
                 getInspectors().forEach(i -> i.setTrip(trip));
-                getListInspectors().forEach(i -> i.setTrip(trip));
                 for (Route route : trip.getLogbookRoute()) {
                     getInspectors().forEach(i -> i.setRoute(route));
-                    getListInspectors().forEach(i -> i.setRoute(route));
-
                     Set<Activity> toValidate = route.getActivity();
                     onData(toValidate);
                 }
