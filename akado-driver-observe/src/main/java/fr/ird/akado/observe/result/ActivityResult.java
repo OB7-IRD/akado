@@ -27,14 +27,12 @@ import fr.ird.common.OTUtils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-import fr.ird.driver.observe.business.referential.common.Ocean;
 import fr.ird.driver.observe.business.referential.ps.common.ObservedSystem;
 import io.ultreia.java4all.util.Dates;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Présente les données à afficher d'une activité qui a généré une erreur durant
@@ -78,9 +76,6 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
     public List<ActivityDataSheet> extractResults() {
         List<ActivityDataSheet> list = new ArrayList<>();
         Activity a = get();
-//        if (a == null) {
-//            return list;
-//        }
         list.add(factory(a));
         return list;
     }
@@ -128,10 +123,10 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
         result.setQuadrant(activity.getQuadrant());
 
         String ocean = "-";
-        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.ATLANTIQUE)) {
+        if (trip.getOcean().isAtlantic()) {
             ocean = "AO";
         }
-        if (Objects.equals(trip.getOcean().getTopiaId(), Ocean.INDIEN)) {
+        if (trip.getOcean().isIndian()) {
             ocean = "IO";
         }
         result.setOceanCode(ocean);
@@ -157,11 +152,11 @@ public class ActivityResult extends Result<Activity> implements WithRoute {
 
         if (activity.getLatitude() != null) {
             result.setLatitude(OTUtils.degreesDecimalToStringDegreesMinutes(
-                    Double.valueOf(activity.getLatitude()), true) + " [" + activity.getLatitude() + "]");
+                    activity.getLatitude(), true) + " [" + activity.getLatitude() + "]");
         }
         if (activity.getLongitude() != null) {
             result.setLongitude(OTUtils.degreesDecimalToStringDegreesMinutes(
-                    Double.valueOf(activity.getLongitude()), false) + " [" + activity.getLongitude() + "]");
+                    activity.getLongitude(), false) + " [" + activity.getLongitude() + "]");
         }
         return result;
     }

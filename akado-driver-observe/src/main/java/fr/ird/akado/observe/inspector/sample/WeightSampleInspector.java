@@ -21,18 +21,17 @@ public class WeightSampleInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Sample sample = get();
         float smallsWeight = sample.getSmallsWeight();
         float bigsWeight = sample.getBigsWeight();
         float totalWeight = sample.getTotalWeight();
-        if ((smallsWeight + bigsWeight == 0 && totalWeight == 0) || (smallsWeight + bigsWeight > 0 && totalWeight != 0)) {
-            SampleResult r = createResult(MessageDescriptions.E_1319_SAMPLE_WEIGHT_INCONSISTENCY, sample,
-                                          sample.getID(getTrip()),
-                                          smallsWeight + bigsWeight,
-                                          totalWeight);
-            results.add(r);
+        if ((smallsWeight + bigsWeight != 0 || totalWeight != 0) && (!(smallsWeight + bigsWeight > 0) || totalWeight == 0)) {
+            return null;
         }
-        return results;
+        SampleResult r = createResult(MessageDescriptions.E_1319_SAMPLE_WEIGHT_INCONSISTENCY, sample,
+                                      sample.getID(getTrip()),
+                                      smallsWeight + bigsWeight,
+                                      totalWeight);
+        return Results.of(r);
     }
 }

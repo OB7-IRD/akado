@@ -17,7 +17,6 @@
 package fr.ird.akado.observe.result.object;
 
 import fr.ird.driver.anapo.business.PosVMS;
-import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.referential.common.Vessel;
 
@@ -34,9 +33,9 @@ public class Anapo {
 
     private final Activity activity;
     private final Vessel vessel;
+    private final String cfrVessel;
     private PosVMS posVMS;
-    private String cfrVessel;
-    private Map<PosVMS, Double> positions = new HashMap();
+    private Map<PosVMS, Double> positions = new HashMap<>();
     private int vmsPositionCount = 0;
 
     public Anapo(Vessel vessel) {
@@ -45,22 +44,18 @@ public class Anapo {
         this.cfrVessel = vessel.getCfrId();
     }
 
-    public Anapo(Trip trip, Activity activity, String cfrVessel) {
+    public Anapo(Activity activity, String cfrVessel) {
         this.activity = activity;
-        this.vessel = trip.getVessel();
+        this.vessel = activity.getVessel();
         this.cfrVessel = cfrVessel;
     }
 
-    public Anapo(Trip trip, Activity activity) {
-        this(trip, activity, trip.getVessel().getCfrId());
+    public Anapo(Activity activity) {
+        this(activity, activity.getVessel().getCfrId());
     }
 
     public String getCfrVessel() {
         return cfrVessel;
-    }
-
-    public void setCfrVessel(String cfrVessel) {
-        this.cfrVessel = cfrVessel;
     }
 
     /**

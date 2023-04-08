@@ -9,8 +9,9 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Catch;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleActivity;
+import fr.ird.driver.observe.business.referential.common.Species;
 
-import static fr.ird.akado.observe.Constant.EPSILON;
+import java.util.Objects;
 
 /**
  * Created on 20/03/2023.
@@ -34,45 +35,57 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         return sumOfSampleWeightedWeight;
     }
 
-    public static boolean specieMustBeSampled(String speciesCode) {
-        if (speciesCode == null) {
-            return false;
-        }
-        int code = Integer.parseInt(speciesCode);
-        return (code >= 1 && code <= 6) || code == 9 || code == 10 || code == 11;
+    public static boolean specieMustBeSampled(Species species) {
+        return species.isYFT() // avdth code 1
+                || species.isSKJ() // avdth code 2
+                || species.isBET() // avdth code 3
+                || species.isALB() // avdth code 4
+                || species.isLTA() // avdth code 5
+                || species.isFRI() // avdth code 6
+                || species.isTUN() // avdth code 9
+                // FIXME See if we need this one (avdth code 9 should be TUN + TUS)
+//                || species.isTUS() // avdth code 40
+                || species.isKAW() // avdth code 10
+                || species.isLOT(); // avdth code 11
     }
 
     public WeightingSampleInspector() {
-        this.description = "";
+        this.description = "Check consistency between elementary catches weight and sample activity weighted weight.";
     }
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Activity activity = get();
+        double sumOfSampleWeightedWeight = sumOfSampleWeightedWeight(getTrip(), activity);
+        if (sumOfSampleWeightedWeight == 0) {
+            return null;
+        }
         double sumOfElementaryCatches = 0d;
         for (Catch aCatch : activity.getCatches()) {
             float catchWeight = aCatch.getWeight();
             if (catchWeight == 0) {
                 continue;
             }
-            if (aCatch.getSpecies() != null && specieMustBeSampled(aCatch.getSpecies().getCode())) {
+            if (aCatch.getSpeciesFate() != null && Objects.equals(aCatch.getSpeciesFate().getDiscard(), true)) {
+                // reject discard catches
+                continue;
+            }
+            if (specieMustBeSampled(aCatch.getSpecies())) {
                 sumOfElementaryCatches += catchWeight;
             }
         }
-        double sumOfSampleWeightedWeight = sumOfSampleWeightedWeight(getTrip(), activity);
 
-        if (sumOfSampleWeightedWeight != 0 && Math.abs(sumOfElementaryCatches - sumOfSampleWeightedWeight) > EPSILON) {
-            ActivityResult r = createResult(MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,
-                                            activity.getID(getTrip(), getRoute()),
-                                            sumOfElementaryCatches,
-                                            sumOfSampleWeightedWeight);
-            r.setValueObtained(sumOfElementaryCatches);
-            r.setValueExpected(sumOfSampleWeightedWeight);
-
-            results.add(r);
-
+        if ((Math.abs(sumOfElementaryCatches - sumOfSampleWeightedWeight) <= EPSILON)) {
+            return null;
         }
-        return results;
+        ActivityResult r = createResult(MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,
+                                        activity.getID(getTrip(), getRoute()),
+                                        sumOfElementaryCatches,
+                                        sumOfSampleWeightedWeight);
+        r.setValueObtained(sumOfElementaryCatches);
+        r.setValueExpected(sumOfSampleWeightedWeight);
+
+        return Results.of(r);
+
     }
 }

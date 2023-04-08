@@ -17,12 +17,18 @@
 package fr.ird.akado.observe.result;
 
 import fr.ird.akado.core.common.MessageDescription;
-import fr.ird.akado.observe.WithRoute;
+import fr.ird.akado.observe.inspector.anapo.AnapoInspector;
 import fr.ird.akado.observe.result.model.AnapoDataSheet;
 import fr.ird.akado.observe.result.object.Anapo;
-import fr.ird.common.log.LogService;
-import fr.ird.driver.observe.business.data.ps.common.Trip;
-import fr.ird.driver.observe.business.data.ps.logbook.Route;
+import fr.ird.common.DateUtils;
+import fr.ird.common.MapUtils;
+import fr.ird.common.OTUtils;
+import fr.ird.common.Utils;
+import fr.ird.driver.anapo.business.PosVMS;
+import fr.ird.driver.observe.business.data.ps.logbook.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,10 +44,9 @@ import java.util.Map;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-public class AnapoResult extends Result<Anapo> implements WithRoute {
+public class AnapoResult extends Result<Anapo> {
 
-    private Trip trip;
-    private Route route;
+    private static final Logger log = LogManager.getLogger(AnapoResult.class);
 
     public static Map<String, Results> filter(Results anapoResults) {
         Map<String, Results> anapoResultsByCFR = new HashMap<>();
@@ -63,26 +68,6 @@ public class AnapoResult extends Result<Anapo> implements WithRoute {
     }
 
     @Override
-    public Trip getTrip() {
-        return trip;
-    }
-
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    @Override
-    public Route getRoute() {
-        return route;
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
-    @Override
     public List<AnapoDataSheet> extractResults() {
         List<AnapoDataSheet> list = new ArrayList<>();
         Anapo anapo = get();
@@ -90,7 +75,6 @@ public class AnapoResult extends Result<Anapo> implements WithRoute {
             return list;
         }
         list.addAll(factory(anapo));
-
         return list;
     }
 
@@ -99,101 +83,101 @@ public class AnapoResult extends Result<Anapo> implements WithRoute {
         return "AnapoResult{" + "cfrVessel=" + get().getCfrVessel() + '}';
     }
 
-    /**
-     * Extrait les données ayant généré une erreur dans l'analyse métier.
-     *
-     * @param anapo
-     * @return la liste de donnée structurée
-     */
     public List<AnapoDataSheet> factory(Anapo anapo) {
-        LogService.getService(AnapoResult.class).logApplicationDebug(" # 1 #");
+        log.debug(" # 1 #");
         List<AnapoDataSheet> list = new ArrayList<>();
-//        AnapoDataSheet anapoDataSheet;
-//        Activity activity = anapo.getActivity();
-//
-//        HashMap<PosVMS, Double> dist = new HashMap<>();
-//        int vesselCode = -1;
-//        String engine = "?";
-//        String landingDate = "?";
-//        String activityDate = "?";
-//        if (activity == null) {
-//            vesselCode = anapo.getVessel().getCode();
-//            PosVMS pvms = anapo.getPosVMS();
-//            String vmsPositionDate = pvms.getDate().toString(DateTimeFormat.forPattern("dd/MM/yyyy HH:MM"));
-//            Double distancePosition = 0d;
-//            Double vmsScore = 0d;
-//            String vmsLatLong = pvms.getLatitude() + "/" + pvms.getLongitude();
-//            int vmsQuadrant = OTUtils.getQuadrant(pvms.getLatitude(), pvms.getLongitude());
-//            String vmsLatLongDegMin = pvms.getLatitudeDegMin() + "/" + pvms.getLongitudeDegMin();
-//            int vmsDirection = pvms.getDirection();
-//            double vmsSpeed = pvms.getSpeed();
-//            int vmsOcean = pvms.getOcean();
-//
-//            anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, "?", 0, 0, 0, "?", "?", 0, vmsPositionDate, distancePosition, vmsScore, vmsQuadrant, vmsLatLong, vmsLatLongDegMin, vmsDirection, vmsSpeed, vmsOcean);
-//            list.add(anapoDataSheet);
-//            return list;
-//        }
-//
-//        if (activity.getVessel() != null) {
-//            vesselCode = activity.getVessel().getCode();
-//            engine = activity.getVessel().getVesselType().getName();
-//        }
-//        if (activity.getLandingDate() != null) {
-//            landingDate = activity.getLandingDate().toString(DateTimeUtils.DATE_FORMATTER);
-//        }
-//        if (activity.getFullDate() != null) {
-//            activityDate = activity.getFullDate().toString(DateTimeUtils.DATE_FORMATTER);
-//        }
-//        String activityHour = activity.getHour() + ":" + activity.getMinute();
-//
-//        int activityNumber = activity.getNumber();
-//
-//        int activityOperation = -1;
-//        if (activity.getOperation() != null) {
-//            activityOperation = activity.getOperation().getCode();
-//        }
-//        int activityQuadrant = activity.getQuadrant();
-//        String activitylagLong = OTUtils.signLatitude(activity.getQuadrant(), activity.getLatitude())
-//                + "/" + OTUtils.signLongitude(activity.getQuadrant(), activity.getLongitude());
-//        String activitylagLongDegMin = OTUtils.degreesDecimalToStringDegreesMinutes(OTUtils.convertLatitude(activity.getQuadrant(), activity.getLatitude()), true)
-//                + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(OTUtils.convertLongitude(activity.getQuadrant(), activity.getLongitude()), false);
-//
-//        int vmsPositionCount = anapo.getVMSPositionCount();
-//        if (activity.getVessel() != null && activity.getLandingDate() != null && anapo.getPositions().isEmpty() && vmsPositionCount >= AnapoInspector.NB_POSITIONS_VMS_MIN) {
-//            anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, activityHour, activityNumber, activityOperation, activityQuadrant, activitylagLong, activitylagLongDegMin, vmsPositionCount);
-//            list.add(anapoDataSheet);
-//            return list;
-//        }
-//
-//        LogService.getService(AnapoResult.class).logApplicationDebug(" # 2 #");
-//        for (Entry<PosVMS, Double> entry : anapo.getPositions().entrySet()) {
-//
-//            PosVMS pvms = entry.getKey();
-//            LogService.getService(AnapoResult.class).logApplicationDebug(" # PosVMS :" + pvms);
-//            dist.put(pvms, Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3));
-//        }
-//        LogService.getService(AnapoResult.class).logApplicationDebug(" # 3 #");
-//        for (Entry<PosVMS, Double> entry
-//                : MapUtils.sortByValue(dist).entrySet()) {
-//            PosVMS pvms = entry.getKey();
-//
-//            LogService.getService(AnapoResult.class).logApplicationDebug(" # PosVMS :" + pvms);
-//            String vmsPositionDate = pvms.getDate().toString(DateTimeFormat.forPattern("dd/MM/yyyy HH:MM"));
-//            Double distancePosition = Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3);
-//            Double vmsScore = Utils.round(AnapoInspector.calculateScore(pvms, activity), 3);
-//            String vmsLatLong = pvms.getLatitude() + "/" + pvms.getLongitude();
-//            int vmsQuadrant = OTUtils.getQuadrant(pvms.getLatitude(), pvms.getLongitude());
-//            String vmsLatLongDegMin = pvms.getLatitudeDegMin() + "/" + pvms.getLongitudeDegMin();
-//            int vmsDirection = pvms.getDirection();
-//            double vmsSpeed = pvms.getSpeed();
-//            int vmsOcean = pvms.getOcean();
-//
-//            anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, activityHour, activityNumber, activityOperation, activityQuadrant, activitylagLong, activitylagLongDegMin, vmsPositionCount, vmsPositionDate, distancePosition, vmsScore, vmsQuadrant, vmsLatLong, vmsLatLongDegMin, vmsDirection, vmsSpeed, vmsOcean);
-//            list.add(anapoDataSheet);
-//            return list;
-//        }
 
+        Activity activity = anapo.getActivity();
+
+        HashMap<PosVMS, Double> dist = new HashMap<>();
+        int vesselCode = -1;
+        String engine = "?";
+        String landingDate = "?";
+        String activityDate = "?";
+        if (activity == null) {
+            vesselCode = anapo.getVessel().getCodeAsInt();
+            PosVMS pvms = anapo.getPosVMS();
+            String vmsPositionDate = pvms.getDate().toString(DateTimeFormat.forPattern("dd/MM/yyyy HH:MM"));
+            Double distancePosition = 0d;
+            Double vmsScore = 0d;
+            String vmsLatLong = pvms.getLatitude() + "/" + pvms.getLongitude();
+            int vmsQuadrant = OTUtils.getQuadrant(pvms.getLatitude(), pvms.getLongitude());
+            String vmsLatLongDegMin = pvms.getLatitudeDegMin() + "/" + pvms.getLongitudeDegMin();
+            int vmsDirection = pvms.getDirection();
+            double vmsSpeed = pvms.getSpeed();
+            int vmsOcean = pvms.getOcean();
+
+            AnapoDataSheet anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, "?", 0, 0, 0, "?", "?", 0, vmsPositionDate, distancePosition, vmsScore, vmsQuadrant, vmsLatLong, vmsLatLongDegMin, vmsDirection, vmsSpeed, vmsOcean);
+            list.add(anapoDataSheet);
+            return list;
+        }
+
+        if (activity.getVessel() != null) {
+            vesselCode = activity.getVessel().getCodeAsInt();
+            engine = activity.getVessel().getVesselType().getLabel2();
+        }
+        if (activity.getLandingDate() != null) {
+            landingDate = DateUtils.formatDate(activity.getLandingDate());
+        }
+        if (activity.getFullDate() != null) {
+            activityDate = DateUtils.formatDateAndTime(activity.getFullDate());
+        }
+        String activityHour = activity.withoutTime() ? "Heure non définie" : DateUtils.formatTime(activity.getTime());
+
+        int activityNumber = activity.getNumber();
+
+        int activityOperation = -1;
+        if (activity.getVesselActivity() != null) {
+            activityOperation = activity.getVesselActivity().getCodeAsInt();
+        }
+        //NPE if no coordinate
+        boolean withoutCoordinate = activity.withoutCoordinate();
+        int activityQuadrant;
+        String activityLagLong;
+        String activityLagLongDegMin;
+        if (    withoutCoordinate) {
+            activityQuadrant = 0;
+            activityLagLong = "na";
+            activityLagLongDegMin = "na";
+        } else {
+            activityQuadrant = activity.getQuadrant();
+            activityLagLong = activity.getLatitude() + "/" + activity.getLongitude();
+            activityLagLongDegMin = OTUtils.degreesDecimalToStringDegreesMinutes(activity.getLatitude(), true)
+                    + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(activity.getLongitude(), false);
+        }
+        int vmsPositionCount = anapo.getVMSPositionCount();
+        if (activity.getVessel() != null && activity.getLandingDate() != null && anapo.getPositions().isEmpty() && vmsPositionCount >= AnapoInspector.NB_POSITIONS_VMS_MIN) {
+            AnapoDataSheet anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, activityHour, activityNumber, activityOperation, activityQuadrant, activityLagLong, activityLagLongDegMin, vmsPositionCount);
+            list.add(anapoDataSheet);
+            return list;
+        }
+
+        log.debug(" # 2 #");
+        for (Map.Entry<PosVMS, Double> entry : anapo.getPositions().entrySet()) {
+
+            PosVMS pvms = entry.getKey();
+            log.debug(" # PosVMS :" + pvms);
+            dist.put(pvms, Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3));
+        }
+        log.debug(" # 3 #");
+        for (Map.Entry<PosVMS, Double> entry : MapUtils.sortByValue(dist).entrySet()) {
+            PosVMS pvms = entry.getKey();
+
+            log.debug(" # PosVMS :" + pvms);
+            String vmsPositionDate = pvms.getDate().toString(DateTimeFormat.forPattern("dd/MM/yyyy HH:MM"));
+            Double distancePosition = Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3);
+            Double vmsScore = Utils.round(AnapoInspector.calculateScore(pvms,  activity), 3);
+            String vmsLatLong = pvms.getLatitude() + "/" + pvms.getLongitude();
+            int vmsQuadrant = OTUtils.getQuadrant(pvms.getLatitude(), pvms.getLongitude());
+            String vmsLatLongDegMin = pvms.getLatitudeDegMin() + "/" + pvms.getLongitudeDegMin();
+            int vmsDirection = pvms.getDirection();
+            double vmsSpeed = pvms.getSpeed();
+            int vmsOcean = pvms.getOcean();
+
+            AnapoDataSheet anapoDataSheet = new AnapoDataSheet(vesselCode, engine, landingDate, activityDate, activityHour, activityNumber, activityOperation, activityQuadrant, activityLagLong, activityLagLongDegMin, vmsPositionCount, vmsPositionDate, distancePosition, vmsScore, vmsQuadrant, vmsLatLong, vmsLatLongDegMin, vmsDirection, vmsSpeed, vmsOcean);
+            list.add(anapoDataSheet);
+            return list;
+        }
         return list;
     }
-
 }

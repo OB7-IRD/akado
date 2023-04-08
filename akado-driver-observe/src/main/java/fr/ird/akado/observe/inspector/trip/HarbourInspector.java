@@ -57,17 +57,15 @@ public class HarbourInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
-
         Trip previous = ObserveService.getService().getDaoSupplier().getPsCommonTripDao().findPreviousTrip(trip.getVessel(), trip.getEndDate());
         if (previous != null && !harbourAreIdentical(previous, trip)) {
             TripResult r = createResult(MessageDescriptions.E_1023_TRIP_HAS_DIFFERENT_HARBOUR, trip,
                                         trip.getID(),
                                         trip.getDepartureHarbour().getCode(),
                                         previous.getLandingHarbour().getCode());
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

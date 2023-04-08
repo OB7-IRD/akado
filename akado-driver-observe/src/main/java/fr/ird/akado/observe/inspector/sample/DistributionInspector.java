@@ -4,7 +4,13 @@ import com.google.auto.service.AutoService;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
+import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
+import fr.ird.driver.observe.business.data.ps.logbook.Well;
+import fr.ird.driver.observe.business.data.ps.logbook.WellActivity;
+import fr.ird.driver.observe.business.data.ps.logbook.WellActivitySpecies;
+
+import java.util.Objects;
 
 /**
  * Created on 20/03/2023.
@@ -14,22 +20,28 @@ import fr.ird.driver.observe.business.data.ps.logbook.Sample;
  */
 @AutoService(ObserveSampleInspector.class)
 public class DistributionInspector extends ObserveSampleInspector {
-    public static boolean distributionIsInconsistent(Sample s) {
+
+    public static boolean distributionIsInconsistent(Trip trip, Sample s) {
         Float m10Weight = 0f;
         Float p10Weight = 0f;
-        //FIXME
-//        for (WellPlan wp : s.getWell().getWellPlans()) {
-//            if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.M10) {
-//                m10Weight += wp.getWeight();
-//            }
-//            if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.UNKNOWN
-//                    && wp.getSpecies().getCode() == 2) {
-//                m10Weight += wp.getWeight();
-//            }
-//            if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.P10) {
-//                p10Weight += wp.getWeight();
-//            }
-//        }
+        String wellId = s.getWell();
+        for (Well well : trip.getWell()) {
+            if (Objects.equals(well.getWell(), wellId)) {
+                for (WellActivity wellActivity : well.getWellActivity()) {
+                    for (WellActivitySpecies wellActivitySpecies : wellActivity.getWellActivitySpecies()) {
+                        if (wellActivitySpecies.isWeightCategoryMinus10()) {
+                            m10Weight += wellActivitySpecies.getWeight();
+                        }
+                        if (wellActivitySpecies.isWeightCategoryUnknown() && wellActivitySpecies.getSpecies().isSKJ()) {
+                            m10Weight += wellActivitySpecies.getWeight();
+                        }
+                        if (wellActivitySpecies.isWeightCategoryPlus10()) {
+                            p10Weight += wellActivitySpecies.getWeight();
+                        }
+                    }
+                }
+            }
+        }
         return !m10Weight.equals(s.getSmallsWeight()) || !p10Weight.equals(s.getBigsWeight());
     }
 
@@ -39,16 +51,12 @@ public class DistributionInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Sample sample = get();
-        if (sample.getWell() == null) {
-            return results;
-        }
-        if (distributionIsInconsistent(sample)) {
+        if (distributionIsInconsistent(getTrip(), sample)) {
             SampleResult r = createResult(MessageDescriptions.E_1335_SAMPLE_DISTRIBUTION_M10_P10, sample,
                                           sample.getID(getTrip()));
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

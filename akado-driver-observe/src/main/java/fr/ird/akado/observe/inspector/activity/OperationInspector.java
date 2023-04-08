@@ -32,22 +32,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 @AutoService(ObserveActivityInspector.class)
 public class OperationInspector extends ObserveActivityInspector {
 
-//    public static boolean operationNumberConsistent(Activity a) {
-//        return a.getVesselActivity() == null && a.getSetCount() > 0;
-//    }
-//
-//    public static boolean activityAndOperationConsistent(Activity a) {
-//        float totalCatchWeightExpected = a.getTotalWeight();
-//        return totalCatchWeightExpected == 0 && Objects.equals(a.getVesselActivity().getCode(), "1")
-//                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "0")
-//                || totalCatchWeightExpected != 0 && Objects.equals(a.getVesselActivity().getCode(), "3")
-//                || totalCatchWeightExpected != 0 && (Objects.equals(a.getVesselActivity().getCode(), "12") || Objects.equals(a.getVesselActivity().getCode(), "13") || Objects.equals(a.getVesselActivity().getCode(), "14"));
-//    }
-//
-//    public static boolean operationAndSchoolTypeConsistent(Activity a) {
-//        return a.getSchoolType() != null && Objects.equals(a.getSchoolType().getCode(), "3") && (Objects.equals(a.getVesselActivity().getCode(), "1") || Objects.equals(a.getVesselActivity().getCode(), "0"));
-//    }
-
     public OperationInspector() {
         this.description = "Check if the operation associated with activity is consistent with other information.";
     }
@@ -58,58 +42,69 @@ public class OperationInspector extends ObserveActivityInspector {
 
         Activity activity = get();
 
-        boolean isFishing = activity.getVesselActivity().getCode().equals("6");
+        boolean isFishing = activity.getVesselActivity().isFishing();
 
         double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
 
+        int setCount = activity.getSetCount();
         if (!isFishing) {
 
-            //FIXME ajouter controle sur activity.setCount ==null
+            // can not have set count
+            if (setCount != 0) {
+                ActivityResult r = createResult(MessageDescriptions.E_1220_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
+                                                activity.getID(getTrip(), getRoute()),
+                                                activity.getVesselActivity().getCode(),
+                                                setCount);
+                results.add(r);
+            }
 
             // can not have catch weight
             if (totalCatchWeightExpected > 0) {
-                //FIXME New message
-                ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                ActivityResult r = createResult(MessageDescriptions.E_1222_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
                                                 activity.getID(getTrip(), getRoute()),
                                                 activity.getVesselActivity().getCode(),
                                                 totalCatchWeightExpected);
                 results.add(r);
             }
-        } else {
+            return results;
+        }
 
-            //FIXME ajouter controle sur activity.setCount !=null et >0
+        // on fishing operation
 
-            if (activity.getReasonForNoFishing() == null) {
-                if (activity.getReasonForNullSet() == null) {
-                    if (totalCatchWeightExpected == 0) {
-                        //FIXME New message
-                        ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
-                                                        activity.getID(getTrip(), getRoute()),
-                                                        activity.getVesselActivity().getCode(),
-                                                        totalCatchWeightExpected);
-                        results.add(r);
-                    }
-                } else {
-                    if (totalCatchWeightExpected > 5) {
-                        //FIXME New message
-                        ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
-                                                        activity.getID(getTrip(), getRoute()),
-                                                        activity.getVesselActivity().getCode(),
-                                                        totalCatchWeightExpected);
-                        results.add(r);
-                    }
+        if (setCount == 0) {
+            ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
+                                            activity.getID(getTrip(), getRoute()),
+                                            activity.getVesselActivity().getCode());
+            results.add(r);
+        }
+        if (activity.getReasonForNoFishing() == null) {
+            if (activity.getReasonForNullSet() == null) {
+                if (totalCatchWeightExpected == 0) {
+                    ActivityResult r = createResult(MessageDescriptions.E_1216_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                                                    activity.getID(getTrip(), getRoute()),
+                                                    activity.getVesselActivity().getCode(),
+                                                    totalCatchWeightExpected);
+                    results.add(r);
                 }
-
             } else {
-                if (totalCatchWeightExpected > 0) {
-                    //FIXME New message
-                    ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_OPERATION_NUMBER_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
-                                                    activity.getTopiaId(),
+                if (totalCatchWeightExpected > 5) {
+                    ActivityResult r = createResult(MessageDescriptions.W_1215_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_CATCH_WEIGHT, activity,
+                                                    activity.getID(getTrip(), getRoute()),
                                                     activity.getVesselActivity().getCode(),
                                                     totalCatchWeightExpected);
                     results.add(r);
                 }
             }
+            return results;
+        }
+        // reasonForNoFishing != null
+        if (totalCatchWeightExpected > 0) {
+            ActivityResult r = createResult(MessageDescriptions.E_1225_ACTIVITY_FISHING_OPERATION_AND_REASON_FOR_NO_FISHING_INCONSISTENCY_CATCH_WEIGHT, activity,
+                                            activity.getTopiaId(),
+                                            activity.getVesselActivity().getCode(),
+                                            activity.getReasonForNoFishing().getCode(),
+                                            totalCatchWeightExpected);
+            results.add(r);
         }
         return results;
     }

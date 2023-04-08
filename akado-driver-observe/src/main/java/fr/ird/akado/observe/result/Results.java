@@ -61,6 +61,12 @@ public class Results extends AbstractResults<Result<?>> {
     public static final boolean WB_USE_SHARED_STRINGS_TABLE = true;
     public static final int WB_ROW_ACCESS_WINDOW_SIZE = 200;
 
+    public static Results of(Result<?> result) {
+        Results results = new Results();
+        results.add(result);
+        return results;
+    }
+
     private void writeInActivitySheet(String filename) throws IOException {
         Results results = getActivityResults();
         if (results.isEmpty()) {

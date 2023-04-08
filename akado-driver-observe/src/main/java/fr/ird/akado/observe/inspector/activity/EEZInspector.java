@@ -13,12 +13,8 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-//FIXME voir avec Pascal si on garde, mais attention le message n'est pas bon du tout
 @AutoService(ObserveActivityInspector.class)
 public class EEZInspector extends ObserveActivityInspector {
-    public static boolean operationAndEEZInconsistent(Activity a) {
-        return a.getFpaZone() == null && a.getVesselActivity().getCode().equals("6");
-    }
 
     public EEZInspector() {
         this.description = "Check if the EEZ reported is consistent with operation.";
@@ -26,18 +22,16 @@ public class EEZInspector extends ObserveActivityInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         if (!AAProperties.isWarningInspectorEnabled()) {
-            return results;
+            return null;
         }
         Activity activity = get();
-        if (operationAndEEZInconsistent(activity)) {
+        if (activity.getVesselActivity().isFishing() && activity.withoutFpaZone()) {
             ActivityResult r = createResult(MessageDescriptions.W_1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
-                                            activity.getVesselActivity().getCode(),
-                                            activity.getSetCount());
-            results.add(r);
+                                            activity.getVesselActivity().getCode());
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

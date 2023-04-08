@@ -25,6 +25,8 @@ import fr.ird.common.DateUtils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
+import java.util.Date;
+
 /**
  * The TemporalLimitInspector check if the temporal limit of the trip are
  * consistent with activities.
@@ -43,31 +45,33 @@ public class TemporalLimitInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         if (!trip.withLogbookActivities()) {
-            return results;
+            return null;
         }
+        Results results = new Results();
         Route firstRoute = trip.firstRoute();
         Route lastRoute = trip.lastRoute();
-        if (!DateTimeUtils.dateEqual(trip.getStartDate(), firstRoute.getDate())) {
-            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_TEMPORAL_LIMIT, trip,
+        Date firstRouteDate = firstRoute.getDate();
+        Date startDate = trip.getStartDate();
+        if (!DateTimeUtils.dateEqual(startDate, firstRouteDate)) {
+            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_START_DATE, trip,
                                         trip.getID(),
-                                        DateUtils.formatDate(lastRoute.getDate()),
-                                        DateUtils.formatDate(trip.getStartDate()),
-                                        DateUtils.formatDate(firstRoute.getDate()));
-            r.setValueObtained(trip.getStartDate());
-            r.setValueExpected(firstRoute.getDate());
+                                        DateUtils.formatDate(startDate),
+                                        DateUtils.formatDate(firstRouteDate));
+            r.setValueObtained(startDate);
+            r.setValueExpected(firstRouteDate);
             results.add(r);
         }
-        if (!DateTimeUtils.dateEqual(trip.getEndDate(), lastRoute.getDate())) {
-            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_TEMPORAL_LIMIT, trip,
+        Date endDate = trip.getEndDate();
+        Date lastRouteDate = lastRoute.getDate();
+        if (!DateTimeUtils.dateEqual(endDate, lastRouteDate)) {
+            TripResult r = createResult(MessageDescriptions.E_1026_TRIP_END_DATE, trip,
                                         trip.getID(),
-                                        DateUtils.formatDate(lastRoute.getDate()),
-                                        DateUtils.formatDate(trip.getStartDate()),
-                                        DateUtils.formatDate(firstRoute.getDate()));
-            r.setValueObtained(trip.getEndDate());
-            r.setValueExpected(lastRoute.getDate());
+                                        DateUtils.formatDate(endDate),
+                                        DateUtils.formatDate(lastRouteDate));
+            r.setValueObtained(endDate);
+            r.setValueExpected(lastRouteDate);
             results.add(r);
         }
         return results;

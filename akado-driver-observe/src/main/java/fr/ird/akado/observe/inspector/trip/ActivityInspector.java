@@ -40,20 +40,20 @@ public class ActivityInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         boolean hasLogbook = trip.hasLogbook();
         boolean withLogbookActivities = trip.withLogbookActivities();
         if (hasLogbook && !withLogbookActivities) {
             TripResult r = createResult(MessageDescriptions.E_1018_TRIP_NO_ACTIVITY, trip,
                                         trip.getID());
-            results.add(r);
-        } else if (!hasLogbook && withLogbookActivities) {
+            return Results.of(r);
+        }
+        if (!hasLogbook && withLogbookActivities) {
             TripResult r = createResult(MessageDescriptions.E_1024_TRIP_HAS_ACTIVITY_NO_LOGBOOK, trip,
                                         trip.getID());
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 
 }

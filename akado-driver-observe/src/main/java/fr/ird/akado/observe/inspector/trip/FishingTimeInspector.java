@@ -40,7 +40,6 @@ public class FishingTimeInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         int fishingTime = trip.getFishingTime();
         int fishingTimeExpected = trip.fishingTimeExpected();
@@ -49,9 +48,9 @@ public class FishingTimeInspector extends ObserveTripInspector {
                                         trip.getID(), fishingTime, fishingTimeExpected);
             r.setValueObtained(fishingTime);
             r.setValueExpected(fishingTimeExpected);
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 
 }

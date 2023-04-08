@@ -12,12 +12,10 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Catch;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-import fr.ird.driver.observe.business.referential.common.Country;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Created on 25/03/2023.
@@ -28,14 +26,9 @@ import java.util.Set;
 @AutoService(ObserveTripListInspector.class)
 public class RaisingFactorInspector extends ObserveTripListInspector {
 
-    public static final Set<String> FORBIDDEN_VESSEL_ACTIVITY_ID = Set.of(
-            //TRANSBORDEMENT_VERS_SENNEUR
-            "fr.ird.referential.ps.common.VesselActivity#1464000000000#27",
-            // TRANSBORDEMENT
-            "fr.ird.referential.ps.common.VesselActivity#1464000000000#25",
-            // TRANSBORDEMENT_VERS_CANNEUR
-            "fr.ird.referential.ps.common.VesselActivity#1464000000000#29");
+    //FIXME Replace this by a method on Species (based on topiaId, not code)
     private static final String[] FRENCH_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "9", "11", "42"};
+    //FIXME Replace this by a method on Species (based on topiaId, not code)
     private static final String[] SPAIN_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "5", "6", "9", "11", "12", "42", "43"};
 //    public static double RaisingFactor1WithLocalMarket(List<Trip> trips) {
 //
@@ -104,11 +97,10 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
     public static double catchesWeight(Trip trip) {
         double subTotalCatchesWeight = 0;
         for (Route route : trip.getLogbookRoute()) {
-
             for (Activity activity : route.getActivity()) {
-                String vesselActivityId = activity.getVesselActivity().getTopiaId();
-                //FIXME Voir si on doit aussi filtrer les activités sur apat (vessel activity ou system observé 102)
-                if (FORBIDDEN_VESSEL_ACTIVITY_ID.contains(vesselActivityId)) {
+                if (activity.getVesselActivity().isTransshipment()
+                        || activity.getVesselActivity().isBait()
+                        || activity.containsFishingBaitsObservedSystem()) {
                     continue;
                 }
                 subTotalCatchesWeight += RaisingFactorInspector.catchesFilter(trip, activity);
@@ -119,22 +111,20 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
 
     public static double catchesFilter(Trip trip, Activity activity) {
         double catchesWeight = 0;
-        if (Objects.equals(trip.getVessel().getFleetCountry().getCode(), Country.AVDTH_CODE_COUNTRY_FRANCE)) {
+        if (trip.getVessel().getFleetCountry().isFrance()) {
             for (Catch aCatch : activity.getCatches()) {
                 if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), FRENCH_TARGET_SPECIES)) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
-        } else if (Objects.equals(trip.getVessel().getFleetCountry().getCode(), Country.AVDTH_CODE_COUNTRY_SPAIN)) {
+        } else if (trip.getVessel().getFleetCountry().isSpain()) {
             for (Catch aCatch : activity.getCatches()) {
                 if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), SPAIN_TARGET_SPECIES)) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
         } else {
-            for (Catch aCatch : activity.getCatches()) {
-                catchesWeight += aCatch.getWeight();
-            }
+            catchesWeight = activity.totalCatchWeightFromCatches();
         }
         return catchesWeight;
     }
@@ -189,12 +179,12 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
 
         if (!AAProperties.isWarningInspectorEnabled()) {
-            return results;
+            return null;
         }
 
+        Results results = new Results();
         double rf1;
 //        double rf1WithLocalMarket = 0d;
 
@@ -206,7 +196,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
             double totalLandingWeight = 0;
 //            boolean hasLogbook = true;
 //            double totalLocalMarketWeight = 0;
-            String tripID = "";
+            StringBuilder tripID = new StringBuilder();
             Trip previous = null;
             for (Trip trip : trips) {
 //                hasLogbook &= trip.hasLogbook();
@@ -224,7 +214,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                 totalCatchesWeight += subTotalCatchesWeight;
                 totalLandingWeight += trip.getLandingTotalWeight();
 //                totalLocalMarketWeight += trip.getLocalMarketWeight();
-                tripID += "{" + trip.getID() + "}";
+                tripID.append("{").append(trip.getID()).append("}");
 
                 previous = trip;
             }
@@ -236,11 +226,10 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
 
             if (!rf1IsConsistent(rf1) && !(totalCatchesWeight == 0 && previous != null && !previous.isPartialLanding())) {
                 MetaTripResult mtr = createResult(MessageDescriptions.W_1020_TRIP_RAISING_FACTOR, trips,
-                                                  tripID, rf1);
+                                                  tripID.toString(), rf1);
                 mtr.setDataInformation(rf1);
                 results.add(mtr);
             }
-
         }
         return results;
     }

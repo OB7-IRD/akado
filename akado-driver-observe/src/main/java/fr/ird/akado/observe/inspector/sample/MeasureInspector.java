@@ -59,7 +59,6 @@ public class MeasureInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Sample sample = get();
         int sampleSpeciesFrequencyCount = 0;
         int sampleSpeciesMeasuredCount = 0;
@@ -69,15 +68,13 @@ public class MeasureInspector extends ObserveSampleInspector {
                 sampleSpeciesFrequencyCount += sampleSpeciesFrequency.getCount();
             }
         }
-
-        if (sampleSpeciesFrequencyCount != sampleSpeciesMeasuredCount) {
-            SampleResult r = createResult(MessageDescriptions.E_1323_SAMPLE_MEASURE_COUNT, sample,
-                                          sample.getID(getTrip()),
-                                          sampleSpeciesMeasuredCount,
-                                          sampleSpeciesFrequencyCount);
-            results.add(r);
+        if (sampleSpeciesFrequencyCount == sampleSpeciesMeasuredCount) {
+            return null;
         }
-
-        return results;
+        SampleResult r = createResult(MessageDescriptions.E_1323_SAMPLE_MEASURE_COUNT, sample,
+                                      sample.getID(getTrip()),
+                                      sampleSpeciesMeasuredCount,
+                                      sampleSpeciesFrequencyCount);
+        return Results.of(r);
     }
 }

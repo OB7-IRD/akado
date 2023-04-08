@@ -41,20 +41,19 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         double landingTotalWeightExpected = trip.landingTotalWeightExpected();
         float landingTotalWeight = trip.getLandingTotalWeight();
-        if (Math.abs(landingTotalWeight - landingTotalWeightExpected) > Constant.EPSILON) {
-            TripResult r = createResult(MessageDescriptions.E_1016_TRIP_LANDING_TOTAL_WEIGHT, trip,
-                                        trip.getID(),
-                                        landingTotalWeight,
-                                        landingTotalWeightExpected);
-            r.setValueObtained(landingTotalWeight);
-            r.setValueExpected(landingTotalWeightExpected);
-            results.add(r);
+        if ((Math.abs(landingTotalWeight - landingTotalWeightExpected) <= Constant.EPSILON)) {
+            return null;
         }
-        return results;
+        TripResult r = createResult(MessageDescriptions.E_1016_TRIP_LANDING_TOTAL_WEIGHT, trip,
+                                    trip.getID(),
+                                    landingTotalWeight,
+                                    landingTotalWeightExpected);
+        r.setValueObtained(landingTotalWeight);
+        r.setValueExpected(landingTotalWeightExpected);
+        return Results.of(r);
     }
 
 }

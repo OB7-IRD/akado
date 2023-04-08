@@ -37,8 +37,6 @@ import fr.ird.driver.observe.business.referential.common.Species;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.ird.akado.observe.inspector.sample.WellNumberConsistentInspector.wellIsConsistent;
-
 /**
  * Représente les résultats d'une analyse pour l'échantillonnage.
  * <p>
@@ -109,9 +107,10 @@ public class SampleResult extends Result<Sample> implements WithTrip {
         }
 
         int sampleNumber = sample.getNumber();
-        boolean hasWell = wellIsConsistent(trip, sample);
+        // In ObServe Sample.well is mandatory
+        boolean hasWell = true;
         String distribution = "";
-        if (sample.getWell() != null && DistributionInspector.distributionIsInconsistent(sample)) {
+        if (sample.getWell() != null && DistributionInspector.distributionIsInconsistent(getTrip(), sample)) {
             distribution = sample.getWell();
         }
 

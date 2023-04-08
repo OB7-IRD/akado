@@ -9,8 +9,6 @@ import fr.ird.common.OTUtils;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.referential.common.Ocean;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -21,27 +19,33 @@ import java.util.Objects;
 public class PositionInspector extends ObserveActivityInspector {
 
     public static boolean inIndianOcean(Activity activity) {
-        return GISHandler.getService().inIndianOcean(
-                activity.getLongitude(),
-                activity.getLatitude());
+        if (activity.getPositionInIndianOcean() != null) {
+            return activity.getPositionInIndianOcean().get();
+        }
+        if (activity.withoutCoordinate()) {
+            return false;
+        }
+        return GISHandler.getService().inIndianOcean(activity.getLongitude(), activity.getLatitude());
     }
 
     public static boolean inAtlanticOcean(Activity activity) {
-        return GISHandler.getService().inAtlanticOcean(
-                activity.getLongitude(),
-                activity.getLatitude());
-    }
-
-    public static Boolean onCoastLine(Activity activity) {
-        return GISHandler.getService().onCoastLine(
-                activity.getLongitude(),
-                activity.getLatitude());
+        if (activity.getPositionInAtlanticOcean() != null) {
+            return activity.getPositionInAtlanticOcean().get();
+        }
+        if (activity.withoutCoordinate()) {
+            return false;
+        }
+        return GISHandler.getService().inAtlanticOcean(activity.getLongitude(), activity.getLatitude());
     }
 
     public static String inLand(Activity activity) {
-        return GISHandler.getService().inLand(
-                activity.getLongitude(),
-                activity.getLatitude());
+        if (activity.getPositionInLand() != null) {
+            return activity.getPositionInLand().get();
+        }
+        if (activity.withoutCoordinate()) {
+            return null;
+        }
+        return GISHandler.getService().inLand(activity.getLongitude(), activity.getLatitude());
     }
 
     public PositionInspector() {
@@ -51,52 +55,66 @@ public class PositionInspector extends ObserveActivityInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Activity activity = get();
-        Double longitude = activity.getLongitude() == null ? null : Double.valueOf(activity.getLongitude());
-        Double latitude = activity.getLatitude() == null ? null : Double.valueOf(activity.getLatitude());
-        if (longitude == null || latitude == null) {
-            //FIXME tester ce cas là https://gitlab.com/ultreiaio/ird-observe/-/issues/2663
-            return results;
+        if (activity.withoutCoordinate()) {
+            activity.setPositionInAtlanticOcean(() -> false);
+            activity.setPositionInIndianOcean(() -> false);
+            activity.setPositionInLand(() -> null);
+            return null;
         }
-        boolean inIO = GISHandler.getService().inIndianOcean(
-                longitude,
-                latitude);
-        boolean inAO = GISHandler.getService().inAtlanticOcean(
-                longitude,
-                latitude);
-        boolean inHarbour = GISHandler.getService().inHarbour(
-                longitude,
-                latitude);
+        double longitude = Double.valueOf(activity.getLongitude());
+        double latitude = Double.valueOf(activity.getLatitude());
+        GISHandler service = GISHandler.getService();
+        boolean inHarbour = service.inHarbour(longitude, latitude);
         if (inHarbour) {
-            return results;
+            return null;
         }
-
+        boolean inIO = service.inIndianOcean(longitude, latitude);
+        if (inIO) {
+            activity.setPositionInAtlanticOcean(() -> false);
+            activity.setPositionInIndianOcean(() -> true);
+            activity.setPositionInLand(() -> null);
+        }
+        boolean inAO = !inIO && service.inAtlanticOcean(longitude, latitude);
+        if (inAO) {
+            activity.setPositionInAtlanticOcean(() -> true);
+            activity.setPositionInIndianOcean(() -> false);
+            activity.setPositionInLand(() -> null);
+        }
         if (!inIO && !inAO) {
-            String country = GISHandler.getService().inLand(longitude, latitude);
-
+            String country = service.inLand(longitude, latitude);
             if (country != null) {
+
+                activity.setPositionInAtlanticOcean(() -> false);
+                activity.setPositionInIndianOcean(() -> false);
+                activity.setPositionInLand(() -> country);
+
+                // not on a ocean
                 ActivityResult r = createResult(MessageDescriptions.E_1214_ACTIVITY_POSITION_NOT_IN_OCEAN, activity,
                                                 activity.getID(getTrip(), getRoute()),
                                                 "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")",
                                                 country);
-                results.add(r);
-            } else {
-                ActivityResult r = createResult(MessageDescriptions.W_1217_ACTIVITY_POSITION_WEIRD, activity,
-                                                activity.getID(getTrip(), getRoute()),
-                                                "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")");
-                results.add(r);
+                return Results.of(r);
             }
-        } else if ((Objects.equals(getTrip().getOcean().getCode(), Ocean.INDIEN) && !inIO) || (Objects.equals(getTrip().getOcean().getCode(), Ocean.ATLANTIQUE) && !inAO)) {
+            activity.setPositionInAtlanticOcean(() -> false);
+            activity.setPositionInIndianOcean(() -> false);
+            activity.setPositionInLand(() -> null);
+            // not in IO or AO
+            ActivityResult r = createResult(MessageDescriptions.W_1217_ACTIVITY_POSITION_WEIRD, activity,
+                                            activity.getID(getTrip(), getRoute()),
+                                            "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")");
+            return Results.of(r);
+        }
+        if ((getTrip().getOcean().isIndian() && !inIO) || (getTrip().getOcean().isAtlantic() && !inAO)) {
+            String oceanCode = Ocean.getOcean(longitude, latitude);
             ActivityResult r = createResult(MessageDescriptions.E_1212_ACTIVITY_OCEAN_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             getTrip().getOcean().getCode(),
-                                            Ocean.getOcean(longitude, latitude));
-
+                                            oceanCode);
             r.setValueObtained(getTrip().getOcean().getCode());
-            r.setValueExpected(Ocean.getOcean(longitude, latitude));
-            results.add(r);
+            r.setValueExpected(oceanCode);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

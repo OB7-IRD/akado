@@ -66,16 +66,20 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         if (!trip.withLogbookActivities()) {
-            return results;
+            return null;
         }
+        Results results = new Results();
         Route lastRoute = null;
         for (Route route : trip.getLogbookRoute()) {
-
-            //FIXME check if there is one activity in each route
             Date routeDate = route.getDate();
+            if (route.getActivity().isEmpty()) {
+                TripResult r = createResult(MessageDescriptions.E_1014_TRIP_ROUTE_NO_ACTIVITY, trip,
+                                            trip.getID(),
+                                            DateUtils.formatDate(routeDate));
+                results.add(r);
+            }
 
             if (lastRoute == null || DateTimeUtils.dateEqual(routeDate, lastRoute.getDate())) {
                 lastRoute = route;

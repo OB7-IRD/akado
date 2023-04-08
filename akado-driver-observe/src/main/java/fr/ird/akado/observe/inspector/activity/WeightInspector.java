@@ -23,20 +23,19 @@ public class WeightInspector extends ObserveActivityInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
-
         Activity activity = get();
         float totalWeight = activity.getTotalWeight();
         double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
-        if (Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON) {
-            ActivityResult r = createResult(MessageDescriptions.E_1210_ACTIVITY_TOTAL_CATCH_WEIGHT, activity,
-                                            activity.getID(getTrip(), getRoute()),
-                                            totalWeight,
-                                            totalCatchWeightExpected);
-            r.setValueObtained(totalWeight);
-            r.setValueExpected(totalCatchWeightExpected);
-            results.add(r);
+        if (!(Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON)) {
+            return null;
         }
-        return results;
+        // weights are different
+        ActivityResult r = createResult(MessageDescriptions.E_1210_ACTIVITY_TOTAL_CATCH_WEIGHT, activity,
+                                        activity.getID(getTrip(), getRoute()),
+                                        totalWeight,
+                                        totalCatchWeightExpected);
+        r.setValueObtained(totalWeight);
+        r.setValueExpected(totalCatchWeightExpected);
+        return Results.of(r);
     }
 }

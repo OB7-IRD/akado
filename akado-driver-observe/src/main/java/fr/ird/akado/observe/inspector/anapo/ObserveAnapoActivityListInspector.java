@@ -2,13 +2,10 @@ package fr.ird.akado.observe.inspector.anapo;
 
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.MessageDescription;
-import fr.ird.akado.observe.WithRoute;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.AnapoResult;
 import fr.ird.akado.observe.result.object.Anapo;
-import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
-import fr.ird.driver.observe.business.data.ps.logbook.Route;
 
 import java.util.List;
 
@@ -18,10 +15,7 @@ import java.util.List;
  * @author Tony Chemit - dev@tchemit.fr
  * @since 1.0.0
  */
-public abstract class ObserveAnapoActivityListInspector extends ObserveInspector<List<Activity>> implements WithRoute {
-
-    private Trip trip;
-    private Route route;
+public abstract class ObserveAnapoActivityListInspector extends ObserveInspector<List<Activity>> {
 
     public static List<ObserveAnapoActivityListInspector> loadInspectors() {
         return loadInspectors(ObserveAnapoActivityListInspector.class);
@@ -31,26 +25,6 @@ public abstract class ObserveAnapoActivityListInspector extends ObserveInspector
         return filterInspectors(ObserveAnapoActivityListInspector.class, inspectors);
     }
 
-    @Override
-    public Trip getTrip() {
-        return trip;
-    }
-
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    @Override
-    public Route getRoute() {
-        return route;
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
     protected AnapoResult createResult(MessageDescription messageDescription, Anapo datum, Object... parameters) {
         AnapoResult r = createResult(datum, messageDescription);
         createResult(r, parameters);
@@ -58,6 +32,6 @@ public abstract class ObserveAnapoActivityListInspector extends ObserveInspector
     }
 
     private AnapoResult createResult(Anapo datum, MessageDescription messageDescription) {
-        return WithRoute.copy(new AnapoResult(datum, messageDescription), this);
+        return new AnapoResult(datum, messageDescription);
     }
 }

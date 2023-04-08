@@ -23,8 +23,11 @@ import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 
 /**
  * Created on 20/03/2023.
@@ -35,17 +38,16 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 @AutoService(ObserveActivityInspector.class)
 public class PositionInEEZInspector extends ObserveActivityInspector {
 
+    private static final Logger log = LogManager.getLogger(PositionInEEZInspector.class);
+
     public static boolean activityPositionAndEEZInconsistent(Activity a) {
-        if (a.getFpaZone() == null) {
-            return false;
-        }
-        String eezCountry = a.getFpaZone().getCountry().getIso3Code();
-        Float latitude = a.getLatitude();
-        Float longitude = a.getLongitude();
+        String eezCountry = Objects.requireNonNull(a.getFpaZone()).getCountry().getIso3Code();
+        Float latitude = Objects.requireNonNull(a.getLatitude());
+        Float longitude = Objects.requireNonNull(a.getLongitude());
         String eezFromPosition = GISHandler.getService().getEEZ(longitude, latitude);
-        LogService.getService(PositionInEEZInspector.class).logApplicationDebug("eezCountry " + eezCountry);
-        LogService.getService(PositionInEEZInspector.class).logApplicationDebug("eezFromPosition " + eezFromPosition);
-        return eezCountry != null && eezFromPosition != null && !eezCountry.equals(eezFromPosition);
+        log.debug("eezCountry " + eezCountry);
+        log.debug("eezFromPosition " + eezFromPosition);
+        return !Objects.equals(eezCountry, eezFromPosition);
     }
 
     public PositionInEEZInspector() {
@@ -54,24 +56,20 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
-
         if (!AAProperties.isWarningInspectorEnabled()) {
-            return results;
+            return null;
         }
         Activity activity = get();
+        if (activity.withoutCoordinate() || activity.withoutFpaZone()) {
+            return null;
+        }
         if (activityPositionAndEEZInconsistent(activity)) {
-
-            String eez = "-";
-            if (activity.getFpaZone() != null && activity.getFpaZone().getCountry() != null) {
-                eez = "" + activity.getFpaZone().getCountry().getIso3Code();
-            }
             ActivityResult r = createResult(MessageDescriptions.W_1234_ACTIVITY_POSITION_EEZ_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
-                                            activity.getLongitude() + " " + activity.getLatitude(),
-                                            eez);
-            results.add(r);
+                                            activity.getFpaZone().getCountry().getIso3Code(),
+                                            activity.getLongitude() + " " + activity.getLatitude());
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

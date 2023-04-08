@@ -39,18 +39,21 @@ public class TimeAtSeaInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         int timeAtSea = trip.getTimeAtSea();
+        if (timeAtSea == 0) {
+            TripResult r = createResult(MessageDescriptions.E_1010_TRIP_NO_TIME_AT_SEA, trip,
+                                        trip.getID());
+            return Results.of(r);
+        }
         int timeAtSeaExpected = trip.timeAtSeaExpected();
-        //FIXME a séparer en deux messages
-        if (0 == trip.getTimeAtSea() || timeAtSeaExpected != trip.getTimeAtSea()) {
+        if (timeAtSeaExpected != trip.getTimeAtSea()) {
             TripResult r = createResult(MessageDescriptions.E_1011_TRIP_TIME_AT_SEA, trip,
                                         trip.getID(), timeAtSea, timeAtSeaExpected);
             r.setValueObtained(timeAtSea);
             r.setValueExpected(timeAtSeaExpected);
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 }

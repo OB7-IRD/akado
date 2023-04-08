@@ -10,8 +10,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.referential.common.SizeMeasureType;
 import fr.ird.driver.observe.business.referential.common.Species;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -23,9 +21,7 @@ public class LDLFInspector extends ObserveSampleInspector {
 
     public static boolean ldlfSpeciesInconsistent(SampleSpecies sampleSpecies) {
         Species species = sampleSpecies.getSpecies();
-        return (Objects.equals(species.getCode(), "2")
-                || Objects.equals(species.getCode(), "5")
-                || Objects.equals(species.getCode(), "6"))
+        return (species.isSKJ() || species.isLTA() || species.isFRI())
                 && sampleSpecies.isLd();
     }
 

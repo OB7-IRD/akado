@@ -40,11 +40,11 @@ public class SampleWithoutMeasureInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Sample sample = get();
         if (sample.getSampleSpecies().isEmpty()) {
-            return results;
+            return null;
         }
+        Results results = new Results();
         for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             if (sampleSpecies.getSampleSpeciesMeasure().isEmpty()) {
                 SampleResult r = createResult(MessageDescriptions.E_1312_SAMPLE_NO_SAMPLE_MEASURE, sample,

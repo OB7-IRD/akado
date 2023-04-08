@@ -9,8 +9,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -35,17 +33,17 @@ public class LittleBigInspector extends ObserveSampleInspector {
         for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
             for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
                 eff += sampleSpeciesMeasure.getCount();
-                if (Objects.equals(sampleSpecies.getSpecies().getCode(), "1")) {
+                if (sampleSpecies.getSpecies().isYFT()) {
                     if ((sampleSpeciesMeasure.getSizeClass() < LD1_YFT && sampleSpecies.isLd())
                             || (sampleSpeciesMeasure.getSizeClass() < LF_YFT && sampleSpecies.isLf())) {
                         little += sampleSpeciesMeasure.getCount();
                     }
-                } else if (Objects.equals(sampleSpecies.getSpecies().getCode(), "3")) {
+                } else if (sampleSpecies.getSpecies().isBET()) {
                     if ((sampleSpeciesMeasure.getSizeClass() < LD1_BET && sampleSpecies.isLd())
                             || (sampleSpeciesMeasure.getSizeClass() < LF_BET && sampleSpecies.isLf())) {
                         little += sampleSpeciesMeasure.getCount();
                     }
-                } else if (Objects.equals(sampleSpecies.getSpecies().getCode(), "4")) {
+                } else if (sampleSpecies.getSpecies().isALB()) {
                     if ((sampleSpeciesMeasure.getSizeClass() < LD1_ALB && sampleSpecies.isLd())
                             || (sampleSpeciesMeasure.getSizeClass() < LF_ALB && sampleSpecies.isLf())) {
                         little += sampleSpeciesMeasure.getCount();
@@ -65,29 +63,22 @@ public class LittleBigInspector extends ObserveSampleInspector {
         for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
             for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
                 eff += sampleSpeciesMeasure.getCount();
-                switch (sampleSpecies.getSpecies().getCode()) {
-                    case "1":
-                        if ((sampleSpeciesMeasure.getSizeClass() >= LD1_YFT && sampleSpecies.isLd())
-                                || (sampleSpeciesMeasure.getSizeClass() >= LF_YFT && sampleSpecies.isLf())) {
-                            big += sampleSpeciesMeasure.getCount();
-                        }
-                        break;
-                    case "3":
-                        if ((sampleSpeciesMeasure.getSizeClass() >= LD1_BET && sampleSpecies.isLd())
-                                || (sampleSpeciesMeasure.getSizeClass() >= LF_BET && sampleSpecies.isLf())) {
-                            big += sampleSpeciesMeasure.getCount();
-                        }
-                        break;
-                    case "4":
-                        if ((sampleSpeciesMeasure.getSizeClass() >= LD1_ALB && sampleSpecies.isLd())
-                                || (sampleSpeciesMeasure.getSizeClass() >= LF_ALB && sampleSpecies.isLf())) {
-                            big += sampleSpeciesMeasure.getCount();
-                        }
-                        break;
-                    default:
-                        break;
+                if (sampleSpecies.getSpecies().isYFT()) {
+                    if (sampleSpeciesMeasure.getSizeClass() >= LD1_YFT && sampleSpecies.isLd()
+                            || sampleSpeciesMeasure.getSizeClass() >= LF_YFT && sampleSpecies.isLf()) {
+                        big += sampleSpeciesMeasure.getCount();
+                    }
+                } else if (sampleSpecies.getSpecies().isBET()) {
+                    if (sampleSpeciesMeasure.getSizeClass() >= LD1_BET && sampleSpecies.isLd()
+                            || sampleSpeciesMeasure.getSizeClass() >= LF_BET && sampleSpecies.isLf()) {
+                        big += sampleSpeciesMeasure.getCount();
+                    }
+                } else if (sampleSpecies.getSpecies().isALB()) {
+                    if (sampleSpeciesMeasure.getSizeClass() >= LD1_ALB && sampleSpecies.isLd()
+                            || sampleSpeciesMeasure.getSizeClass() >= LF_ALB && sampleSpecies.isLf()) {
+                        big += sampleSpeciesMeasure.getCount();
+                    }
                 }
-
             }
         }
         return big / eff;
@@ -146,15 +137,15 @@ public class LittleBigInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         if (!AAProperties.isWarningInspectorEnabled()) {
-            return results;
+            return null;
         }
         Sample sample = get();
         double little = littleFish(sample);
         double big = bigFish(sample);
         double ld1 = ld1Measure(sample);
         double lf = lfMeasure(sample);
+        Results results = new Results();
         if (littleIsInfThreshold(sample, little, lf, ld1)) {
             SampleResult r = createResult(MessageDescriptions.W_1330_SAMPLE_LITTLE_INF_THRESHOLD, sample,
                                           sample.getID(getTrip()),

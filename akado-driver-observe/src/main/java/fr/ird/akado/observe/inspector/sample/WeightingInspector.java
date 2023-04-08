@@ -10,8 +10,6 @@ import fr.ird.driver.observe.business.data.ps.landing.Landing;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleActivity;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -40,9 +38,7 @@ public class WeightingInspector extends ObserveSampleInspector {
         Trip trip = getTrip();
         double weight = sample.getTotalWeight();
         if (weight == 0) {
-            float smallsWeight = sample.getSmallsWeight();
-            float bigsWeight = sample.getBigsWeight();
-            weight = smallsWeight + bigsWeight;
+            weight = sample.getSmallsWeight() + sample.getBigsWeight();
         }
         double weightedWeight = weightedWeight(sample);
         if (AAProperties.isWarningInspectorEnabled()) {
@@ -65,8 +61,7 @@ public class WeightingInspector extends ObserveSampleInspector {
             }
         }
         if (trip.getVessel().isBaitBoat()) {
-            //FIXME
-            if (!Objects.equals(sample.getSampleType().getCode(), "11")) {
+            if (!sample.getSampleType().isAtLandingFreshFishBaitBoat()) {
                 if (Math.abs(weightedWeight - weight) > 1) {
                     SampleResult r = createResult(MessageDescriptions.E_1327_SAMPLE_WEIGHTING_BB_WEIGHT, sample,
                                                   sample.getID(getTrip()),
@@ -77,8 +72,9 @@ public class WeightingInspector extends ObserveSampleInspector {
             } else {
                 double lc = 0;
                 for (Landing landing : trip.getLanding()) {
-                    //FIXME
-                    if (landing.getWeightCategory() != null && Objects.equals(landing.getWeightCategory().getCode(), "10")) {
+                    if (landing.getWeightCategory() != null
+                            && landing.getWeightCategory().getCode().startsWith("L-")
+                            && landing.getWeightCategory().getCode().endsWith("-10")) {
                         lc += landing.getWeight();
                     }
                 }

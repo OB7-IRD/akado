@@ -10,8 +10,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.SampleSpecies;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleSpeciesMeasure;
 import fr.ird.driver.observe.business.referential.common.Species;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -26,9 +24,9 @@ public class LengthClassInspector extends ObserveSampleInspector {
     public static final int LENGTH_CLASS_ALB = 42;
 
     public static boolean lengthClassLimits(Species species, SampleSpeciesMeasure sampleSpeciesFrequency) {
-        return (Objects.equals(species.getCode(), "1") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_YFT)
-                || (Objects.equals(species.getCode(), "3") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_BET)
-                || (Objects.equals(species.getCode(), "4") && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_ALB);
+        return (species.isYFT() && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_YFT)
+                || (species.isBET() && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_BET)
+                || (species.isALB() && sampleSpeciesFrequency.getSizeClass() > LENGTH_CLASS_ALB);
     }
 
     public LengthClassInspector() {
@@ -38,11 +36,11 @@ public class LengthClassInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         if (!AAProperties.isWarningInspectorEnabled()) {
-            return results;
+            return null;
         }
         Sample sample = get();
+        Results results = new Results();
         for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             if (sampleSpecies.isLd()) {
                 Species species = sampleSpecies.getSpecies();

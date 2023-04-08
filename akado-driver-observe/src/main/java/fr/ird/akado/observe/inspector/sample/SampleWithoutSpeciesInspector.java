@@ -39,14 +39,12 @@ public class SampleWithoutSpeciesInspector extends ObserveSampleInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Sample sample = get();
-        if (sample.getSampleSpecies().isEmpty()) {
-            SampleResult r = createResult(MessageDescriptions.E_1311_SAMPLE_NO_SAMPLE_SPECIES, sample,
-                                          sample.getID(getTrip()));
-            results.add(r);
+        if (!sample.getSampleSpecies().isEmpty()) {
+            return null;
         }
-        return results;
+        SampleResult r = createResult(MessageDescriptions.E_1311_SAMPLE_NO_SAMPLE_SPECIES, sample,
+                                      sample.getID(getTrip()));
+        return Results.of(r);
     }
-
 }

@@ -42,28 +42,28 @@ public class LandingConsistentInspector extends ObserveTripInspector {
 
     @Override
     public Results execute() {
-        Results results = new Results();
         Trip trip = get();
         if (!trip.getVessel().isPurseSeine()) {
-            return results;
+            return null;
         }
         float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
-        double catchesWeight = trip.getLandingTotalWeight() + trip.getLocalMarketTotalWeight();
         if (capacityMax == 0) {
             TripResult r = createResult(MessageDescriptions.W_1002_VESSEL_NO_CAPACITY, trip,
                                         trip.getVessel().getLabel2());
             r.setDataInformation(trip.getVessel());
-            results.add(r);
-        } else if (catchesWeight > capacityMax) {
+            return Results.of(r);
+        }
+        double catchesWeight = trip.getLandingTotalWeight() + trip.getLocalMarketTotalWeight();
+        if (catchesWeight > capacityMax) {
             TripResult r = createResult(MessageDescriptions.E_1022_TRIP_CAPACITY_OVERRIDE, trip,
                                         trip.getID(),
                                         catchesWeight,
                                         capacityMax);
             r.setValueObtained(catchesWeight);
             r.setValueExpected(capacityMax);
-            results.add(r);
+            return Results.of(r);
         }
-        return results;
+        return null;
     }
 
 }

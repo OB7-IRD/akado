@@ -7,8 +7,6 @@ import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.referential.common.Ocean;
 
-import java.util.Objects;
-
 /**
  * Created on 20/03/2023.
  *
@@ -24,44 +22,23 @@ public class QuadrantInspector extends ObserveActivityInspector {
 
     @Override
     public Results execute() throws Exception {
-        Results results = new Results();
         Activity activity = get();
-        double longitude = activity.getLongitude() == null ? 0 : Double.valueOf(activity.getLongitude());
-        double latitude = activity.getLatitude() == null ? 0 : Double.valueOf(activity.getLatitude());
+        if (activity.withoutCoordinate()) {
+            return null;
+        }
+        Ocean ocean = getTrip().getOcean();
+        if (ocean.isMultiple() || ocean.isAtlantic()) {
+            // on multiple or atlantic ocean no check to do (all quadrant are authorized)
+            return null;
+        }
         int quadrant = activity.getQuadrant();
-        //FIXME Utiliser les deux controles du doc et pas ceux-là
-        String activityId = activity.getID(getTrip(), getRoute());
-
-        if (latitude == 0 && !(quadrant == 1 || quadrant == 4)) {
-
-            ActivityResult r = createResult(MessageDescriptions.E_1229_ACTIVITY_QUADRANT_LAT_INCONSISTENCY, activity,
-                                            activityId,
-                                            quadrant);
-            results.add(r);
+        if (!ocean.isIndian() || quadrant == 1 || quadrant == 2) {
+            return null;
         }
-        if (longitude == 0 && !(quadrant == 2 || quadrant == 1)) {
-            ActivityResult r = createResult(MessageDescriptions.E_1230_ACTIVITY_QUADRANT_LON_INCONSISTENCY, activity,
-                                            activityId,
-                                            quadrant);
-            results.add(r);
-        }
-
-        if ((quadrant == 3 || quadrant == 4)
-                && Objects.equals(getTrip().getOcean().getCode(), Ocean.INDIEN)) {
-            ActivityResult r = createResult(MessageDescriptions.E_1213_ACTIVITY_QUADRANT_INCONSISTENCY, activity,
-                                            activityId,
-                                            quadrant);
-            results.add(r);
-
-        }
-
-        if ((quadrant == 3 || quadrant == 4)
-                && Objects.equals(Ocean.getOcean(longitude, latitude), Ocean.INDIEN)) {
-            ActivityResult r = createResult(MessageDescriptions.E_1216_ACTIVITY_QUADRANT_INCONSISTENCY_POSITION, activity,
-                                            activityId,
-                                            quadrant);
-            results.add(r);
-        }
-        return results;
+        // on indian ocean, must be on quadrant 1 or 2
+        ActivityResult r = createResult(MessageDescriptions.E_1213_ACTIVITY_QUADRANT_INCONSISTENCY, activity,
+                                        activity.getID(getTrip(), getRoute()),
+                                        quadrant);
+        return Results.of(r);
     }
 }
