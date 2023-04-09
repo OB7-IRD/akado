@@ -58,8 +58,8 @@ public class OTUtils {
      * @param coord the longitude or latitute in degrees decimal
      * @return String the value in degrees minutes
      */
-    public static String degreesDecimalToStringDegreesMinutes(final Double coord, final boolean isLatitude) {
-        final Double nCoord = Math.abs(coord);
+    public static String degreesDecimalToStringDegreesMinutes(double coord,  boolean isLatitude) {
+        double nCoord = Math.abs(coord);
         String deg = "" + (int) Math.floor(nCoord);
         String min = "" + Math.round((nCoord * 60) % 60);
         String orientation = "?";
