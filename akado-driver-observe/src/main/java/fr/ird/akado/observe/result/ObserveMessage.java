@@ -19,7 +19,6 @@ package fr.ird.akado.observe.result;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoMessage;
 import fr.ird.akado.core.common.MessageDescription;
-import fr.ird.akado.observe.Constant;
 import fr.ird.common.message.Message;
 
 import java.util.List;
@@ -33,6 +32,7 @@ import java.util.Locale;
  */
 public class ObserveMessage extends AkadoMessage {
 
+    public static String AKADO_OBSERVE_BUNDLE_PROPERTIES = "ObServe-inspector";
     private final Message message;
 
     public ObserveMessage(String messageCode, String messageLabel, List<?> list, String messageType) {
@@ -45,7 +45,7 @@ public class ObserveMessage extends AkadoMessage {
 
     @Override
     public String getContent() {
-        return message.displayMessage(Constant.AKADO_OBSERVE_BUNDLE_PROPERTIES,
+        return message.displayMessage(AKADO_OBSERVE_BUNDLE_PROPERTIES,
                                       Locale.forLanguageTag(AAProperties.L10N));//System.getProperty("user.language")));
 
     }

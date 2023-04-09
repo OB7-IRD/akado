@@ -103,7 +103,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         loadProperties();
         prepare();
         setResults(new Results());
-        getAkadoMessages().setBundleProperties(Constant.AKADO_OBSERVE_BUNDLE_PROPERTIES);
+        getAkadoMessages().setBundleProperties(ObserveMessage.AKADO_OBSERVE_BUNDLE_PROPERTIES);
 
         flagSelectors = new ArrayList<>();
         vesselSelectors = new ArrayList<>();
