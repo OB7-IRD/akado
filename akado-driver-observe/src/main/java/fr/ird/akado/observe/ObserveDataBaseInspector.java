@@ -55,13 +55,11 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
@@ -95,7 +93,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         if (AAProperties.isResultsEnabled()) {
             exportDirectoryPath = baseDirectory.resolve("_akado_result_" + currentDateTime.getYear() + currentDateTime.getMonthOfYear() + currentDateTime.getDayOfMonth() + "_" + currentDateTime.getHourOfDay() + currentDateTime.getMinuteOfHour()).toString();
             if (!(new File(exportDirectoryPath)).exists()) {
-                new File(exportDirectoryPath).mkdirs();
+                Files.createDirectories(new File(exportDirectoryPath).toPath());
             }
             log.info("The results will be write in the directory " + exportDirectoryPath);
         }
@@ -141,7 +139,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
             }
             inspectors.addAll(activityInspectors);
         }
-        if (anapoEnabled && anapoConfigurationEnabled) {
+        if (anapoEnabled) {
             inspectors.addAll(ObserveAnapoActivityInspector.loadInspectors());
             inspectors.addAll(ObserveAnapoActivityListInspector.loadInspectors());
         }
@@ -162,8 +160,8 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         r.setFirstDateOfTrip(convertDate(ObserveService.getService().getDaoSupplier().getPsCommonTripDao().firstLandingDate()));
         r.setLastDateOfTrip(convertDate(ObserveService.getService().getDaoSupplier().getPsCommonTripDao().lastLandingDate()));
         r.setActivityCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookActivityDao().count());
-        r.setFirstDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookActivityDao().firstActivityDate()));
-        r.setLastDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookActivityDao().lastActivityDate()));
+        r.setFirstDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookRouteDao().firstDate()));
+        r.setLastDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookRouteDao().lastDate()));
         r.setSampleCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookSampleDao().count());
         r.setWellCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookWellDao().count());
         InfoResult info = new InfoResult(r, MessageDescriptions.I_0001_INFO_DATABASE);
@@ -180,7 +178,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         info.setMessageParameters(infos);
         getAkadoMessages().add(info.getMessage());
         log.info(r);
-        LogService.getService(ObserveDataBaseInspector.class).logApplicationInfo(r.toString());
+        log.info(r.toString());
     }
 
     @Override
@@ -204,15 +202,16 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
             tasks.add(new SampleTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
         }
         tasks.add(new AnapoTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
-        ExecutorService exec = Executors.newFixedThreadPool(AAProperties.NB_PROC);
+//        ExecutorService exec = Executors.newFixedThreadPool(AAProperties.NB_PROC);
         for (ObserveDataBaseInspectorTask<?> task : tasks) {
-            exec.submit(task);
+            task.run();
+//            exec.submit(task);
         }
-        exec.shutdown();
-        boolean done = exec.awaitTermination(120, TimeUnit.MINUTES);
-        if (!done) {
-            log.error("Executor service not done after 2 hours...");
-        }
+//        exec.shutdown();
+//        boolean done = exec.awaitTermination(120, TimeUnit.MINUTES);
+//        if (!done) {
+//            log.error("Executor service not done after 2 hours...");
+//        }
     }
 
     private List<Trip> getTripsToValidate() {

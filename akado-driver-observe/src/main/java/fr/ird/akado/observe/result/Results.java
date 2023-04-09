@@ -36,6 +36,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class Results extends AbstractResults<Result<?>> {
         return results;
     }
 
-    private void writeInActivitySheet(String filename) throws IOException {
+    public void writeInActivitySheet(String directoryPath) throws IOException {
         Results results = getActivityResults();
         if (results.isEmpty()) {
             return;
@@ -78,10 +79,10 @@ public class Results extends AbstractResults<Result<?>> {
             activities.addAll(r.extractResults());
         }
         String template = "activity_template.xlsx";
-        writeInSheet("activities", activities, template, SHEET_NAME_ACTIVITY, filename);
+        writeInSheet("activities", activities, template, SHEET_NAME_ACTIVITY, directoryPath);
     }
 
-    private void writeInTripSheet(String filename) throws IOException {
+    public void writeInTripSheet(String directoryPath) throws IOException {
         Results results = getTripResults();
         log.debug("TripResults size : " + results.size());
         if (results.isEmpty()) {
@@ -98,10 +99,10 @@ public class Results extends AbstractResults<Result<?>> {
             trips.addAll(l);
         }
         String template = "trip_template.xlsx";
-        writeInSheet("trips", trips, template, SHEET_NAME_TRIP, filename);
+        writeInSheet("trips", trips, template, SHEET_NAME_TRIP, directoryPath);
     }
 
-    private void writeInSampleSheet(String filename) throws IOException {
+    public void writeInSampleSheet(String directoryPath) throws IOException {
         Results results = getSampleResults();
         if (results.isEmpty()) {
             return;
@@ -111,10 +112,10 @@ public class Results extends AbstractResults<Result<?>> {
             samples.addAll(r.extractResults());
         }
         String template = "sample_template.xlsx";
-        writeInSheet("samples", samples, template, SHEET_NAME_SAMPLE, filename);
+        writeInSheet("samples", samples, template, SHEET_NAME_SAMPLE, directoryPath);
     }
 
-    private void writeInWellSheet(String filename) throws IOException {
+    public void writeInWellSheet(String directoryPath) throws IOException {
         Results results = getWellResults();
         if (results.isEmpty()) {
             return;
@@ -124,10 +125,10 @@ public class Results extends AbstractResults<Result<?>> {
             wdtos.addAll(r.extractResults());
         }
         String template = "well_template.xlsx";
-        writeInSheet("wells", wdtos, template, SHEET_NAME_WELL, filename);
+        writeInSheet("wells", wdtos, template, SHEET_NAME_WELL, directoryPath);
     }
 
-    private void writeInMetaTripSheet(String filename) throws IOException {
+    public void writeInMetaTripSheet(String directoryPath) throws IOException {
         Results results = getMetaTripResults();
         if (results.isEmpty()) {
             return;
@@ -137,10 +138,10 @@ public class Results extends AbstractResults<Result<?>> {
             mtdtos.addAll(r.extractResults());
         }
         String template = "metatrip_template.xlsx";
-        writeInSheet("metatrips", mtdtos, template, SHEET_NAME_TRIP_EXTENDED, filename);
+        writeInSheet("metatrips", mtdtos, template, SHEET_NAME_TRIP_EXTENDED, directoryPath);
     }
 
-    private void writeInAnapoSheet(String filename) throws IOException {
+    public void writeInAnapoSheet(String directoryPath) throws IOException {
         Results results = getAnapoResults();
         if (results.isEmpty()) {
             return;
@@ -150,36 +151,40 @@ public class Results extends AbstractResults<Result<?>> {
             adtos.addAll(r.extractResults());
         }
         String template = "anapo_template.xlsx";
-        writeInSheet("anapos", adtos, template, SHEET_NAME_ANAPO, filename);
+        writeInSheet("anapos", adtos, template, SHEET_NAME_ANAPO, directoryPath);
     }
 
-    private void writeInSheet(String dataVarname, List<?> data, String templateName, String sheetName, String directoryPath) throws IOException {
-        InputStream is = Results.class.getResourceAsStream(templateName);
-        Context context = new Context();
-        context.putVar(dataVarname, data);
-        OutputStream os = new FileOutputStream(directoryPath + File.separator + sheetName + "_akado_output.xlsx");
-        JxlsHelper.getInstance().processTemplate(is, os, context);
+    private void writeInSheet(String dataVarName, List<?> data, String templateName, String sheetName, String directoryPath) throws IOException {
+        try (InputStream is = Results.class.getResourceAsStream(templateName)) {
+            Context context = new Context();
+            context.putVar(dataVarName, data);
+            String filePath = directoryPath + File.separator + sheetName + "_akado_output.xlsx";
+            log.info("Writing results in: {}", filePath);
+            try (OutputStream os = new FileOutputStream(filePath)) {
+                JxlsHelper.getInstance().processTemplate(is, os, context);
+            }
+        }
 //        JxlsHelper.getInstance().processTemplateAtCell(is, os, context, sheetName + "!A1");
     }
 
-    @Override
-    public void exportToXLS(String directoryPath) {
-
-        log.info("Running export to XLS file");
-
-        try {
-            writeInTripSheet(directoryPath);
-            writeInActivitySheet(directoryPath);
-            writeInMetaTripSheet(directoryPath);
-            writeInSampleSheet(directoryPath);
-            writeInWellSheet(directoryPath);
-            writeInAnapoSheet(directoryPath);
-            writeLogs(directoryPath);
-
-        } catch (IOException ex) {
-            log.error(ex.getMessage());
-        }
-    }
+//    @Override
+//    public void exportToXLS(String directoryPath) {
+//
+//        log.info("Running export to XLS file {}", directoryPath);
+//
+//        try {
+//            writeInTripSheet(directoryPath);
+//            writeInActivitySheet(directoryPath);
+//            writeInMetaTripSheet(directoryPath);
+//            writeInSampleSheet(directoryPath);
+//            writeInWellSheet(directoryPath);
+//            writeInAnapoSheet(directoryPath);
+//            writeLogs(directoryPath);
+//
+//        } catch (IOException ex) {
+//            log.error(ex.getMessage());
+//        }
+//    }
 
     public boolean in(Result<?> result) {
         for (AbstractResult r : this) {
@@ -251,18 +256,19 @@ public class Results extends AbstractResults<Result<?>> {
         return results;
     }
 
-    private void writeLogs(String directoryPath) throws IOException {
+    public void writeLogs(String directoryPath) throws IOException {
         File file = new File(directoryPath + File.separator + "akado.log");
         if (!file.exists()) {
             file.createNewFile();
         }
-
+        log.info("Appending logs in: {}", file);
         //true = append file
-        try (BufferedWriter bufferWritter = new BufferedWriter(new FileWriter(file, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8, true))) {
             for (Result<?> result : this) {
                 String message = result.getMessage().getContent();
                 log.debug(message);
-                bufferWritter.write(message + "\n");
+                writer.write(message);
+                writer.newLine();
             }
         }
     }

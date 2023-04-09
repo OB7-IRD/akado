@@ -5,9 +5,8 @@ import fr.ird.akado.observe.inspector.sample.ObserveSampleInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class SampleTask extends ObserveDataBaseInspectorTask<Sample> {
-    private static final Logger log = LogManager.getLogger(SampleTask.class);
 
     public SampleTask(String exportDirectoryPath, List<Trip> tripList, List<Inspector<?>> inspectors, Results r) {
         super(exportDirectoryPath, tripList, r, ObserveSampleInspector.filterInspectors(inspectors), null);
@@ -31,16 +29,17 @@ public class SampleTask extends ObserveDataBaseInspectorTask<Sample> {
     }
 
     @Override
-    public void run() {
-        try {
-            for (Trip trip : getTripList()) {
-                getInspectors().forEach(i -> i.setTrip(trip));
-                Set<Sample> toValidate = trip.getLogbookSample();
-                onData(toValidate);
-            }
-            writeResultsInFile();
-        } catch (Exception ex) {
-            log.error("Error in database inspector task: {}", this, ex);
+    protected void inspect() throws Exception {
+        for (Trip trip : getTripList()) {
+            getInspectors().forEach(i -> i.setTrip(trip));
+            Set<Sample> toValidate = trip.getLogbookSample();
+            onData(toValidate);
         }
+    }
+
+    @Override
+    protected void writeResults(String directoryPath, Results results) throws IOException {
+        results.writeInSampleSheet(directoryPath);
+        results.writeLogs(directoryPath);
     }
 }

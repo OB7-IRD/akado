@@ -1,17 +1,16 @@
 package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.observe.inspector.activity.ObserveActivityInspector;
 import fr.ird.akado.observe.inspector.anapo.ObserveAnapoActivityInspector;
 import fr.ird.akado.observe.inspector.anapo.ObserveAnapoActivityListInspector;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +21,6 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class AnapoTask extends ObserveDataBaseInspectorTask<Activity> {
-    private static final Logger log = LogManager.getLogger(AnapoTask.class);
 
     public AnapoTask(String exportDirectoryPath, List<Trip> tripList, List<Inspector<?>> inspectors, Results r) {
         super(exportDirectoryPath, tripList, r, ObserveAnapoActivityInspector.filterInspectors(inspectors), ObserveAnapoActivityListInspector.filterInspectors(inspectors));
@@ -30,8 +28,8 @@ public class AnapoTask extends ObserveDataBaseInspectorTask<Activity> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<ObserveActivityInspector> getInspectors() {
-        return (List<ObserveActivityInspector>) super.getInspectors();
+    public List<ObserveAnapoActivityInspector> getInspectors() {
+        return (List<ObserveAnapoActivityInspector>) super.getInspectors();
     }
 
     @SuppressWarnings("unchecked")
@@ -41,23 +39,28 @@ public class AnapoTask extends ObserveDataBaseInspectorTask<Activity> {
     }
 
     @Override
-    public void run() {
-        try {
-            LogService.getService(this.getClass()).logApplicationInfo("Anapo processing...");
-
-            for (Trip trip : getTripList()) {
-                getInspectors().forEach(i -> i.setTrip(trip));
-                getListInspectors().forEach(i -> i.setTrip(trip));
-                for (Route route : trip.getLogbookRoute()) {
-                    getInspectors().forEach(i -> i.setRoute(route));
-                    getListInspectors().forEach(i -> i.setRoute(route));
-                    Set<Activity> toValidate = route.getActivity();
-                    onData(toValidate);
+    protected void inspect() throws Exception {
+        List<Activity> allActivities = new LinkedList<>();
+        for (Trip trip : getTripList()) {
+            for (Route route : trip.getLogbookRoute()) {
+                Set<Activity> toValidate = route.getActivity();
+                allActivities.addAll(toValidate);
+                for (Activity activity : toValidate) {
+                    activity.setLandingDate(trip.getEndDate());
+                    activity.setVessel(trip.getVessel());
+                    activity.setDate(route.getDate());
+                    onDatum(activity);
                 }
             }
-            writeResultsInFile();
-        } catch (Exception ex) {
-            log.error("Error in database inspector task: {}", this, ex);
         }
+        // Sort activities by vessel code, then by activity full date
+        allActivities.sort(Comparator.comparing(a -> ((Activity) a).getVessel().getCode()).thenComparing(a -> ((Activity) a).getFullDate()));
+        onDataList(allActivities);
+    }
+
+    @Override
+    protected void writeResults(String directoryPath, Results results) throws IOException {
+        results.writeInAnapoSheet(directoryPath);
+        results.writeLogs(directoryPath);
     }
 }

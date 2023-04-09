@@ -122,7 +122,7 @@ public class AnapoResult extends Result<Anapo> {
         if (activity.getFullDate() != null) {
             activityDate = DateUtils.formatDateAndTime(activity.getFullDate());
         }
-        String activityHour = activity.withoutTime() ? "Heure non définie" : DateUtils.formatTime(activity.getTime());
+        String activityHour = activity.withoutTime() ? "??:??" : DateUtils.formatTime(activity.getTime());
 
         int activityNumber = activity.getNumber();
 

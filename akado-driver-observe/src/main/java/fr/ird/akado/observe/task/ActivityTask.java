@@ -6,9 +6,8 @@ import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
-    private static final Logger log = LogManager.getLogger(ActivityTask.class);
 
     public ActivityTask(String exportDirectoryPath, List<Trip> tripList, List<Inspector<?>> inspectors, Results r) {
         super(exportDirectoryPath, tripList, r, ObserveActivityInspector.filterInspectors(inspectors), null);
@@ -32,20 +30,20 @@ public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
     }
 
     @Override
-    public void run() {
-        try {
-            log.info("Activity processing...");
-            for (Trip trip : getTripList()) {
-                getInspectors().forEach(i -> i.setTrip(trip));
-                for (Route route : trip.getLogbookRoute()) {
-                    getInspectors().forEach(i -> i.setRoute(route));
-                    Set<Activity> toValidate = route.getActivity();
-                    onData(toValidate);
-                }
+    protected void inspect() throws Exception {
+        for (Trip trip : getTripList()) {
+            getInspectors().forEach(i -> i.setTrip(trip));
+            for (Route route : trip.getLogbookRoute()) {
+                getInspectors().forEach(i -> i.setRoute(route));
+                Set<Activity> toValidate = route.getActivity();
+                onData(toValidate);
             }
-            writeResultsInFile();
-        } catch (Exception ex) {
-            log.error("Error in database inspector task: {}", this, ex);
         }
+    }
+
+    @Override
+    protected void writeResults(String directoryPath, Results results) throws IOException {
+        results.writeInActivitySheet(directoryPath);
+        results.writeLogs(directoryPath);
     }
 }

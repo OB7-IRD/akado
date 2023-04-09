@@ -5,9 +5,8 @@ import fr.ird.akado.observe.inspector.metatrip.ObserveTripListInspector;
 import fr.ird.akado.observe.inspector.trip.ObserveTripInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,7 +16,6 @@ import java.util.List;
  * @since 1.0.0
  */
 public class TripTask extends ObserveDataBaseInspectorTask<Trip> {
-    private static final Logger log = LogManager.getLogger(TripTask.class);
 
     public TripTask(String exportDirectoryPath, List<Trip> tripList, List<Inspector<?>> inspectors, Results r) {
         super(exportDirectoryPath, tripList, r, ObserveTripInspector.filterInspectors(inspectors), ObserveTripListInspector.filterInspectors(inspectors));
@@ -30,14 +28,15 @@ public class TripTask extends ObserveDataBaseInspectorTask<Trip> {
     }
 
     @Override
-    public void run() {
-        try {
-            log.info("Trip processing...");
-            List<Trip> toValidate = getTripList();
-            onData(toValidate);
-            writeResultsInFile();
-        } catch (Exception ex) {
-            log.error("Error in database inspector task: {}", this, ex);
-        }
+    protected void inspect() throws Exception {
+        List<Trip> toValidate = getTripList();
+        onData(toValidate);
+    }
+
+    @Override
+    protected void writeResults(String directoryPath, Results results) throws IOException {
+        results.writeInTripSheet(directoryPath);
+        results.writeInMetaTripSheet(directoryPath);
+        results.writeLogs(directoryPath);
     }
 }
