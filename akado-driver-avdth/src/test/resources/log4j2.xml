@@ -10,6 +10,9 @@
     <Logger name="fr.ird" level="info" additivity="false">
       <AppenderRef ref="console"/>
     </Logger>
+    <Logger name="org.apache.commons.jexl2.JexlEngine" level="error" additivity="false">
+      <AppenderRef ref="console"/>
+    </Logger>
     <Root level="warn">
       <AppenderRef ref="console"/>
     </Root>

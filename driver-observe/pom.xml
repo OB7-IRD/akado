@@ -13,12 +13,12 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>ird-common</artifactId>
+      <artifactId>driver-anapo</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>driver-anapo</artifactId>
+      <artifactId>ird-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
