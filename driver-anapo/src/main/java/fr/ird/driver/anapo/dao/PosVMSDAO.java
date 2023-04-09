@@ -15,17 +15,19 @@
  */
 package fr.ird.driver.anapo.dao;
 
-import fr.ird.common.JDBCUtilities;
 import fr.ird.common.DateTimeUtils;
+import fr.ird.common.JDBCUtilities;
 import fr.ird.driver.anapo.business.PosVMS;
 import fr.ird.driver.anapo.service.ANAPOService;
+import org.joda.time.DateTime;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import org.joda.time.DateTime;
 
 /**
  * DAO to make queries on the table <em>PosVMSDAO</em>.
@@ -143,6 +145,17 @@ public class PosVMSDAO {
      * @return a list of positions
      */
     public List<PosVMS> findAllPositions(int code, DateTime date) {
+        return findAllPositions(code, DateTimeUtils.convertFilteredDate(date));
+    }
+
+    /**
+     * Return all positions for the vessel code and the activity date
+     *
+     * @param code the vessel code of VMS positions
+     * @param date the date of the activity
+     * @return a list of positions
+     */
+    public List<PosVMS> findAllPositions(int code, Date date) {
 //        System.out.println(code + " " + date);
         List<PosVMS> positions = null;
         String query = "select * from POSVMS "
@@ -152,7 +165,7 @@ public class PosVMSDAO {
 
             statement = connection.prepareStatement(query);
             statement.setInt(1, code);
-            statement.setDate(2, DateTimeUtils.convertFilteredDate(date));
+            statement.setDate(2, new java.sql.Date(date.getTime()));
 
             ResultSet rs = statement.executeQuery();
             positions = new ArrayList<>();
