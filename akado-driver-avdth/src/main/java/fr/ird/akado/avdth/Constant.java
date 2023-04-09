@@ -29,7 +29,6 @@ import fr.ird.common.message.Message;
  */
 public class Constant {
 
-    public static double EPSILON = 0.01;
     public static String AKADO_AVDTH_BUNDLE_PROPERTIES = "AVDTH-inspector";
 
     public static final String CODE_INFO_DATABASE = "0001";

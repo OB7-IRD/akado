@@ -29,6 +29,7 @@ import fr.ird.akado.core.common.AbstractResults;
  */
 public abstract class Inspector<T> {
 
+    public static double EPSILON = 0.01;
     protected String name;
     protected String description;
     private T t;

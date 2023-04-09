@@ -6,8 +6,6 @@ import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
-import static fr.ird.akado.observe.Constant.EPSILON;
-
 /**
  * Created on 20/03/2023.
  *

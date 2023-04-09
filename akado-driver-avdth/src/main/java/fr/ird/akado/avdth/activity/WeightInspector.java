@@ -17,7 +17,6 @@
 package fr.ird.akado.avdth.activity;
 
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_TOTAL_CATCH_WEIGHT;
-import static fr.ird.akado.avdth.Constant.EPSILON;
 import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_TOTAL_CATCH_WEIGHT;
 import fr.ird.akado.avdth.result.ActivityResult;
 import fr.ird.akado.avdth.result.Results;

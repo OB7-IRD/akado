@@ -17,7 +17,6 @@
 package fr.ird.akado.observe.inspector.trip;
 
 import com.google.auto.service.AutoService;
-import fr.ird.akado.observe.Constant;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
@@ -44,7 +43,7 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
         Trip trip = get();
         double landingTotalWeightExpected = trip.landingTotalWeightExpected();
         float landingTotalWeight = trip.getLandingTotalWeight();
-        if ((Math.abs(landingTotalWeight - landingTotalWeightExpected) <= Constant.EPSILON)) {
+        if ((Math.abs(landingTotalWeight - landingTotalWeightExpected) <= EPSILON)) {
             return null;
         }
         TripResult r = createResult(MessageDescriptions.E_1016_TRIP_LANDING_TOTAL_WEIGHT, trip,

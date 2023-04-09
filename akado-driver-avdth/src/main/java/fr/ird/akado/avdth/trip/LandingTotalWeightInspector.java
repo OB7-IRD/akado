@@ -17,7 +17,6 @@
 package fr.ird.akado.avdth.trip;
 
 import static fr.ird.akado.avdth.Constant.CODE_TRIP_LANDING_TOTAL_WEIGHT;
-import static fr.ird.akado.avdth.Constant.EPSILON;
 import static fr.ird.akado.avdth.Constant.LABEL_TRIP_LANDING_TOTAL_WEIGHT;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.TripResult;
