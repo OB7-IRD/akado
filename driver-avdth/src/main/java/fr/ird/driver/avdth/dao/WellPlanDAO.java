@@ -18,10 +18,11 @@ package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Well;
 import fr.ird.driver.avdth.business.WellPlan;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ import java.util.List;
  * @date 26 mai 2014
  */
 public class WellPlanDAO extends AbstractDAO<WellPlan> {
-
+    private static final Logger log = LogManager.getLogger(WellPlanDAO.class);
     public WellPlanDAO() {
         super();
     }
@@ -157,7 +158,7 @@ public class WellPlanDAO extends AbstractDAO<WellPlan> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

@@ -23,9 +23,10 @@ import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.OTUtils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_OPERATION_EEZ_INCONSIST
  *
  */
 public class PositionsInEEZInspector extends Inspector<List<Activity>> {
-
+    private static final Logger log = LogManager.getLogger(PositionsInEEZInspector.class);
     public PositionsInEEZInspector() {
         super();
         this.name = this.getClass().getName();
@@ -72,8 +73,8 @@ public class PositionsInEEZInspector extends Inspector<List<Activity>> {
                 result.put(a, Boolean.FALSE);
             } else {
                 eezCountry = a.getFpaZone().getCountry().getCodeIso3();
-                LogService.getService(PositionsInEEZInspector.class).logApplicationDebug("eezCountry " + eezCountry);
-                LogService.getService(PositionsInEEZInspector.class).logApplicationDebug("eezFromPosition " + eezList.get(eezIndex));
+                log.debug("eezCountry " + eezCountry);
+                log.debug("eezFromPosition " + eezList.get(eezIndex));
                 result.put(a, (eezCountry != null && eezList.get(eezIndex) != null && !eezCountry.equals(eezList.get(eezIndex))));
             }
             eezIndex += 1;
@@ -90,12 +91,8 @@ public class PositionsInEEZInspector extends Inspector<List<Activity>> {
         Double latitude = OTUtils.convertLatitude(a.getQuadrant(), a.getLatitude());
         Double longitude = OTUtils.convertLongitude(a.getQuadrant(), a.getLongitude());
         String eezFromPosition = GISHandler.getService().getEEZ(longitude, latitude);
-        LogService
-                .getService(PositionsInEEZInspector.class
-                ).logApplicationDebug("eezCountry " + eezCountry);
-        LogService
-                .getService(PositionsInEEZInspector.class
-                ).logApplicationDebug("eezFromPosition " + eezFromPosition);
+        log.debug("eezCountry " + eezCountry);
+        log.debug("eezFromPosition " + eezFromPosition);
         return (eezCountry != null && eezFromPosition != null && !eezCountry.equals(eezFromPosition));
 
     }
@@ -152,11 +149,11 @@ public class PositionsInEEZInspector extends Inspector<List<Activity>> {
 //                    + "         ST_GeomFromText('MULTIPOINT(" + multipoint + ")', 4326 ),"
 //                    + "		ST_SetSRID(e.the_geom, 4326)"
 //                    + "	)";
-//            LogService.getService(PositionsInEEZInspector.class).logApplicationDebug(sql);
+//            log.debug(sql);
 //            ResultSet rs = statement.executeQuery(sql);
-//            LogService.getService(PositionsInEEZInspector.class).logApplicationDebug(rs.toString());
+//            log.debug(rs.toString());
 //            while (rs.next()) {
-//                LogService.getService(PositionsInEEZInspector.class).logApplicationDebug(rs.getString("TERRITORY1") + " - " + rs.getString("ISO_Ter1"));
+//                log.debug(rs.getString("TERRITORY1") + " - " + rs.getString("ISO_Ter1"));
 //                eezList.add(rs.getString("ISO_Ter1"));
 //            }
 //            rs.close();

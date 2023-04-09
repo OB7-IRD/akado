@@ -18,9 +18,15 @@ package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
-import fr.ird.driver.avdth.business.*;
+import fr.ird.driver.avdth.business.Activity;
+import fr.ird.driver.avdth.business.Country;
+import fr.ird.driver.avdth.business.ElementaryLanding;
+import fr.ird.driver.avdth.business.Harbour;
+import fr.ird.driver.avdth.business.Trip;
+import fr.ird.driver.avdth.business.Vessel;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.sql.Date;
@@ -37,7 +43,7 @@ import java.util.List;
  *
  */
 public class TripDAO extends AbstractDAO<Trip> {
-
+    private static final Logger log = LogManager.getLogger(TripDAO.class);
     public TripDAO() {
         super();
     }
@@ -96,7 +102,7 @@ public class TripDAO extends AbstractDAO<Trip> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

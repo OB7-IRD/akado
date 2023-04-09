@@ -17,7 +17,6 @@
 package fr.ird.driver.avdth;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.Country;
 import fr.ird.driver.avdth.business.Harbour;
@@ -30,7 +29,6 @@ import fr.ird.driver.avdth.business.VesselSizeCategory;
 import fr.ird.driver.avdth.business.VesselType;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.ActivityDAO;
-import fr.ird.driver.avdth.dao.VesselSizeCategoryDAO;
 import fr.ird.driver.avdth.dao.CountryDAO;
 import fr.ird.driver.avdth.dao.HarbourDAO;
 import fr.ird.driver.avdth.dao.OperationDAO;
@@ -40,18 +38,18 @@ import fr.ird.driver.avdth.dao.SampleTypeDAO;
 import fr.ird.driver.avdth.dao.SchoolTypeDAO;
 import fr.ird.driver.avdth.dao.TripDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
+import fr.ird.driver.avdth.dao.VesselSizeCategoryDAO;
 import fr.ird.driver.avdth.dao.VesselTypeDAO;
 import fr.ird.driver.avdth.service.AvdthService;
-import java.sql.SQLException;
-import java.util.List;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Cette classe permet de tester en écriture et lecture la couche AVDTH du
@@ -61,7 +59,7 @@ import org.junit.BeforeClass;
  *
  */
 public class InsertTest extends TestCase {
-    
+    private static final Logger log = LogManager.getLogger(InsertTest.class);
     public final static boolean DELETE = true;
     public static String AVDTH_DB_TEST = "/avdth_350_test.mdb";
     private final String avdthDatabasePath;
@@ -158,7 +156,7 @@ public class InsertTest extends TestCase {
             JDBCUtilities.printSQLException(e);
             assertFalse(true);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             assertTrue(pdao.delete(port));
         }
@@ -348,7 +346,7 @@ public class InsertTest extends TestCase {
             JDBCUtilities.printSQLException(e);
             assertFalse(true);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             assertTrue(AvdthService.getService().delete(maree));
         }

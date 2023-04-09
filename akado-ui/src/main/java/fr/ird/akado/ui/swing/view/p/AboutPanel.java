@@ -17,16 +17,19 @@
 package fr.ird.akado.ui.swing.view.p;
 
 import fr.ird.akado.ui.Constant;
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.util.Objects;
 
 /**
  * The AboutPanel displayed an about of Akado application. This class extends
@@ -38,7 +41,7 @@ import javax.swing.JPanel;
  *
  */
 public class AboutPanel extends JPanel {
-
+    private static final Logger log = LogManager.getLogger(AboutPanel.class);
     private BufferedImage image;
     private Boolean DEBGUG = Boolean.FALSE;
     private Font font;
@@ -46,9 +49,9 @@ public class AboutPanel extends JPanel {
     public AboutPanel() {
         image = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(Constant.SPLASH));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(Constant.SPLASH)));
         } catch (IOException e) {
-            LogService.getService(AboutPanel.class).logApplicationError(e.getMessage());
+            log.error(e.getMessage());
         }
         setSize(new Dimension(500, 250));
     }

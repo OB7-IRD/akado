@@ -18,10 +18,11 @@ package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Sample;
 import fr.ird.driver.avdth.business.SampleSpecies;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +39,7 @@ import java.util.List;
  *
  */
 public class SampleSpeciesDAO extends AbstractDAO<SampleSpecies> {
-
+    private static final Logger log = LogManager.getLogger(SampleSpeciesDAO.class);
     public SampleSpeciesDAO() {
         super();
     }
@@ -162,7 +163,7 @@ public class SampleSpeciesDAO extends AbstractDAO<SampleSpecies> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

@@ -18,28 +18,29 @@
  */
 package fr.ird.akado.ui.swing.action;
 
-import fr.ird.akado.ui.swing.AkadoController;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
-import fr.ird.common.log.LogService;
-import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import fr.ird.akado.ui.swing.AkadoController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
 
 /**
  * This class provides an action which creates the GIS database.
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 27 mai 2014
- *
+ * <p>
  * $LastChangedDate: 2015-03-20 12:04:12 +0100 (ven., 20 mars 2015) $
- *
+ * <p>
  * $LastChangedRevision: 553 $
+ * @since 2.0
  */
 public class GISHandlerAction extends AbstractAction {
+    private static final Logger log = LogManager.getLogger(GISHandlerAction.class);
 
     private final Boolean DEBUG = false;
     private AkadoController akadoController;
@@ -66,20 +67,20 @@ public class GISHandlerAction extends AbstractAction {
 
         if (n == JOptionPane.YES_OPTION) {
             try {
-                LogService.getService(this.getClass()).logApplicationInfo("Generate the gis DB - start");
+                log.info("Generate the gis DB - start");
                 GISHandler.getService().init(AAProperties.STANDARD_DIRECTORY,
-                        AAProperties.SHP_COUNTRIES_PATH,
-                        AAProperties.SHP_OCEAN_PATH,
-                        AAProperties.SHP_HARBOUR_PATH,
-                        AAProperties.SHP_EEZ_PATH);
+                                             AAProperties.SHP_COUNTRIES_PATH,
+                                             AAProperties.SHP_OCEAN_PATH,
+                                             AAProperties.SHP_HARBOUR_PATH,
+                                             AAProperties.SHP_EEZ_PATH);
                 if (GISHandler.getService().exists()) {
-                    LogService.getService(this.getClass()).logApplicationInfo("Generate the gis DB - delete old DB");
+                    log.info("Generate the gis DB - delete old DB");
                     GISHandler.getService().delete();
                 }
                 GISHandler.getService().create();
-                LogService.getService(this.getClass()).logApplicationInfo("Generate the gis DB - done");
+                log.info("Generate the gis DB - done");
             } catch (Exception ex) {
-                Logger.getLogger(GISHandlerAction.class.getName()).log(Level.SEVERE, null, ex);
+                log.error(ex);
             }
         }
     }

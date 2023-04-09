@@ -17,7 +17,9 @@
  */
 package fr.ird.common.configuration;
 
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,7 +38,7 @@ import java.util.Properties;
  *
  */
 public abstract class IRDProperties {
-
+    private static final Logger log = LogManager.getLogger(IRDProperties.class);
     /**
      * The name of the project.
      */
@@ -90,7 +92,7 @@ public abstract class IRDProperties {
         String filepath = AppConfig.getRelativeConfigPath(PROJECT_NAME);
         String filename = PROJECT_CONFIG_FILENAME;
         if (!configFileExist()) {
-            LogService.getService(IRDProperties.class).logApplicationInfo("Create the default configuration file");
+            log.info("Create the default configuration file");
             createDefaultDirectory();
             copyDefaultFile();
 
@@ -99,7 +101,7 @@ public abstract class IRDProperties {
                 createDefaultProperties().storeToXML(fos, PROJECT_CONFIG_COMMENT);
                 fos.close();
             } catch (IOException ex) {
-                LogService.getService(IRDProperties.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
 
         }
@@ -118,7 +120,7 @@ public abstract class IRDProperties {
             properties.storeToXML(fos, PROJECT_CONFIG_COMMENT);
             fos.close();
         } catch (IOException ex) {
-            LogService.getService(IRDProperties.class).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -136,7 +138,7 @@ public abstract class IRDProperties {
         PROJECT_CONFIG_ABSOLUTE_PATH = AppConfig.getConfigDirectory(AppConfig.getRelativeConfigPath(PROJECT_NAME));
         boolean success = (new File(PROJECT_CONFIG_ABSOLUTE_PATH)).mkdirs();
         if (success) {
-            LogService.getService(IRDProperties.class).logApplicationInfo("Directory: " + PROJECT_CONFIG_ABSOLUTE_PATH + " created");
+            log.info("Directory: " + PROJECT_CONFIG_ABSOLUTE_PATH + " created");
         }
     }
 

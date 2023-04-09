@@ -30,7 +30,6 @@ import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.OTUtils;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.FishingContext;
 import fr.ird.driver.avdth.business.SchoolType;
@@ -40,6 +39,8 @@ import fr.ird.driver.avdth.dao.ActivityDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
 import fr.ird.driver.avdth.service.AvdthService;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -56,7 +57,7 @@ import java.util.List;
  * @date 6 juin 2014
  */
 public class ActivityTest extends TestCase {
-
+    private static final Logger log = LogManager.getLogger(ActivityTest.class);
     public final static boolean DELETE = true;
 
     private final static String AVDTH_DB_TEST = "/akado_avdth_test_350.mdb";
@@ -132,7 +133,7 @@ public class ActivityTest extends TestCase {
                 new DateTime(2014, 01, 06, 0, 0),
                 new DateTime(2013, 11, 21, 0, 0),
                 1);
-        LogService.getService().logApplicationInfo("=> " + a);
+        log.info("=> " + a);
         assertNotNull(a);
         assertEquals("CIV", GISHandler.getService().getEEZ(OTUtils.convertLongitude(4, 400),
                 OTUtils.convertLatitude(4, 515)));

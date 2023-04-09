@@ -17,9 +17,10 @@
 package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.LogType;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ import java.sql.SQLException;
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  */
 public class LogTypeDAO extends AbstractDAO<LogType> {
-
+    private static final Logger log = LogManager.getLogger(LogTypeDAO.class);
     public LogTypeDAO() {
         super();
     }
@@ -55,7 +56,7 @@ public class LogTypeDAO extends AbstractDAO<LogType> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(LogTypeDAO.class).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

@@ -16,7 +16,10 @@
  */
 package fr.ird.akado.core.common;
 
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.event.EventListenerList;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +27,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.event.EventListenerList;
 
 /**
  *
@@ -34,6 +36,8 @@ import javax.swing.event.EventListenerList;
  */
 public class AkadoMessages extends ArrayList<AkadoMessage> {
 
+    private static final Logger log = LogManager.getLogger(AkadoMessages.class);
+    
     // un seul objet pour tous les types d'écouteurs
     private final EventListenerList listeners = new EventListenerList();
     private String bundleProperties;
@@ -100,14 +104,14 @@ public class AkadoMessages extends ArrayList<AkadoMessage> {
             }
             writer.write(out);
         } catch (IOException ex) {
-            LogService.getService(AkadoMessages.class).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             try {
                 if (writer != null) {
                     writer.close();
                 }
             } catch (Exception ex) {
-                LogService.getService(AkadoMessages.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
 

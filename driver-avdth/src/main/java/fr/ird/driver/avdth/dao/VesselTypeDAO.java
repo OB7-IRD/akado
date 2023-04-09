@@ -17,9 +17,10 @@
 package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.VesselType;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +36,7 @@ import java.util.List;
  *
  */
 public class VesselTypeDAO extends AbstractDAO<VesselType> {
-
+    private static final Logger log = LogManager.getLogger(VesselTypeDAO.class);
     public VesselTypeDAO() {
         super();
     }
@@ -58,7 +59,7 @@ public class VesselTypeDAO extends AbstractDAO<VesselType> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {
@@ -92,7 +93,7 @@ public class VesselTypeDAO extends AbstractDAO<VesselType> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

@@ -17,7 +17,6 @@
 package fr.ird.driver.avdth.service;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.ElementaryCatch;
 import fr.ird.driver.avdth.business.ElementaryLanding;
@@ -33,6 +32,9 @@ import fr.ird.driver.avdth.dao.SampleDAO;
 import fr.ird.driver.avdth.dao.TripDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
 import fr.ird.driver.avdth.dao.WellDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -45,7 +47,7 @@ import java.util.Properties;
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  */
 public class AvdthService {
-
+    private static final Logger log = LogManager.getLogger(AvdthService.class);
     private static final AvdthService SERVICE = new AvdthService();
 
     private String url;
@@ -64,15 +66,15 @@ public class AvdthService {
         this.password = password;
         try {
             Class.forName(driver).newInstance();
-            LogService.getService(AvdthService.class).logApplicationDebug("AVDTH SERVICE : initialisation");
-            LogService.getService(AvdthService.class).logApplicationDebug("AVDTH SERVICE : " + url);
+            log.debug("AVDTH SERVICE : initialisation");
+            log.debug("AVDTH SERVICE : " + url);
             p = new Properties();
             p.setProperty("user", this.user);
             p.setProperty("password", this.password);
             p.setProperty("charSet", "utf-8");
             p.setProperty("lockType", "ACCESS");
             connection = DriverManager.getConnection(this.url, p);
-            LogService.getService(AvdthService.class).logApplicationDebug("AVDTH SERVICE : end");
+            log.debug("AVDTH SERVICE : end");
         } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new AvdthDriverException("The database connection has failed. See below for more information.\n\n\t«" + ex.getMessage() + "»", ex);
         }
@@ -107,11 +109,11 @@ public class AvdthService {
         boolean isOk = mareeDAO.insert(maree);
 
         for (Activity activite : maree.getActivites()) {
-            LogService.getService(this.getClass()).logApplicationDebug(activite.toString());
+            log.debug(activite.toString());
             isOk &= save(activite);
         }
         for (ElementaryLanding el : maree.getLotsCommerciaux()) {
-            LogService.getService(this.getClass()).logApplicationDebug(el.toString());
+            log.debug(el.toString());
             isOk &= save(el);
         }
         return isOk;

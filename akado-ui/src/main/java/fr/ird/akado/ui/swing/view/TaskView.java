@@ -30,7 +30,6 @@ import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.ui.swing.view.p.InfoBar;
 import fr.ird.akado.ui.swing.view.p.ToolsBar;
 import fr.ird.common.DateTimeUtils;
-import fr.ird.common.log.LogService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -161,8 +160,8 @@ public class TaskView extends JPanel implements ActionListener {
         Task(TaskController controller) throws Exception {
             DateTime start = DateTimeUtils.convertLocalDate(dpStartDate.getDate());
             DateTime end = DateTimeUtils.convertLocalDate(dpEndDate.getDate());
-            LogService.getService(this.getClass()).logApplicationInfo("" + start);
-            LogService.getService(this.getClass()).logApplicationInfo("" + end);
+            log.info("" + start);
+            log.info("" + end);
 
             akado = new AkadoCore();
 
@@ -224,7 +223,7 @@ public class TaskView extends JPanel implements ActionListener {
                 Throwable ex = e.getCause();
                 log.error("Error while executing Akado", ex);
                 String exceptionMessage = "" + ex.getLocalizedMessage();
-                LogService.getService(this.getClass()).logApplicationError("DoInBG: " + exceptionMessage);
+                log.error("DoInBG: " + exceptionMessage);
                 JOptionPane.showMessageDialog(null, exceptionMessage, "Akado error", JOptionPane.ERROR_MESSAGE);
             } finally {
                 DateTime endProcess = new DateTime();
@@ -248,7 +247,7 @@ public class TaskView extends JPanel implements ActionListener {
             } catch (Exception ex) {
                 log.error("Error in executing task", ex);
                 String exceptionMessage = "" + ex.getMessage();
-                LogService.getService(this.getClass()).logApplicationError(exceptionMessage);
+                log.error(exceptionMessage);
                 JOptionPane.showMessageDialog(null, exceptionMessage, "Akado error", JOptionPane.ERROR_MESSAGE);
             }
             startButton.setEnabled(false);

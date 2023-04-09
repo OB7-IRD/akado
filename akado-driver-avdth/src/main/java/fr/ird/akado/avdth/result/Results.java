@@ -18,14 +18,17 @@ package fr.ird.akado.avdth.result;
 
 import fr.ird.akado.avdth.result.model.ActivityDataSheet;
 import fr.ird.akado.avdth.result.model.AnapoDataSheet;
-
 import fr.ird.akado.avdth.result.model.MetaTripDataSheet;
 import fr.ird.akado.avdth.result.model.SampleDataSheet;
 import fr.ird.akado.avdth.result.model.TripDataSheet;
 import fr.ird.akado.avdth.result.model.WellDataSheet;
 import fr.ird.akado.core.common.AbstractResult;
 import fr.ird.akado.core.common.AbstractResults;
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,8 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.jxls.common.Context;
-import org.jxls.util.JxlsHelper;
 
 /**
  * Représente une liste de résultat généré lors de l'analyse d'une base AVDTH.
@@ -48,7 +49,7 @@ import org.jxls.util.JxlsHelper;
  * @date 11 juil. 2014
  */
 public class Results extends AbstractResults<Result> {
-
+    private static final Logger log = LogManager.getLogger(Results.class);
     public static final String SHEET_NAME_TRIP = "Trip";
     public static final String SHEET_NAME_TRIP_EXTENDED = "Trip with partials landings";
     public static final String SHEET_NAME_ACTIVITY = "Activity";
@@ -75,17 +76,17 @@ public class Results extends AbstractResults<Result> {
 
     private void writeInTripSheet(String filename) throws IOException {
         Results results = getTripResults();
-        LogService.getService(Results.class).logApplicationDebug("TripResults size : " + results.size());
+        log.debug("TripResults size : " + results.size());
         if (results.isEmpty()) {
             return;
         }
         List<TripDataSheet> trips = new ArrayList<>();
         for (Result r : results) {
-//            LogService.getService(Results.class).logApplicationDebug("TripResult : " + r);
+//            log.debug("TripResult : " + r);
             List l = r.extractResults();
-//            LogService.getService(Results.class).logApplicationDebug("TripResult extractResults: " + l.size());
+//            log.debug("TripResult extractResults: " + l.size());
 //            for (Object o : l) {
-//                LogService.getService(Results.class).logApplicationDebug(o.toString());
+//                log.debug(o.toString());
 //            }
             trips.addAll(l);
         }
@@ -157,7 +158,7 @@ public class Results extends AbstractResults<Result> {
     @Override
     public void exportToXLS(String directoryPath) {
 
-        LogService.getService(Results.class).logApplicationInfo("Running export to XLS file");
+        log.info("Running export to XLS file");
 
         try {
             writeInTripSheet(directoryPath);
@@ -169,7 +170,7 @@ public class Results extends AbstractResults<Result> {
             writeLogs(directoryPath);
 
         } catch (IOException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -186,7 +187,7 @@ public class Results extends AbstractResults<Result> {
         Results results = new Results();
         for (AbstractResult result : this) {
             if (result instanceof TripResult && !results.in(result)) {
-                LogService.getService(Results.class).logApplicationDebug(result.toString());
+                log.debug(result.toString());
                 results.add((TripResult) result);
             }
         }
@@ -254,7 +255,7 @@ public class Results extends AbstractResults<Result> {
         BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
 
         for (AbstractResult result : this) {
-            LogService.getService(Results.class).logApplicationDebug(result.getMessage().getContent());
+            log.debug(result.getMessage().getContent());
             bufferWritter.write(result.getMessage().getContent() + "\n");
         }
         bufferWritter.close();

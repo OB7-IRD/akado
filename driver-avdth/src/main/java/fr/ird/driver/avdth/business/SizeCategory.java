@@ -16,13 +16,14 @@
  */
 package fr.ird.driver.avdth.business;
 
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Les catégories de taille.
  */
 public class SizeCategory {
-
+    private static final Logger log = LogManager.getLogger(SizeCategory.class);
     public static int SIZE_CATEGORY_UNKNOWN = 9;
 
     private Species species;
@@ -33,14 +34,14 @@ public class SizeCategory {
 
     public Boolean getStatus() {
         if (status == null) {
-            LogService.getService(SizeCategory.class).logApplicationDebug("[CAT_TAILLE] The status is null.");
+            log.debug("[CAT_TAILLE] The status is null.");
         }
         return status;
     }
 
     public String getName() {
         if (name == null) {
-            LogService.getService(SizeCategory.class).logApplicationDebug("[CAT_TAILLE] The name is null.");
+            log.debug("[CAT_TAILLE] The name is null.");
         }
         return name;
     }

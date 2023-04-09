@@ -18,11 +18,12 @@ package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.FishingContext;
 import fr.ird.driver.avdth.business.FishingContextType;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.sql.PreparedStatement;
@@ -39,7 +40,7 @@ import java.util.List;
  * @date 26 sept. 2013
  */
 public class FishingContextDAO extends AbstractDAO<FishingContext> {
-
+    private static final Logger log = LogManager.getLogger(FishingContextDAO.class);
     public FishingContextDAO() {
         super();
     }
@@ -105,7 +106,7 @@ public class FishingContextDAO extends AbstractDAO<FishingContext> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {
@@ -157,7 +158,7 @@ public class FishingContextDAO extends AbstractDAO<FishingContext> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(FishingContextDAO.class).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

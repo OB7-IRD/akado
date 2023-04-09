@@ -1,10 +1,8 @@
 package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.Inspector;
-import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.observe.inspector.well.ObserveWellInspector;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Well;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +41,6 @@ public class WellTask extends ObserveDataBaseInspectorTask<Well> {
             writeResultsInFile();
         } catch (Exception ex) {
             log.error("Error in database inspector task: {}", this, ex);
-            LogService.getService(ObserveDataBaseInspector.class).logApplicationError(ex.getMessage());
         }
     }
 }

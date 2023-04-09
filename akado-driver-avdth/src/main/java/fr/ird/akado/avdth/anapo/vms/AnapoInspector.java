@@ -17,32 +17,33 @@
 package fr.ird.akado.avdth.anapo.vms;
 
 import fr.ird.akado.avdth.Constant;
-
-import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_NO_TRACE_VMS;
-import static fr.ird.akado.avdth.Constant.CODE_INCONSISTENCY_VMS_POSITION_COUNT;
-import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_NO_TRACE_VMS;
-import static fr.ird.akado.avdth.Constant.LABEL_INCONSISTENCY_VMS_POSITION_COUNT;
-import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.AnapoResult;
+import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.object.Anapo;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
-import static fr.ird.akado.core.common.AAProperties.THRESHOLD_CLASS_TWO;
-
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.core.spatial.WGS84;
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.OTUtils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.anapo.business.PosVMS;
 import fr.ird.driver.anapo.dao.PosVMSDAO;
 import fr.ird.driver.avdth.business.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_NO_TRACE_VMS;
+import static fr.ird.akado.avdth.Constant.CODE_INCONSISTENCY_VMS_POSITION_COUNT;
+import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_NO_TRACE_VMS;
+import static fr.ird.akado.avdth.Constant.LABEL_INCONSISTENCY_VMS_POSITION_COUNT;
+import static fr.ird.akado.core.common.AAProperties.THRESHOLD_CLASS_TWO;
 
 /**
  * The AnapoInspector class check if an activity is consistent with the VMS
@@ -54,7 +55,7 @@ import java.util.Map.Entry;
  *
  */
 public class AnapoInspector extends Inspector<Activity> {
-
+    private static final Logger log = LogManager.getLogger(AnapoInspector.class);
     public static final String OK = "ok";
     public static final String WARNING = "warning";
     public static final String ERROR = "error";
@@ -77,7 +78,7 @@ public class AnapoInspector extends Inspector<Activity> {
     @Override
     public Results execute() {
         Results results = new Results();
-        LogService.getService(AnapoInspector.class).logApplicationDebug(name + " " + description);
+        log.debug(name + " " + description);
 
         if (!AAProperties.isAnapoInspectorEnabled()) {
             return results;
@@ -86,7 +87,7 @@ public class AnapoInspector extends Inspector<Activity> {
         Activity a = get();
 
 //        for (Activity a : activities) {
-//            LogService.getService(AnapoInspector.class).logApplicationDebug(a.toString());
+//            log.debug(a.toString());
         Boolean analyseVessel = false;
         for (String s : AAProperties.ANAPO_VMS_COUNTRY.split("\\s*\\|\\s*")) {
             analyseVessel |= s.equals("" + a.getVessel().getCountry().getCode());
@@ -101,7 +102,7 @@ public class AnapoInspector extends Inspector<Activity> {
         PosVMSDAO dao = new PosVMSDAO();
         List<PosVMS> positions = dao.findAllPositions(a.getVessel().getCode(), a.getDate());
 //        for (PosVMS pvms : positions) {
-////                LogService.getService(AnapoInspector.class).logApplicationDebug("---> " + pvms);
+////                log.debug("---> " + pvms);
 //        }
         if (positions.isEmpty()) {
             anapo = new Anapo(a);
@@ -117,8 +118,8 @@ public class AnapoInspector extends Inspector<Activity> {
             results.add(r);
             return results;
         }
-        LogService.getService(AnapoInspector.class).logApplicationDebug("[" + a + "]");
-        LogService.getService(AnapoInspector.class).logApplicationDebug("Nb positions : " + positions.size());
+        log.debug("[" + a + "]");
+        log.debug("Nb positions : " + positions.size());
         if (positions.size() < NB_POSITIONS_VMS_MIN) {
             anapo = new Anapo(a);
             anapo.setVmsPositionCount(positions.size());
@@ -164,7 +165,7 @@ public class AnapoInspector extends Inspector<Activity> {
         if (!foundValidPosition) {
 
             Map<PosVMS, Double> m = filterPositionValid(scores);
-            LogService.getService(AnapoInspector.class).logApplicationDebug("Position valid is empty " + m.isEmpty());
+            log.debug("Position valid is empty " + m.isEmpty());
             if (m.isEmpty()) {
                 m = filterPositionNotValid(scores);
                 if (!m.isEmpty()) {

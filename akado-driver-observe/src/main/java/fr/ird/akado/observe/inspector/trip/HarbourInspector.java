@@ -20,9 +20,10 @@ import com.google.auto.service.AutoService;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.TripResult;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.service.ObserveService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ import java.util.Objects;
  */
 @AutoService(ObserveTripInspector.class)
 public class HarbourInspector extends ObserveTripInspector {
+    private static final Logger log = LogManager.getLogger(HarbourInspector.class);
 
     public static boolean harbourAreIdentical(Trip previous, Trip current) {
         return current != null && previous != null && Objects.equals(current.getDepartureHarbour(), previous.getLandingHarbour());
@@ -47,7 +49,7 @@ public class HarbourInspector extends ObserveTripInspector {
         if (previous == null) {
             return true;
         }
-        LogService.getService(HarbourInspector.class).logApplicationDebug("Previous trip " + previous);
+        log.debug("Previous trip " + previous);
         return harbourAreIdentical(previous, current);
     }
 

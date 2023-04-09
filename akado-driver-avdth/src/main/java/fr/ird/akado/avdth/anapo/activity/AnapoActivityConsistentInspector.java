@@ -18,15 +18,12 @@ package fr.ird.akado.avdth.anapo.activity;
 
 import fr.ird.akado.avdth.AvdthInspector;
 import fr.ird.akado.avdth.Constant;
-import static fr.ird.akado.avdth.Constant.CODE_ANAPO_NO_ACTIVITY;
-import static fr.ird.akado.avdth.Constant.LABEL_ANAPO_NO_ACTIVITY;
-import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.AnapoResult;
+import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.object.Anapo;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.DateTimeUtils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.anapo.business.PosVMS;
 import fr.ird.driver.anapo.dao.PosVMSDAO;
@@ -34,9 +31,15 @@ import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.Vessel;
 import fr.ird.driver.avdth.dao.ActivityDAO;
 import fr.ird.driver.avdth.dao.VesselDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.joda.time.DateTime;
+
+import static fr.ird.akado.avdth.Constant.CODE_ANAPO_NO_ACTIVITY;
+import static fr.ird.akado.avdth.Constant.LABEL_ANAPO_NO_ACTIVITY;
 
 /**
  * The AnapoActivityConsistentInspector class check for each VMS position if an
@@ -48,7 +51,7 @@ import org.joda.time.DateTime;
  *
  */
 public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> {
-
+    private static final Logger log = LogManager.getLogger(AnapoActivityConsistentInspector.class);
     public AnapoActivityConsistentInspector() {
         super();
         this.name = this.getClass().getName();
@@ -59,7 +62,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
     public Results execute() {
         Results results = new Results();
 
-        LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug(name + " " + description);
+        log.debug(name + " " + description);
         if (!AAProperties.isAnapoInspectorEnabled()) {
             return results;
         }
@@ -75,9 +78,9 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
                 vesselsCode.add(Integer.valueOf(vesselCodeString));
             }
         }
-        LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("" + get());
+        log.debug("" + get());
         List<Activity> activities = get();
-        LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("Size of activities " + activities.size());
+        log.debug("Size of activities " + activities.size());
 
         Activity lastActivity = null;
 
@@ -86,7 +89,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
         }
 
         lastActivity = activities.get(activities.size() - 1);
-        LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("Last activity " + lastActivity);
+        log.debug("Last activity " + lastActivity);
 
         AnapoResult r;
         Anapo anapo;
@@ -132,7 +135,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
             }
         }
 
-        LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("Size of postions " + positions.size());
+        log.debug("Size of postions " + positions.size());
         String lastCFRVessel = "";
         DateTime lastDate = new DateTime(1000, 1, 1, 0, 0);
         for (PosVMS posVMS : positions) {
@@ -147,10 +150,10 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
             VesselDAO vesselDAO = new VesselDAO();
             Vessel vessel = vesselDAO.findVesselByCode(posVMS.getVesselId());
 
-            LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("Position VMS " + posVMS.toString());
-            LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("DATE " + DateTimeUtils.convertDate(posVMS.getDate()));
-            LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("VESSEL " + vessel);
-            LogService.getService(AnapoActivityConsistentInspector.class).logApplicationDebug("isExistAnActivityFor : " + activityDAO.isExistAnActivityFor(vessel, posVMS.getDate()));
+            log.debug("Position VMS " + posVMS.toString());
+            log.debug("DATE " + DateTimeUtils.convertDate(posVMS.getDate()));
+            log.debug("VESSEL " + vessel);
+            log.debug("isExistAnActivityFor : " + activityDAO.isExistAnActivityFor(vessel, posVMS.getDate()));
 
             if (vessel == null) {
                 Activity a = new Activity();

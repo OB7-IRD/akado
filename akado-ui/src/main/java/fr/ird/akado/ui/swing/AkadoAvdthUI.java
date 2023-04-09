@@ -16,19 +16,22 @@
  */
 package fr.ird.akado.ui.swing;
 
-import fr.ird.akado.ui.AkadoAvdthProperties;
-import fr.ird.akado.ui.Constant;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
-import fr.ird.common.log.LogService;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.channels.*;
-import java.util.Locale;
+import fr.ird.akado.ui.AkadoAvdthProperties;
+import fr.ird.akado.ui.Constant;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.util.Locale;
 
 /**
  * The main class of Akado Avdth UI. Implements a file lock to disable a second
@@ -39,18 +42,18 @@ import javax.swing.UIManager;
  * @date 27 mai 2014
  */
 public class AkadoAvdthUI {
-
+    private static final Logger log = LogManager.getLogger(AkadoAvdthUI.class);
     private static File f;
     private static FileChannel channel;
     private static FileLock lock;
 
     public static void main(String[] args) throws AkadoException {
-        LogService.getService(AkadoAvdthUI.class).logApplicationInfo(
+        log.info(
                 "---------------------------------------------------------------");
-        LogService.getService(AkadoAvdthUI.class).logApplicationInfo(Constant.APPLICATION_NAME + " " + Constant.APPLICATION_VERSION);
-        LogService.getService(AkadoAvdthUI.class).logApplicationInfo(Constant.APPLICATION_AUTHOR + " " + Constant.APPLICATION_YEAR);
+        log.info(Constant.APPLICATION_NAME + " " + Constant.APPLICATION_VERSION);
+        log.info(Constant.APPLICATION_AUTHOR + " " + Constant.APPLICATION_YEAR);
 
-        LogService.getService(AkadoAvdthUI.class).logApplicationInfo(
+        log.info(
                 "---------------------------------------------------------------");
         AkadoAvdthProperties.getService().init();
 
@@ -100,7 +103,7 @@ public class AkadoAvdthUI {
                 f.delete();
             }
         } catch (IOException e) {
-            LogService.getService(AkadoAvdthUI.class).logApplicationError(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 

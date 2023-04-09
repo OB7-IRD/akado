@@ -28,22 +28,14 @@ import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.DataBaseInspectorTask;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
-import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
-import static fr.ird.akado.core.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
-import static fr.ird.akado.core.common.AAProperties.KEY_SHP_HARBOUR_PATH;
-import static fr.ird.akado.core.common.AAProperties.KEY_SHP_OCEAN_PATH;
-import static fr.ird.akado.core.common.AAProperties.KEY_STANDARD_DIRECTORY;
-import fr.ird.akado.core.common.AkadoException;
-import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.core.common.AbstractResults;
+import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.core.selector.TemporalSelector;
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
-import static fr.ird.common.ListUtils.map;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.list.comprehesion.Func;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
-import fr.ird.driver.anapo.service.ANAPOService;
 import fr.ird.driver.anapo.common.exception.ANAPODriverException;
+import fr.ird.driver.anapo.service.ANAPOService;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.Country;
 import fr.ird.driver.avdth.business.Sample;
@@ -53,16 +45,26 @@ import fr.ird.driver.avdth.business.Well;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.VersionDAO;
 import fr.ird.driver.avdth.service.AvdthService;
+import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.io.FilenameUtils;
-import org.joda.time.DateTime;
-import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
+
+import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_HARBOUR_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_OCEAN_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_STANDARD_DIRECTORY;
+import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
+import static fr.ird.common.ListUtils.map;
 
 /**
  *
@@ -71,7 +73,7 @@ import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
  * @date 21 mai 2014
  */
 public class AvdthInspector extends DataBaseInspector {
-
+    private static final Logger log = LogManager.getLogger(AvdthInspector.class);
     public static final String JDBC_ACCESS_DRIVER = "com.hxtt.sql.access.AccessDriver";
 
     private String exportDirectoryPath;
@@ -130,9 +132,9 @@ public class AvdthInspector extends DataBaseInspector {
             if (!(new File(exportDirectoryPath)).exists()) {
                 new File(exportDirectoryPath).mkdirs();
             }
-            LogService.getService(this.getClass()).logApplicationInfo("The results will be write in the directory " + exportDirectoryPath);
+            log.info("The results will be write in the directory " + exportDirectoryPath);
         }
-        LogService.getService(this.getClass()).logApplicationDebug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
+        log.debug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
         loadProperties();
         prepare();
         setResults(new Results());
@@ -151,9 +153,7 @@ public class AvdthInspector extends DataBaseInspector {
 
             }
         } catch (AvdthDriverException ex) {
-            LogService.getService(AvdthInspector.class).logApplicationError(ex.toString());
-            LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
-            LogService.getService(AvdthInspector.class).logApplicationError(Arrays.toString(ex.getStackTrace()));
+            log.error(ex.getMessage(), ex);
         }
         r.setDatabaseName(url.substring(url.lastIndexOf(File.separator) + 1));
         if (AAProperties.isTripInspectorEnabled()) {
@@ -208,7 +208,7 @@ public class AvdthInspector extends DataBaseInspector {
         info.setMessageLabel(Constant.LABEL_INFO_DATABASE);
         info.setMessageParameters(infos);
         getAkadoMessages().add(info.getMessage());
-        LogService.getService(AvdthInspector.class).logApplicationInfo(r.toString());
+        log.info(r.toString());
 
     }
 
@@ -235,7 +235,7 @@ public class AvdthInspector extends DataBaseInspector {
         public void run() {
             try {
                 if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
-                    LogService.getService(this.getClass()).logApplicationInfo("Vessel selection : " + AAProperties.VESSEL_SELECTED);
+                    log.info("Vessel selection : " + AAProperties.VESSEL_SELECTED);
                     String[] codeList = AAProperties.VESSEL_SELECTED.split("\\|");
                     for (String code : codeList) {
                         addVesselConstraint(Integer.valueOf(code));
@@ -244,7 +244,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 List<Activity> activities = getActivitiesToValidate();
                 for (Activity a : activities) {
-                    LogService.getService(this.getClass()).logApplicationInfo(a.getID());
+                    log.info(a.getID());
 //            System.out.println(getClass().getName() + " ActivityInspector=" + a);
                     for (Inspector i : getInspectors()) {
                         if (ALL_ACTIVITY_INSPECTORS.contains(i)) {
@@ -255,7 +255,7 @@ public class AvdthInspector extends DataBaseInspector {
                         }
                     }
                 }
-                LogService.getService(this.getClass()).logApplicationInfo("Activities processing...");
+                log.info("Activities processing...");
                 for (Inspector i : getInspectors()) {
                     if (ALL_ACTIVITIES_INSPECTORS.contains(i)) {
                         i.set(activities);
@@ -264,7 +264,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }
                 writeResultsInFile();
             } catch (Exception ex) {
-                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }
@@ -281,7 +281,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 List<Trip> trips = getTripsToValidate();
                 for (Trip m : trips) {
-                    LogService.getService(this.getClass()).logApplicationInfo(m.getID());
+                    log.info(m.getID());
                     for (Inspector i : getInspectors()) {
                         if (ALL_TRIP_INSPECTORS.contains(i)) {
                             i.set(m);
@@ -289,7 +289,7 @@ public class AvdthInspector extends DataBaseInspector {
                         }
                     }
                 }
-                LogService.getService(this.getClass()).logApplicationInfo("MetaTrip processing...");
+                log.info("MetaTrip processing...");
                 for (Inspector i : getInspectors()) {
                     if (ALL_METATRIP_INSPECTORS.contains(i)) {
                         i.set(trips);
@@ -298,7 +298,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }
                 writeResultsInFile();
             } catch (Exception ex) {
-                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }
@@ -313,14 +313,14 @@ public class AvdthInspector extends DataBaseInspector {
         public void run() {
             try {
                 if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
-                    LogService.getService(this.getClass()).logApplicationInfo("Vessel selection : " + AAProperties.VESSEL_SELECTED);
+                    log.info("Vessel selection : " + AAProperties.VESSEL_SELECTED);
                     String[] codeList = AAProperties.VESSEL_SELECTED.split("\\|");
                     for (String code : codeList) {
                         addVesselConstraint(Integer.valueOf(code));
                     }
                 }
 
-                LogService.getService(this.getClass()).logApplicationInfo("Anapo processing...");
+                log.info("Anapo processing...");
                 for (Inspector i : ALL_ANAPO_INSPECTORS) {
                     if (AAProperties.ANAPO_DB_URL != null && AAProperties.isAnapoInspectorEnabled()) {
                         for (Activity activity : getActivitiesToValidate()) {
@@ -338,7 +338,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 writeResultsInFile();
             } catch (Exception ex) {
-                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }
@@ -353,7 +353,7 @@ public class AvdthInspector extends DataBaseInspector {
         public void run() {
             try {
                 for (Well e : getWellsToValidate()) {
-                    LogService.getService(this.getClass()).logApplicationInfo(e.getID());
+                    log.info(e.getID());
 //            System.out.println(getClass().getName() + " Well=" + e);
                     for (Inspector i : getInspectors()) {
                         if (ALL_WELL_INSPECTORS.contains(i)) {
@@ -364,7 +364,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }
                 writeResultsInFile();
             } catch (Exception ex) {
-                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }
@@ -380,7 +380,7 @@ public class AvdthInspector extends DataBaseInspector {
             try {
 
                 for (Sample e : getSamplesToValidate()) {
-                    LogService.getService(this.getClass()).logApplicationInfo(e.getID());
+                    log.info(e.getID());
                     for (Inspector i : getInspectors()) {
                         if (ALL_SAMPLE_INSPECTORS.contains(i)) {
                             i.set(e);
@@ -391,7 +391,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }
                 writeResultsInFile();
             } catch (Exception ex) {
-                LogService.getService(AvdthInspector.class).logApplicationError(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }

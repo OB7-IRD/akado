@@ -23,15 +23,17 @@ import fr.ird.common.DateTimeUtils;
 import fr.ird.common.MapUtils;
 import fr.ird.common.OTUtils;
 import fr.ird.common.Utils;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.anapo.business.PosVMS;
 import fr.ird.driver.avdth.business.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.format.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.joda.time.format.DateTimeFormat;
 
 /**
  * Présente les données à afficher pour les analyses des traces VMS des
@@ -42,7 +44,7 @@ import org.joda.time.format.DateTimeFormat;
  * @date 16 juil. 2015
  */
 public class AnapoResult extends Result<Anapo> {
-
+    private static final Logger log = LogManager.getLogger(AnapoResult.class);
     public static Map<String, Results> filter(Results anapoResults) {
         Map<String, Results> anapoResultsByCFR = new HashMap<>();
 
@@ -68,7 +70,7 @@ public class AnapoResult extends Result<Anapo> {
      * @return la liste de donnée structurée
      */
     public static List<AnapoDataSheet> factory(Anapo anapo) {
-        LogService.getService(AnapoResult.class).logApplicationDebug(" # 1 #");
+        log.debug(" # 1 #");
         List<AnapoDataSheet> list = new ArrayList<>();
         AnapoDataSheet anapoDataSheet;
         Activity activity = anapo.getActivity();
@@ -127,19 +129,19 @@ public class AnapoResult extends Result<Anapo> {
             return list;
         }
 
-        LogService.getService(AnapoResult.class).logApplicationDebug(" # 2 #");
+        log.debug(" # 2 #");
         for (Entry<PosVMS, Double> entry : anapo.getPositions().entrySet()) {
 
             PosVMS pvms = entry.getKey();
-            LogService.getService(AnapoResult.class).logApplicationDebug(" # PosVMS :" + pvms);
+            log.debug(" # PosVMS :" + pvms);
             dist.put(pvms, Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3));
         }
-        LogService.getService(AnapoResult.class).logApplicationDebug(" # 3 #");
+        log.debug(" # 3 #");
         for (Entry<PosVMS, Double> entry
                 : MapUtils.sortByValue(dist).entrySet()) {
             PosVMS pvms = entry.getKey();
 
-            LogService.getService(AnapoResult.class).logApplicationDebug(" # PosVMS :" + pvms);
+            log.debug(" # PosVMS :" + pvms);
             String vmsPositionDate = pvms.getDate().toString(DateTimeFormat.forPattern("dd/MM/yyyy HH:MM"));
             Double distancePosition = Utils.round(AnapoInspector.calculateDistanceProximity(pvms, activity), 3);
             Double vmsScore = Utils.round(AnapoInspector.calculateScore(pvms, activity), 3);

@@ -1,13 +1,15 @@
 package fr.ird.common;
 
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Classe utilitaire permettant la conversion d'une Map en objet JSON et
@@ -21,6 +23,7 @@ import org.json.JSONObject;
  *
  */
 public class JSONFucker {
+    private static final Logger log = LogManager.getLogger(JSONFucker.class);
     // HashMap > Map
     // ArrayList > List
 
@@ -61,7 +64,7 @@ public class JSONFucker {
         try {
             o = (JSONObject) toJSON((Object) object);
         } catch (JSONException ex) {
-            LogService.getService(JSONFucker.class).logApplicationError(ex.getLocalizedMessage());
+            log.error(ex.getLocalizedMessage());
         }
         return o;
     }

@@ -16,17 +16,20 @@
  */
 package fr.ird.akado.avdth.trip;
 
-import static fr.ird.akado.avdth.Constant.CODE_TRIP_HAS_DIFFERENT_HARBOUR;
-import static fr.ird.akado.avdth.Constant.LABEL_TRIP_HAS_DIFFERENT_HARBOUR;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.TripResult;
 import fr.ird.akado.core.Inspector;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.Trip;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.TripDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
+
+import static fr.ird.akado.avdth.Constant.CODE_TRIP_HAS_DIFFERENT_HARBOUR;
+import static fr.ird.akado.avdth.Constant.LABEL_TRIP_HAS_DIFFERENT_HARBOUR;
 
 /**
  * The HarbourInspector class check if the landing harbour of a previous trip is
@@ -38,7 +41,7 @@ import java.util.ArrayList;
  *
  */
 public class HarbourInspector extends Inspector<Trip> {
-
+    private static final Logger log = LogManager.getLogger(HarbourInspector.class);
     public HarbourInspector() {
         super();
         this.name = this.getClass().getName();
@@ -77,10 +80,10 @@ public class HarbourInspector extends Inspector<Trip> {
             if (previous == null) {
                 return true;
             }
-            LogService.getService(HarbourInspector.class).logApplicationDebug("Previous trip " + previous);
+            log.debug("Previous trip " + previous);
             return harbourAreIdentical(previous, current);
         } catch (AvdthDriverException ex) {
-            LogService.getService(HarbourInspector.class).logApplicationDebug(ex.getMessage());
+            log.debug(ex.getMessage());
         }
         return false;
     }

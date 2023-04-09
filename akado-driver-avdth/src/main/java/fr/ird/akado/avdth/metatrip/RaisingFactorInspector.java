@@ -16,18 +16,12 @@
  */
 package fr.ird.akado.avdth.metatrip;
 
-import static fr.ird.akado.avdth.Constant.CODE_TRIP_NO_CATCH;
-import static fr.ird.akado.avdth.Constant.CODE_TRIP_RAISING_FACTOR;
-import static fr.ird.akado.avdth.Constant.LABEL_TRIP_NO_CATCH;
-import static fr.ird.akado.avdth.Constant.LABEL_TRIP_RAISING_FACTOR;
-import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.avdth.result.MetaTripResult;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.TripResult;
 import fr.ird.akado.core.Inspector;
-import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.Utils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.Activity;
 import fr.ird.driver.avdth.business.Country;
@@ -35,8 +29,17 @@ import fr.ird.driver.avdth.business.ElementaryCatch;
 import fr.ird.driver.avdth.business.Operation;
 import fr.ird.driver.avdth.business.Trip;
 import fr.ird.driver.avdth.common.AvdthUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static fr.ird.akado.avdth.Constant.CODE_TRIP_NO_CATCH;
+import static fr.ird.akado.avdth.Constant.CODE_TRIP_RAISING_FACTOR;
+import static fr.ird.akado.avdth.Constant.LABEL_TRIP_NO_CATCH;
+import static fr.ird.akado.avdth.Constant.LABEL_TRIP_RAISING_FACTOR;
+import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
 
 /**
  * Calculate the raising factor, with and without the local market, for all
@@ -47,7 +50,7 @@ import java.util.List;
  * @date 12 juin 2014
  */
 public class RaisingFactorInspector extends Inspector<List<Trip>> {
-
+    private static final Logger log = LogManager.getLogger(RaisingFactorInspector.class);
     public RaisingFactorInspector() {
         super();
         this.name = this.getClass().getName();
@@ -119,11 +122,11 @@ public class RaisingFactorInspector extends Inspector<List<Trip>> {
 //        double rf1WithLocalMarket = 0d;
 
             List<Trip> allTrips = get();
-            LogService.getService(RaisingFactorInspector.class).logApplicationDebug("***    ***");
+            log.debug("***    ***");
             for (Trip t : allTrips) {
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug(t.getID());
+                log.debug(t.getID());
             }
-            LogService.getService(RaisingFactorInspector.class).logApplicationDebug("***    ***");
+            log.debug("***    ***");
             TripResult r;
             MetaTripResult mtr;
             List<List<Trip>> extendedTrips = AvdthUtils.buildExtendedTrips(allTrips);
@@ -169,11 +172,11 @@ public class RaisingFactorInspector extends Inspector<List<Trip>> {
                 } catch (NumberFormatException ex) {
                     rf1 = 0d;
                 }
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug("******");
+                log.debug("******");
                 for (Trip t : trips) {
-                    LogService.getService(RaisingFactorInspector.class).logApplicationDebug(t.getID());
+                    log.debug(t.getID());
                 }
-                LogService.getService(RaisingFactorInspector.class).logApplicationDebug(tripID);
+                log.debug(tripID);
                 if (!rf1IsConsistent(rf1) && !(totalCatchesWeight == 0 && previous != null && !previous.isPartialLanding())) {
                     mtr = new MetaTripResult();
 

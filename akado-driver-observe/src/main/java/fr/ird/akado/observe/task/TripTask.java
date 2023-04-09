@@ -4,7 +4,6 @@ import fr.ird.akado.core.Inspector;
 import fr.ird.akado.observe.inspector.metatrip.ObserveTripListInspector;
 import fr.ird.akado.observe.inspector.trip.ObserveTripInspector;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +32,7 @@ public class TripTask extends ObserveDataBaseInspectorTask<Trip> {
     @Override
     public void run() {
         try {
-            LogService.getService(this.getClass()).logApplicationInfo("Trip processing...");
+            log.info("Trip processing...");
             List<Trip> toValidate = getTripList();
             onData(toValidate);
             writeResultsInFile();

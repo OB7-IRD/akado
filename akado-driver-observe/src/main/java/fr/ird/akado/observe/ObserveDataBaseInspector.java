@@ -43,7 +43,6 @@ import fr.ird.akado.observe.task.ObserveDataBaseInspectorTask;
 import fr.ird.akado.observe.task.SampleTask;
 import fr.ird.akado.observe.task.TripTask;
 import fr.ird.akado.observe.task.WellTask;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.anapo.common.exception.ANAPODriverException;
 import fr.ird.driver.anapo.service.ANAPOService;
 import fr.ird.driver.observe.business.ObserveVersion;
@@ -98,9 +97,9 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
             if (!(new File(exportDirectoryPath)).exists()) {
                 new File(exportDirectoryPath).mkdirs();
             }
-            LogService.getService(this.getClass()).logApplicationInfo("The results will be write in the directory " + exportDirectoryPath);
+            log.info("The results will be write in the directory " + exportDirectoryPath);
         }
-        LogService.getService(this.getClass()).logApplicationDebug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
+        log.debug("CONFIGURATION PROPERTIES " + CONFIGURATION_PROPERTIES);
         loadProperties();
         prepare();
         setResults(new Results());
@@ -109,7 +108,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         flagSelectors = new ArrayList<>();
         vesselSelectors = new ArrayList<>();
         if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
-            LogService.getService(this.getClass()).logApplicationInfo("Vessel selection : " + AAProperties.VESSEL_SELECTED);
+            log.info("Vessel selection : " + AAProperties.VESSEL_SELECTED);
             String[] codeList = AAProperties.VESSEL_SELECTED.split("\\s*\\|\\s*");
             for (String code : codeList) {
                 addVesselConstraint(code);

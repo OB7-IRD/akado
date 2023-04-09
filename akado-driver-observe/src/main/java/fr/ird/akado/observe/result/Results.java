@@ -24,7 +24,8 @@ import fr.ird.akado.observe.result.model.MetaTripDataSheet;
 import fr.ird.akado.observe.result.model.SampleDataSheet;
 import fr.ird.akado.observe.result.model.TripDataSheet;
 import fr.ird.akado.observe.result.model.WellDataSheet;
-import fr.ird.common.log.LogService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
@@ -49,7 +50,7 @@ import java.util.List;
  * @since 1.0.0
  */
 public class Results extends AbstractResults<Result<?>> {
-
+    private static final Logger log = LogManager.getLogger(Results.class);
     public static final String SHEET_NAME_TRIP = "Trip";
     public static final String SHEET_NAME_TRIP_EXTENDED = "Trip with partials landings";
     public static final String SHEET_NAME_ACTIVITY = "Activity";
@@ -82,17 +83,17 @@ public class Results extends AbstractResults<Result<?>> {
 
     private void writeInTripSheet(String filename) throws IOException {
         Results results = getTripResults();
-        LogService.getService(Results.class).logApplicationDebug("TripResults size : " + results.size());
+        log.debug("TripResults size : " + results.size());
         if (results.isEmpty()) {
             return;
         }
         List<TripDataSheet> trips = new ArrayList<>();
         for (Result<?> r : results) {
-//            LogService.getService(Results.class).logApplicationDebug("TripResult : " + r);
+//            log.debug("TripResult : " + r);
             List<TripDataSheet> l = r.extractResults();
-//            LogService.getService(Results.class).logApplicationDebug("TripResult extractResults: " + l.size());
+//            log.debug("TripResult extractResults: " + l.size());
 //            for (Object o : l) {
-//                LogService.getService(Results.class).logApplicationDebug(o.toString());
+//                log.debug(o.toString());
 //            }
             trips.addAll(l);
         }
@@ -164,7 +165,7 @@ public class Results extends AbstractResults<Result<?>> {
     @Override
     public void exportToXLS(String directoryPath) {
 
-        LogService.getService(Results.class).logApplicationInfo("Running export to XLS file");
+        log.info("Running export to XLS file");
 
         try {
             writeInTripSheet(directoryPath);
@@ -176,7 +177,7 @@ public class Results extends AbstractResults<Result<?>> {
             writeLogs(directoryPath);
 
         } catch (IOException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -193,7 +194,7 @@ public class Results extends AbstractResults<Result<?>> {
         Results results = new Results();
         for (Result<?> result : this) {
             if (result instanceof TripResult && !results.in(result)) {
-                LogService.getService(Results.class).logApplicationDebug(result.toString());
+                log.debug(result.toString());
                 results.add(result);
             }
         }
@@ -260,7 +261,7 @@ public class Results extends AbstractResults<Result<?>> {
         try (BufferedWriter bufferWritter = new BufferedWriter(new FileWriter(file, true))) {
             for (Result<?> result : this) {
                 String message = result.getMessage().getContent();
-                LogService.getService(Results.class).logApplicationDebug(message);
+                log.debug(message);
                 bufferWritter.write(message + "\n");
             }
         }

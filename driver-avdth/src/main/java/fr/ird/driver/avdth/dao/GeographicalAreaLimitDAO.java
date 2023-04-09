@@ -17,11 +17,12 @@
 package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.GeographicalAreaLimit;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
-import java.sql.PreparedStatement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -33,7 +34,7 @@ import java.sql.SQLException;
  * @date 26 mai 2014
  */
 public class GeographicalAreaLimitDAO extends AbstractDAO<GeographicalAreaLimit> {
-
+    private static final Logger log = LogManager.getLogger(GeographicalAreaLimitDAO.class);
     public GeographicalAreaLimitDAO() {
         super();
     }
@@ -69,7 +70,7 @@ public class GeographicalAreaLimitDAO extends AbstractDAO<GeographicalAreaLimit>
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(GeographicalAreaLimitDAO.class).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (statement != null) {
                 try {

@@ -16,12 +16,14 @@
 package fr.ird.driver.anapo.service;
 
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.anapo.business.BatVMS;
 import fr.ird.driver.anapo.business.PosVMS;
 import fr.ird.driver.anapo.common.exception.ANAPODriverException;
 import fr.ird.driver.anapo.dao.BatVMSDAO;
 import fr.ird.driver.anapo.dao.PosVMSDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,7 +37,7 @@ import java.sql.SQLException;
  * @date 14 fevr. 2014
  */
 public class ANAPOService {
-
+    private static final Logger log = LogManager.getLogger(ANAPOService.class);
     private static final ANAPOService service = new ANAPOService();    
 //    private static final String PROTOCOLE = "jdbc:Access:///";
     private String url;
@@ -55,10 +57,10 @@ public class ANAPOService {
         try {
             Class.forName(driver).newInstance();
             // Connexion à la base
-            LogService.getService(ANAPOService.class).logApplicationDebug("ANAPO SERVICE : initialisation");
-            LogService.getService(ANAPOService.class).logApplicationDebug("ANAPO SERVICE : " + url);
+            log.debug("ANAPO SERVICE : initialisation");
+            log.debug("ANAPO SERVICE : " + url);
             connection = DriverManager.getConnection(this.url, this.user, this.password);
-            LogService.getService(ANAPOService.class).logApplicationDebug("ANAPO SERVICE : end");
+            log.debug("ANAPO SERVICE : end");
 
         } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new ANAPODriverException("ANAPO: The database connection has failed. See below for more information.\n\n\t«" + ex.getMessage() + "»", ex);

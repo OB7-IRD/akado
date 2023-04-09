@@ -24,8 +24,10 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  * @since 0.9
- *
+ * @deprecated since 3.0.0 (the design of this service is not ok and does not work, logging should be done in each
+ * class which required it).
  */
+@Deprecated
 public class LogService {
 
     private static final LogService service = new LogService();

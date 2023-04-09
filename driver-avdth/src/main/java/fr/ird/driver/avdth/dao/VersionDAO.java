@@ -18,9 +18,10 @@ package fr.ird.driver.avdth.dao;
 
 import fr.ird.common.DateTimeUtils;
 import fr.ird.common.JDBCUtilities;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.avdth.business.Version;
 import fr.ird.driver.avdth.common.exception.AvdthDriverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ import java.sql.Statement;
  * @date 23 sept. 2013
  */
 public class VersionDAO extends AbstractDAO<Version> {
-
+    private static final Logger log = LogManager.getLogger(VersionDAO.class);
     public VersionDAO() {
         super();
     }
@@ -90,7 +91,7 @@ public class VersionDAO extends AbstractDAO<Version> {
         } catch (SQLException ex) {
             JDBCUtilities.printSQLException(ex);
         } catch (AvdthDriverException ex) {
-            LogService.getService(this.getClass()).logApplicationError(ex.getMessage());
+            log.error(ex.getMessage());
         } finally {
             if (stmt != null) {
                 try {

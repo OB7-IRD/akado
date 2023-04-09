@@ -23,9 +23,10 @@ import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.common.OTUtils;
-import fr.ird.common.log.LogService;
 import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.Activity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_POSITION_EEZ_INCONSISTE
  * @since 2.0
  */
 public class PositionInEEZInspector extends Inspector<Activity> {
-
+    private static final Logger log = LogManager.getLogger(PositionInEEZInspector.class);
     public PositionInEEZInspector() {
         super();
         this.name = this.getClass().getName();
@@ -57,8 +58,8 @@ public class PositionInEEZInspector extends Inspector<Activity> {
         Double latitude = OTUtils.convertLatitude(a.getQuadrant(), a.getLatitude());
         Double longitude = OTUtils.convertLongitude(a.getQuadrant(), a.getLongitude());
         String eezFromPosition = GISHandler.getService().getEEZ(longitude, latitude);
-        LogService.getService(PositionInEEZInspector.class).logApplicationDebug("eezCountry " + eezCountry);
-        LogService.getService(PositionInEEZInspector.class).logApplicationDebug("eezFromPosition " + eezFromPosition);
+        log.debug("eezCountry " + eezCountry);
+        log.debug("eezFromPosition " + eezFromPosition);
         return (eezCountry != null && eezFromPosition != null && !eezCountry.equals(eezFromPosition));
 
     }

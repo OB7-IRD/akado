@@ -3,7 +3,6 @@ package fr.ird.akado.observe.task;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.observe.inspector.activity.ObserveActivityInspector;
 import fr.ird.akado.observe.result.Results;
-import fr.ird.common.log.LogService;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
@@ -35,7 +34,7 @@ public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
     @Override
     public void run() {
         try {
-            LogService.getService(this.getClass()).logApplicationInfo("Activity processing...");
+            log.info("Activity processing...");
             for (Trip trip : getTripList()) {
                 getInspectors().forEach(i -> i.setTrip(trip));
                 for (Route route : trip.getLogbookRoute()) {
