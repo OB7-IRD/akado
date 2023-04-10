@@ -76,6 +76,8 @@
             </goals>
             <phase>package</phase>
             <configuration>
+              <includeScope>runtime</includeScope>
+              <excludeScope>test,provided</excludeScope>
               <outputDirectory>${project.build.directory}/libs/</outputDirectory>
             </configuration>
           </execution>
