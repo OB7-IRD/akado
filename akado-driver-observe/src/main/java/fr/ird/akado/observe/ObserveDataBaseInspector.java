@@ -164,7 +164,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         r.setLastDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookRouteDao().lastDate()));
         r.setSampleCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookSampleDao().count());
         r.setWellCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookWellDao().count());
-        InfoResult info = new InfoResult(r, MessageDescriptions.I_0001_INFO_DATABASE);
+        InfoResult info = new InfoResult(r, MessageDescriptions.I_0001_DATABASE_INFO);
 
         List<Object> infos = new ArrayList<>();
         infos.add(r.getTripCount());

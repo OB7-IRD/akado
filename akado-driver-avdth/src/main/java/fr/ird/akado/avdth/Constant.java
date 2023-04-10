@@ -32,9 +32,9 @@ public class Constant {
     public static String AKADO_AVDTH_BUNDLE_PROPERTIES = "AVDTH-inspector";
 
     public static final String CODE_INFO_DATABASE = "0001";
-    public static final String LABEL_INFO_DATABASE = "info.database";
+    public static final String LABEL_INFO_DATABASE = "database.info";
     public static final String CODE_DATABASE_NOT_COMPATIBLE = "0002";
-    public static final String LABEL_DATABASE_NOT_COMPATIBLE = "avdth.not.compatible";
+    public static final String LABEL_DATABASE_NOT_COMPATIBLE = "database.version.not.compatible";
 
     public static final String CODE_VESSEL_IS_NOT_IN_DATABASE = "0003";
     public static final String LABEL_VESSEL_IS_NOT_IN_DATABASE = "avdth.vessel.not.in.db";

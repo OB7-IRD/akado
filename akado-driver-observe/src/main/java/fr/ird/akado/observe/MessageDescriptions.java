@@ -14,8 +14,8 @@ public enum MessageDescriptions implements MessageDescription {
 
     // Global messages
 
-    I_0001_INFO_DATABASE("info.database", false),
-    E_0002_DATABASE_NOT_COMPATIBLE("avdth.not.compatible", false),
+    I_0001_DATABASE_INFO("database.info", false),
+    E_0002_DATABASE_NOT_COMPATIBLE("database.version.not.compatible", false),
 
     // Trip messages
 
