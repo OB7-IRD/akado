@@ -88,8 +88,8 @@ public class SampleResult extends Result<Sample> implements WithTrip {
         }
 
         double minus10Weight = sample.getSmallsWeight();
-        float bigsWeight = sample.getBigsWeight();
-        float totalWeight = sample.getTotalWeight();
+        double bigsWeight = sample.getBigsWeight();
+        double totalWeight = sample.getTotalWeight();
 
         double sPoids = totalWeight;
         if (totalWeight == 0) {

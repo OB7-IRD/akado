@@ -46,7 +46,7 @@ public class LandingConsistentInspector extends ObserveTripInspector {
         if (!trip.getVessel().isPurseSeine()) {
             return null;
         }
-        float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
+        double capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
         if (capacityMax == 0) {
             TripResult r = createResult(MessageDescriptions.W_1002_VESSEL_NO_CAPACITY, trip,
                                         trip.getVessel().getLabel2());

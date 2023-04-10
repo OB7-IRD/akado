@@ -65,7 +65,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
             if (trip.withLogbookActivities()) {
                 subTotalCatchesWeight += catchesWeight(trip);
             }
-            float landingTotalWeight = trip.getLandingTotalWeight();
+            double landingTotalWeight = trip.getLandingTotalWeight();
             if (previous == null || !previous.isPartialLanding()) {
                 if (subTotalCatchesWeight == 0 && landingTotalWeight != 0) {
                     return 0;

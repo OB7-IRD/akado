@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.akado.observe.result.SampleResult;
+import fr.ird.common.Utils;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.Well;
@@ -22,8 +23,8 @@ import java.util.Objects;
 public class DistributionInspector extends ObserveSampleInspector {
 
     public static boolean distributionIsInconsistent(Trip trip, Sample s) {
-        Float m10Weight = 0f;
-        Float p10Weight = 0f;
+        double m10Weight = 0d;
+        double p10Weight = 0d;
         String wellId = s.getWell();
         for (Well well : trip.getWell()) {
             if (Objects.equals(well.getWell(), wellId)) {
@@ -42,7 +43,7 @@ public class DistributionInspector extends ObserveSampleInspector {
                 }
             }
         }
-        return !m10Weight.equals(s.getSmallsWeight()) || !p10Weight.equals(s.getBigsWeight());
+        return m10Weight!=s.getSmallsWeight() || p10Weight!=s.getBigsWeight();
     }
 
     public DistributionInspector() {
@@ -59,4 +60,79 @@ public class DistributionInspector extends ObserveSampleInspector {
         }
         return null;
     }
+
+    /*
+
+    public static double wellM10Weight(Trip trip, Sample sample) {
+        double m10Weight = 0d;
+        String wellId = sample.getWell();
+        for (Well well : trip.getWell()) {
+            if (Objects.equals(well.getWell(), wellId)) {
+                for (WellActivity wellActivity : well.getWellActivity()) {
+                    for (WellActivitySpecies wellActivitySpecies : wellActivity.getWellActivitySpecies()) {
+                        if (wellActivitySpecies.isWeightCategoryMinus10()) {
+                            m10Weight += wellActivitySpecies.getWeight();
+                        }
+                        if (wellActivitySpecies.isWeightCategoryUnknown() && wellActivitySpecies.getSpecies().isSKJ()) {
+                            m10Weight += wellActivitySpecies.getWeight();
+                        }
+                    }
+                }
+            }
+        }
+//        return  Utils.round(m10Weight, 4);
+        return  m10Weight;
+    }
+
+    public static double wellP10Weight(Trip trip, Sample sample) {
+        double p10Weight = 0d;
+        String wellId = sample.getWell();
+        for (Well well : trip.getWell()) {
+            if (Objects.equals(well.getWell(), wellId)) {
+                for (WellActivity wellActivity : well.getWellActivity()) {
+                    for (WellActivitySpecies wellActivitySpecies : wellActivity.getWellActivitySpecies()) {
+                        if (wellActivitySpecies.isWeightCategoryPlus10()) {
+                            p10Weight += wellActivitySpecies.getWeight();
+                        }
+                    }
+                }
+            }
+        }
+//        return  Utils.round(p10Weight, 4);
+        return  p10Weight;
+    }
+
+    public static boolean distributionIsInconsistent(Trip trip, Sample sample) {
+        double wellM10Weight = wellM10Weight(trip, sample);
+        double wellP10Weight = wellP10Weight(trip, sample);
+        double smallsWeight = sample.getSmallsWeight();
+        double bigsWeight = sample.getBigsWeight();
+        return !equals(wellM10Weight,smallsWeight) || !equals(wellP10Weight,bigsWeight);
+    }
+
+    public DistributionInspector() {
+        this.description = "Compare la somme des +10/-10 saisie dans les plans de cuve avec celle saisie dans l'échantillon.";
+    }
+
+    @Override
+    public Results execute() throws Exception {
+        Sample sample = get();
+        double wellM10Weight = wellM10Weight(getTrip(), sample);
+        double wellP10Weight = wellP10Weight(getTrip(), sample);
+        double smallsWeight = sample.getSmallsWeight();
+        double bigsWeight = sample.getBigsWeight();
+//        if (wellM10Weight!=smallsWeight || wellP10Weight!= bigsWeight) {
+        if (!equals(wellM10Weight,smallsWeight) || !equals(wellP10Weight,bigsWeight)) {
+            SampleResult r = createResult(MessageDescriptions.E_1335_SAMPLE_DISTRIBUTION_M10_P10, sample,
+                                          sample.getID(getTrip()),
+                                          smallsWeight,
+                                          bigsWeight,
+                                          sample.getWell(),
+                                          wellM10Weight,
+                                          wellP10Weight);
+            return Results.of(r);
+        }
+        return null;
+    }
+     */
 }

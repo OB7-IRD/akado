@@ -42,7 +42,7 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
     public Results execute() {
         Trip trip = get();
         double landingTotalWeightExpected = trip.landingTotalWeightExpected();
-        float landingTotalWeight = trip.getLandingTotalWeight();
+        double landingTotalWeight = trip.getLandingTotalWeight();
         if ((Math.abs(landingTotalWeight - landingTotalWeightExpected) <= EPSILON)) {
             return null;
         }

@@ -22,9 +22,9 @@ public class WeightSampleInspector extends ObserveSampleInspector {
     @Override
     public Results execute() throws Exception {
         Sample sample = get();
-        float smallsWeight = sample.getSmallsWeight();
-        float bigsWeight = sample.getBigsWeight();
-        float totalWeight = sample.getTotalWeight();
+        double smallsWeight = sample.getSmallsWeight();
+        double bigsWeight = sample.getBigsWeight();
+        double totalWeight = sample.getTotalWeight();
         if ((smallsWeight + bigsWeight != 0 || totalWeight != 0) && (!(smallsWeight + bigsWeight > 0) || totalWeight == 0)) {
             return null;
         }

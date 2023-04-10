@@ -27,7 +27,7 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         for (Sample sample : trip.getLogbookSample()) {
             for (SampleActivity sampleActivity : sample.getSampleActivity()) {
                 if (a.equals(sampleActivity.getActivity())) {
-                    float weightedWeight = sampleActivity.getWeightedWeight();
+                    double weightedWeight = sampleActivity.getWeightedWeight();
                     sumOfSampleWeightedWeight += weightedWeight;
                 }
             }
@@ -62,7 +62,7 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         }
         double sumOfElementaryCatches = 0d;
         for (Catch aCatch : activity.getCatches()) {
-            float catchWeight = aCatch.getWeight();
+            double catchWeight = aCatch.getWeight();
             if (catchWeight == 0) {
                 continue;
             }

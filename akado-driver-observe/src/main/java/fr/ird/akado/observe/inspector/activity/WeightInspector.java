@@ -22,7 +22,7 @@ public class WeightInspector extends ObserveActivityInspector {
     @Override
     public Results execute() throws Exception {
         Activity activity = get();
-        float totalWeight = activity.getTotalWeight();
+        double  totalWeight = activity.getTotalWeight();
         double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
         if (!(Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON)) {
             return null;

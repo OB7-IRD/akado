@@ -21,7 +21,7 @@ public class WeightingInspector extends ObserveSampleInspector {
     public static double weightedWeight(Sample s) {
         double result = 0;
         for (SampleActivity sw : s.getSampleActivity()) {
-            float weightedWeight = sw.getWeightedWeight();
+            double weightedWeight = sw.getWeightedWeight();
             result += weightedWeight;
         }
         return result;
