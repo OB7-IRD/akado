@@ -43,7 +43,7 @@ public class DistributionInspector extends ObserveSampleInspector {
                 }
             }
         }
-        return m10Weight!=s.getSmallsWeight() || p10Weight!=s.getBigsWeight();
+        return !equals(m10Weight,s.getSmallsWeight()) || !equals(p10Weight,s.getBigsWeight());
     }
 
     public DistributionInspector() {

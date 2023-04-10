@@ -75,7 +75,7 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
             }
         }
 
-        if ((Math.abs(sumOfElementaryCatches - sumOfSampleWeightedWeight) <= EPSILON)) {
+        if (equals(sumOfElementaryCatches , sumOfSampleWeightedWeight)) {
             return null;
         }
         ActivityResult r = createResult(MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,

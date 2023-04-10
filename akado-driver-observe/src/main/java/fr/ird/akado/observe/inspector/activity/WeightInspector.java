@@ -24,7 +24,7 @@ public class WeightInspector extends ObserveActivityInspector {
         Activity activity = get();
         double  totalWeight = activity.getTotalWeight();
         double totalCatchWeightExpected = activity.totalCatchWeightFromCatches();
-        if (!(Math.abs(totalCatchWeightExpected - totalWeight) > EPSILON)) {
+        if (equals(totalCatchWeightExpected , totalWeight)) {
             return null;
         }
         // weights are different
