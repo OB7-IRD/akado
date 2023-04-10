@@ -34,7 +34,7 @@ public class WellActivitySpeciesDao extends AbstractDataDao<WellActivitySpecies>
     @Override
     protected void fill(WellActivitySpecies result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
-        result.setWeight(rs.getFloat(6));
+        result.setWeight(rs.getDouble(6));
         result.setCount(rs.getInt(7));
         result.setSetSpeciesNumber(rs.getInt(8));
         ReferentialCache referentialCache = referentialCache();

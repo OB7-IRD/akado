@@ -11,7 +11,7 @@ import fr.ird.driver.observe.business.data.DataEntity;
 public class SampleSpeciesMeasure extends DataEntity {
 
     private int count;
-    private float sizeClass;
+    private double sizeClass;
 
     public int getCount() {
         return count;
@@ -21,11 +21,11 @@ public class SampleSpeciesMeasure extends DataEntity {
         this.count = count;
     }
 
-    public float getSizeClass() {
+    public double getSizeClass() {
         return sizeClass;
     }
 
-    public void setSizeClass(float sizeClass) {
+    public void setSizeClass(double sizeClass) {
         this.sizeClass = sizeClass;
     }
 }

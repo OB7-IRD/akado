@@ -19,7 +19,7 @@ public class Batch extends DataEntity {
 
     private Date date;
     private int count;
-    private float weight;
+    private double weight;
     private String weightComputedSource;
     private String origin;
     private String comment;
@@ -44,11 +44,11 @@ public class Batch extends DataEntity {
         this.count = count;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

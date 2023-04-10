@@ -49,9 +49,9 @@ public class SampleDao extends AbstractDataDao<Sample> {
         result.setComment(rs.getString(7));
         result.setWell(rs.getString(8));
         result.setSuperSample(rs.getBoolean(9));
-        result.setSmallsWeight(rs.getFloat(10));
-        result.setBigsWeight(rs.getFloat(11));
-        result.setTotalWeight(rs.getFloat(12));
+        result.setSmallsWeight(rs.getDouble(10));
+        result.setBigsWeight(rs.getDouble(11));
+        result.setTotalWeight(rs.getDouble(12));
         ReferentialCache referentialCache = referentialCache();
         result.setSampleType(referentialCache.lazyReferential(SampleType.class, rs.getString(13)));
         result.setSampleQuality(referentialCache.lazyReferential(SampleQuality.class, rs.getString(14)));

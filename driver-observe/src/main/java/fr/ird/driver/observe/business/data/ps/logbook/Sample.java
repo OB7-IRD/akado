@@ -25,9 +25,9 @@ public class Sample extends DataEntity {
     private String comment;
     private String well;
     private boolean superSample;
-    private float smallsWeight;
-    private float bigsWeight;
-    private float totalWeight;
+    private double smallsWeight;
+    private double bigsWeight;
+    private double totalWeight;
     private Supplier<SampleType> sampleType = () -> null;
     private Supplier<SampleQuality> sampleQuality = () -> null;
     private Supplier<Set<SampleActivity>> sampleActivity = SingletonSupplier.of(LinkedHashSet::new);
@@ -65,27 +65,27 @@ public class Sample extends DataEntity {
         this.superSample = superSample;
     }
 
-    public float getSmallsWeight() {
+    public double getSmallsWeight() {
         return smallsWeight;
     }
 
-    public void setSmallsWeight(float smallsWeight) {
+    public void setSmallsWeight(double smallsWeight) {
         this.smallsWeight = smallsWeight;
     }
 
-    public float getBigsWeight() {
+    public double getBigsWeight() {
         return bigsWeight;
     }
 
-    public void setBigsWeight(float bigsWeight) {
+    public void setBigsWeight(double bigsWeight) {
         this.bigsWeight = bigsWeight;
     }
 
-    public float getTotalWeight() {
+    public double getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(float totalWeight) {
+    public void setTotalWeight(double totalWeight) {
         this.totalWeight = totalWeight;
     }
 

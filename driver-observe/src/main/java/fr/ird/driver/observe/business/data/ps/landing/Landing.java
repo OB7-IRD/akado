@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 public class Landing extends DataEntity {
 
     private Date date;
-    private float weight;
+    private double weight;
     private Supplier<Species> species = () -> null;
     private Supplier<WeightCategory> weightCategory = () -> null;
     private Supplier<Destination> destination = () -> null;
@@ -35,11 +35,11 @@ public class Landing extends DataEntity {
         this.date = date;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

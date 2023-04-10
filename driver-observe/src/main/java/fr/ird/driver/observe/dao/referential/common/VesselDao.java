@@ -59,11 +59,11 @@ public class VesselDao extends AbstractI18nReferentialDao<Vessel> {
         result.setKeelCode(getInteger(rs, 18));
         result.setChangeDate(rs.getDate(19));
         result.setYearService(getInteger(rs, 20));
-        result.setLength(rs.getFloat(21));
-        result.setCapacity(rs.getFloat(22));
+        result.setLength(rs.getDouble(21));
+        result.setCapacity(rs.getDouble(22));
         result.setPowerCv(getInteger(rs, 23));
         result.setPowerKW(getInteger(rs, 24));
-        result.setSearchMaximum(rs.getFloat(25));
+        result.setSearchMaximum(rs.getDouble(25));
         result.setComment(rs.getString(26));
         result.setSource(rs.getString(27));
         result.setIccatId(rs.getString(28));

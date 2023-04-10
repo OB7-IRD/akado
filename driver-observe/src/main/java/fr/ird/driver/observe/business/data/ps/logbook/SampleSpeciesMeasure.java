@@ -10,14 +10,14 @@ import fr.ird.driver.observe.business.data.DataEntity;
  */
 public class SampleSpeciesMeasure extends DataEntity {
 
-    private float sizeClass;
+    private double sizeClass;
     private int count;
 
-    public float getSizeClass() {
+    public double getSizeClass() {
         return sizeClass;
     }
 
-    public void setSizeClass(float sizeClass) {
+    public void setSizeClass(double sizeClass) {
         this.sizeClass = sizeClass;
     }
 

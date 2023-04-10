@@ -45,10 +45,10 @@ public class Activity extends DataEntity {
     private boolean positionCorrected;
     private int number;
     private int setCount;
-    private float seaSurfaceTemperature;
+    private double seaSurfaceTemperature;
     private int windDirection;
-    private float totalWeight;
-    private float currentSpeed;
+    private double totalWeight;
+    private double currentSpeed;
     private int currentDirection;
     private Supplier<VesselActivity> vesselActivity = () -> null;
     private Supplier<Wind> wind = () -> null;
@@ -181,11 +181,11 @@ public class Activity extends DataEntity {
         this.setCount = setCount;
     }
 
-    public float getSeaSurfaceTemperature() {
+    public double getSeaSurfaceTemperature() {
         return seaSurfaceTemperature;
     }
 
-    public void setSeaSurfaceTemperature(float seaSurfaceTemperature) {
+    public void setSeaSurfaceTemperature(double seaSurfaceTemperature) {
         this.seaSurfaceTemperature = seaSurfaceTemperature;
     }
 
@@ -197,19 +197,19 @@ public class Activity extends DataEntity {
         this.windDirection = windDirection;
     }
 
-    public float getTotalWeight() {
+    public double getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight(float totalWeight) {
+    public void setTotalWeight(double totalWeight) {
         this.totalWeight = totalWeight;
     }
 
-    public float getCurrentSpeed() {
+    public double getCurrentSpeed() {
         return currentSpeed;
     }
 
-    public void setCurrentSpeed(float currentSpeed) {
+    public void setCurrentSpeed(double currentSpeed) {
         this.currentSpeed = currentSpeed;
     }
 

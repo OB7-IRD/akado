@@ -40,7 +40,7 @@ public class CatchDao extends AbstractDataDao<Catch> {
     protected void fill(Catch result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
         result.setComment(rs.getString(6));
-        result.setWeight(rs.getFloat(7));
+        result.setWeight(rs.getDouble(7));
         result.setCount(rs.getInt(8));
         result.setWell(rs.getString(9));
         ReferentialCache referentialCache = referentialCache();

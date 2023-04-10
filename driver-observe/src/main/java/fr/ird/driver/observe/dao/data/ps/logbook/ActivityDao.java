@@ -82,10 +82,10 @@ public class ActivityDao extends AbstractDataDao<Activity> {
         result.setPositionCorrected(rs.getBoolean(14));
         result.setNumber(rs.getInt(15));
         result.setSetCount(rs.getInt(16));
-        result.setSeaSurfaceTemperature(rs.getFloat(17));
+        result.setSeaSurfaceTemperature(rs.getDouble(17));
         result.setWindDirection(rs.getInt(18));
-        result.setTotalWeight(rs.getFloat(19));
-        result.setCurrentSpeed(rs.getFloat(20));
+        result.setTotalWeight(rs.getDouble(19));
+        result.setCurrentSpeed(rs.getDouble(20));
         result.setCurrentDirection(rs.getInt(21));
         ReferentialCache referentialCache = referentialCache();
         result.setVesselActivity(referentialCache.lazyReferential(VesselActivity.class, rs.getString(22)));

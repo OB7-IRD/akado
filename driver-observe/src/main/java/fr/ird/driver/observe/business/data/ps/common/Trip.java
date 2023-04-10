@@ -44,8 +44,8 @@ public class Trip extends DataEntity {
     private String ersId;
     private int timeAtSea;
     private int fishingTime;
-    private float landingTotalWeight;
-    private float localMarketTotalWeight;
+    private double landingTotalWeight;
+    private double localMarketTotalWeight;
     private int loch;
     private String generalComment;
     private String logbookComment;
@@ -146,19 +146,19 @@ public class Trip extends DataEntity {
         this.fishingTime = fishingTime;
     }
 
-    public float getLandingTotalWeight() {
+    public double getLandingTotalWeight() {
         return landingTotalWeight;
     }
 
-    public void setLandingTotalWeight(float landingTotalWeight) {
+    public void setLandingTotalWeight(double landingTotalWeight) {
         this.landingTotalWeight = landingTotalWeight;
     }
 
-    public float getLocalMarketTotalWeight() {
+    public double getLocalMarketTotalWeight() {
         return localMarketTotalWeight;
     }
 
-    public void setLocalMarketTotalWeight(float localMarketTotalWeight) {
+    public void setLocalMarketTotalWeight(double localMarketTotalWeight) {
         this.localMarketTotalWeight = localMarketTotalWeight;
     }
 

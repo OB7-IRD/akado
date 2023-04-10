@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public class Catch extends DataEntity {
 
     private String comment;
-    private float weight;
+    private double weight;
     private int count;
     private String well;
     private Supplier<Species> species = () -> null;
@@ -34,11 +34,11 @@ public class Catch extends DataEntity {
         this.comment = comment;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

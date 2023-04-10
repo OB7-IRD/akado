@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class SampleActivity extends DataEntity {
 
     private Supplier<Activity> activity = () -> null;
-    private float weightedWeight;
+    private double weightedWeight;
 
     public Activity getActivity() {
         return activity.get();
@@ -24,11 +24,11 @@ public class SampleActivity extends DataEntity {
         this.activity = Objects.requireNonNull(activity);
     }
 
-    public float getWeightedWeight() {
+    public double getWeightedWeight() {
         return weightedWeight;
     }
 
-    public void setWeightedWeight(float weightedWeight) {
+    public void setWeightedWeight(double weightedWeight) {
         this.weightedWeight = weightedWeight;
     }
 }

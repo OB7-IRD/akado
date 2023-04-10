@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class WellActivitySpecies extends DataEntity {
     private Supplier<Species> species = () -> null;
     private Supplier<WeightCategory> weightCategory = () -> null;
-    private float weight;
+    private double weight;
     private int count;
     private int setSpeciesNumber;
 
@@ -46,11 +46,11 @@ public class WellActivitySpecies extends DataEntity {
         this.weightCategory = Objects.requireNonNull(weightCategory);
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
