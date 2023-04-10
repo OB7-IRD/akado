@@ -92,7 +92,7 @@ public class WeightInspector extends Inspector<Activity> {
         Results results = new Results();
         Activity a = get();
         double totalCatchWeightExpected = totalCatchWeight(a);
-        if (Math.abs(totalCatchWeightExpected - a.getCatchWeight()) > EPSILON) {
+        if (!equals(totalCatchWeightExpected , a.getCatchWeight())) {
             ActivityResult r = new ActivityResult();
             r.set(a);
             r.setMessageType(Message.ERROR);

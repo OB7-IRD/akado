@@ -71,7 +71,7 @@ public class LandingTotalWeightInspector extends Inspector<Trip> {
         Results results = new Results();
         Trip trip = get();
         double landingTotalWeightExpected = landingTotalWeightExpected(trip);
-        if (Math.abs(trip.getTotalLandingWeight() - landingTotalWeightExpected) > EPSILON) {
+        if (!equals(trip.getTotalLandingWeight() , landingTotalWeightExpected)) {
             TripResult r = new TripResult();
             r.set(trip);
             r.setMessageType(Message.ERROR);

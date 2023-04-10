@@ -25,7 +25,6 @@ import fr.ird.akado.avdth.sample.SpeciesInspector;
 import fr.ird.akado.core.Inspector;
 import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.*;
-import fr.ird.driver.avdth.dao.SampleDAO;
 import fr.ird.driver.avdth.dao.SampleWellDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,7 @@ public class WeightingSampleInspector extends Inspector<Activity> {
         Double sumOfSampleWeightedWeight = sumOfSampleWeightedWeight(a);
 
         if (sumOfSampleWeightedWeight != 0
-                && Math.abs(sumOfElementaryCatches - sumOfSampleWeightedWeight) > EPSILON) {
+                && !equals(sumOfElementaryCatches , sumOfSampleWeightedWeight)) {
             ActivityResult r = new ActivityResult();
             r.set(a);
             r.setMessageType(Message.ERROR);
