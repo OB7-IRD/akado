@@ -24,7 +24,7 @@ public class NullPositionInspector extends ObserveActivityInspector {
         Activity activity = get();
         boolean activityRequiresCoordinate = activity.requiresCoordinate();
         if (activityRequiresCoordinate) {
-            ActivityResult r = createResult(MessageDescriptions.E_1231_ACTIVITY_POSITION_INCONSISTENCY, activity,
+            ActivityResult r = createResult(MessageDescriptions.E1231_ACTIVITY_POSITION_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             activity.getVesselActivity().getLabel2());
             return Results.of(r);

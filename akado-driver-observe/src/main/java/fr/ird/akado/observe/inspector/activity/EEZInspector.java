@@ -27,7 +27,7 @@ public class EEZInspector extends ObserveActivityInspector {
         }
         Activity activity = get();
         if (activity.getVesselActivity().isFishing() && activity.withoutFpaZone()) {
-            ActivityResult r = createResult(MessageDescriptions.W_1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, activity,
+            ActivityResult r = createResult(MessageDescriptions.W1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             activity.getVesselActivity().getCode());
             return Results.of(r);

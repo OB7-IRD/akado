@@ -47,7 +47,7 @@ public class SampleWithoutMeasureInspector extends ObserveSampleInspector {
         Results results = new Results();
         for (SampleSpecies sampleSpecies : sample.getSampleSpecies()) {
             if (sampleSpecies.getSampleSpeciesMeasure().isEmpty()) {
-                SampleResult r = createResult(MessageDescriptions.E_1312_SAMPLE_NO_SAMPLE_MEASURE, sample,
+                SampleResult r = createResult(MessageDescriptions.E1312_SAMPLE_NO_SAMPLE_MEASURE, sample,
                                               sample.getID(getTrip()),
                                               sampleSpecies.getSubSampleNumber(),
                                               sampleSpecies.getSpecies().getCode(),

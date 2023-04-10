@@ -206,7 +206,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                 }
                 if (previous == null || !previous.isPartialLanding()) {
                     if (subTotalCatchesWeight == 0 && trip.getLandingTotalWeight() != 0) {
-                        TripResult r = createResult(MessageDescriptions.E_1025_TRIP_NO_CATCH, trip,
+                        TripResult r = createResult(MessageDescriptions.E1025_TRIP_NO_CATCH, trip,
                                                     trip.getID(), trip.getLandingTotalWeight());
                         results.add(r);
                     }
@@ -225,7 +225,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
             }
 
             if (!rf1IsConsistent(rf1) && !(totalCatchesWeight == 0 && previous != null && !previous.isPartialLanding())) {
-                MetaTripResult mtr = createResult(MessageDescriptions.W_1020_TRIP_RAISING_FACTOR, trips,
+                MetaTripResult mtr = createResult(MessageDescriptions.W1020_TRIP_RAISING_FACTOR, trips,
                                                   tripID.toString(), rf1);
                 mtr.setDataInformation(rf1);
                 results.add(mtr);

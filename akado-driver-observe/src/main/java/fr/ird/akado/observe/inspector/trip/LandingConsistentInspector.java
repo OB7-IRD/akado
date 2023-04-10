@@ -48,14 +48,14 @@ public class LandingConsistentInspector extends ObserveTripInspector {
         }
         double capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
         if (capacityMax == 0) {
-            TripResult r = createResult(MessageDescriptions.W_1002_VESSEL_NO_CAPACITY, trip,
+            TripResult r = createResult(MessageDescriptions.W1002_VESSEL_NO_CAPACITY, trip,
                                         trip.getVessel().getLabel2());
             r.setDataInformation(trip.getVessel());
             return Results.of(r);
         }
         double catchesWeight = trip.getLandingTotalWeight() + trip.getLocalMarketTotalWeight();
         if (catchesWeight > capacityMax) {
-            TripResult r = createResult(MessageDescriptions.E_1022_TRIP_CAPACITY_OVERRIDE, trip,
+            TripResult r = createResult(MessageDescriptions.E1022_TRIP_CAPACITY_OVERRIDE, trip,
                                         trip.getID(),
                                         catchesWeight,
                                         capacityMax);

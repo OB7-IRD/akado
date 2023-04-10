@@ -46,7 +46,7 @@ public class LengthClassInspector extends ObserveSampleInspector {
                 Species species = sampleSpecies.getSpecies();
                 for (SampleSpeciesMeasure sampleSpeciesMeasure : sampleSpecies.getSampleSpeciesMeasure()) {
                     if (lengthClassLimits(species, sampleSpeciesMeasure)) {
-                        SampleResult r = createResult(MessageDescriptions.W_1329_SAMPLE_LENGTH_CLASS, sample,
+                        SampleResult r = createResult(MessageDescriptions.W1329_SAMPLE_LENGTH_CLASS, sample,
                                                       sample.getID(getTrip()),
                                                       species.getCode(),
                                                       sampleSpeciesMeasure.getSizeClass());

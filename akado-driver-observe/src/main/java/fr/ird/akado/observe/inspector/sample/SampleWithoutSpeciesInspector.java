@@ -43,7 +43,7 @@ public class SampleWithoutSpeciesInspector extends ObserveSampleInspector {
         if (!sample.getSampleSpecies().isEmpty()) {
             return null;
         }
-        SampleResult r = createResult(MessageDescriptions.E_1311_SAMPLE_NO_SAMPLE_SPECIES, sample,
+        SampleResult r = createResult(MessageDescriptions.E1311_SAMPLE_NO_SAMPLE_SPECIES, sample,
                                       sample.getID(getTrip()));
         return Results.of(r);
     }

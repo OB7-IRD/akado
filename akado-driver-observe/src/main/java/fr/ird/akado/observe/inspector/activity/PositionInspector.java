@@ -90,7 +90,7 @@ public class PositionInspector extends ObserveActivityInspector {
                 activity.setPositionInLand(() -> country);
 
                 // not on a ocean
-                ActivityResult r = createResult(MessageDescriptions.E_1214_ACTIVITY_POSITION_NOT_IN_OCEAN, activity,
+                ActivityResult r = createResult(MessageDescriptions.E1214_ACTIVITY_POSITION_NOT_IN_OCEAN, activity,
                                                 activity.getID(getTrip(), getRoute()),
                                                 "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")",
                                                 country);
@@ -100,14 +100,14 @@ public class PositionInspector extends ObserveActivityInspector {
             activity.setPositionInIndianOcean(() -> false);
             activity.setPositionInLand(() -> null);
             // not in IO or AO
-            ActivityResult r = createResult(MessageDescriptions.W_1217_ACTIVITY_POSITION_WEIRD, activity,
+            ActivityResult r = createResult(MessageDescriptions.W1217_ACTIVITY_POSITION_WEIRD, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             "(" + OTUtils.degreesDecimalToStringDegreesMinutes(latitude, true) + "/" + OTUtils.degreesDecimalToStringDegreesMinutes(longitude, false) + ")");
             return Results.of(r);
         }
         if ((getTrip().getOcean().isIndian() && !inIO) || (getTrip().getOcean().isAtlantic() && !inAO)) {
             String oceanCode = Ocean.getOcean(longitude, latitude);
-            ActivityResult r = createResult(MessageDescriptions.E_1212_ACTIVITY_OCEAN_INCONSISTENCY, activity,
+            ActivityResult r = createResult(MessageDescriptions.E1212_ACTIVITY_OCEAN_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             getTrip().getOcean().getCode(),
                                             oceanCode);

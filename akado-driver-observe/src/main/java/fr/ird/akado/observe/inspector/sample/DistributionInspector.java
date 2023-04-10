@@ -78,7 +78,7 @@ public class DistributionInspector extends ObserveSampleInspector {
         double smallsWeight = sample.getSmallsWeight();
         double bigsWeight = sample.getBigsWeight();
         if (!equals(wellM10Weight, smallsWeight) || !equals(wellP10Weight, bigsWeight)) {
-            SampleResult r = createResult(MessageDescriptions.E_1335_SAMPLE_DISTRIBUTION_M10_P10, sample,
+            SampleResult r = createResult(MessageDescriptions.E1335_SAMPLE_DISTRIBUTION_M10_P10, sample,
                                           sample.getID(getTrip()),
                                           smallsWeight,
                                           bigsWeight,

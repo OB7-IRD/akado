@@ -147,7 +147,7 @@ public class LittleBigInspector extends ObserveSampleInspector {
         double lf = lfMeasure(sample);
         Results results = new Results();
         if (littleIsInfThreshold(sample, little, lf, ld1)) {
-            SampleResult r = createResult(MessageDescriptions.W_1330_SAMPLE_LITTLE_INF_THRESHOLD, sample,
+            SampleResult r = createResult(MessageDescriptions.W1330_SAMPLE_LITTLE_INF_THRESHOLD, sample,
                                           sample.getID(getTrip()),
                                           little,
                                           THRESHOLD,
@@ -156,7 +156,7 @@ public class LittleBigInspector extends ObserveSampleInspector {
             results.add(r);
         }
         if (bigIsInfThreshold(sample, big, lf, ld1)) {
-            SampleResult r = createResult(MessageDescriptions.W_1337_SAMPLE_BIG_INF_THRESHOLD, sample,
+            SampleResult r = createResult(MessageDescriptions.W1337_SAMPLE_BIG_INF_THRESHOLD, sample,
                                           sample.getID(getTrip()),
                                           big,
                                           THRESHOLD,

@@ -71,7 +71,7 @@ public class MeasureInspector extends ObserveSampleInspector {
         if (sampleSpeciesFrequencyCount == sampleSpeciesMeasuredCount) {
             return null;
         }
-        SampleResult r = createResult(MessageDescriptions.E_1323_SAMPLE_MEASURE_COUNT, sample,
+        SampleResult r = createResult(MessageDescriptions.E1323_SAMPLE_MEASURE_COUNT, sample,
                                       sample.getID(getTrip()),
                                       sampleSpeciesMeasuredCount,
                                       sampleSpeciesFrequencyCount);

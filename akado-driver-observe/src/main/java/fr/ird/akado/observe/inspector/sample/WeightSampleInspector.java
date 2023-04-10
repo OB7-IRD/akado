@@ -28,7 +28,7 @@ public class WeightSampleInspector extends ObserveSampleInspector {
         if ((smallsWeight + bigsWeight != 0 || totalWeight != 0) && (!(smallsWeight + bigsWeight > 0) || totalWeight == 0)) {
             return null;
         }
-        SampleResult r = createResult(MessageDescriptions.E_1319_SAMPLE_WEIGHT_INCONSISTENCY, sample,
+        SampleResult r = createResult(MessageDescriptions.E1319_SAMPLE_WEIGHT_INCONSISTENCY, sample,
                                       sample.getID(getTrip()),
                                       smallsWeight + bigsWeight,
                                       totalWeight);

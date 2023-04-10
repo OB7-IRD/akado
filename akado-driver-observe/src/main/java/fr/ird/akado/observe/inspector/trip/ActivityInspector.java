@@ -44,12 +44,12 @@ public class ActivityInspector extends ObserveTripInspector {
         boolean hasLogbook = trip.hasLogbook();
         boolean withLogbookActivities = trip.withLogbookActivities();
         if (hasLogbook && !withLogbookActivities) {
-            TripResult r = createResult(MessageDescriptions.E_1018_TRIP_NO_ACTIVITY, trip,
+            TripResult r = createResult(MessageDescriptions.E1018_TRIP_NO_ACTIVITY, trip,
                                         trip.getID());
             return Results.of(r);
         }
         if (!hasLogbook && withLogbookActivities) {
-            TripResult r = createResult(MessageDescriptions.E_1024_TRIP_HAS_ACTIVITY_NO_LOGBOOK, trip,
+            TripResult r = createResult(MessageDescriptions.E1024_TRIP_HAS_ACTIVITY_NO_LOGBOOK, trip,
                                         trip.getID());
             return Results.of(r);
         }

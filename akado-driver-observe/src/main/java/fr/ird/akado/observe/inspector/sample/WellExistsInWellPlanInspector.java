@@ -43,7 +43,7 @@ public class WellExistsInWellPlanInspector extends ObserveSampleInspector {
         Results results = new Results();
         Sample sample = get();
         if (!wellExistsInWellPlan(getTrip(), sample)) {
-            SampleResult r = createResult(MessageDescriptions.E_1314_SAMPLE_WELL_INCONSISTENCY, sample,
+            SampleResult r = createResult(MessageDescriptions.E1314_SAMPLE_WELL_INCONSISTENCY, sample,
                                           sample.getID(getTrip()),
                                           sample.getWell());
             results.add(r);

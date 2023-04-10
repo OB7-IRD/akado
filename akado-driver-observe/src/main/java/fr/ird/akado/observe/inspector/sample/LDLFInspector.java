@@ -47,7 +47,7 @@ public class LDLFInspector extends ObserveSampleInspector {
             SizeMeasureType sizeMeasureType = sampleSpecies.getSizeMeasureType();
             Species species = sampleSpecies.getSpecies();
             if (LDLFInspector.ldlfSpeciesInconsistent(sampleSpecies)) {
-                SampleResult r = createResult(MessageDescriptions.E_1334_SAMPLE_LDLF_SPECIES_FORBIDDEN, sample,
+                SampleResult r = createResult(MessageDescriptions.E1334_SAMPLE_LDLF_SPECIES_FORBIDDEN, sample,
                                               sample.getID(getTrip()),
                                               species.getCode(),
                                               sizeMeasureType.getCode());
@@ -56,7 +56,7 @@ public class LDLFInspector extends ObserveSampleInspector {
 
             if (AAProperties.isWarningInspectorEnabled()) {
                 if (ldlfP10(sample, sampleSpecies)) {
-                    SampleResult r = createResult(MessageDescriptions.W_1332_SAMPLE_LDLF_P10, sample,
+                    SampleResult r = createResult(MessageDescriptions.W1332_SAMPLE_LDLF_P10, sample,
                                                   sample.getID(getTrip()),
                                                   sizeMeasureType.getCode(),
                                                   sample.getBigsWeight(),
@@ -64,7 +64,7 @@ public class LDLFInspector extends ObserveSampleInspector {
                     results.add(r);
                 }
                 if (ldlfM10(sample, sampleSpecies)) {
-                    SampleResult r = createResult(MessageDescriptions.W_1333_SAMPLE_LDLF_M10, sample,
+                    SampleResult r = createResult(MessageDescriptions.W1333_SAMPLE_LDLF_M10, sample,
                                                   sample.getID(getTrip()),
                                                   sizeMeasureType.getCode(),
                                                   sample.getSmallsWeight(),

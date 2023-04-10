@@ -46,7 +46,7 @@ public class LandingTotalWeightInspector extends ObserveTripInspector {
         if (equals(landingTotalWeight , landingTotalWeightExpected)) {
             return null;
         }
-        TripResult r = createResult(MessageDescriptions.E_1016_TRIP_LANDING_TOTAL_WEIGHT, trip,
+        TripResult r = createResult(MessageDescriptions.E1016_TRIP_LANDING_TOTAL_WEIGHT, trip,
                                     trip.getID(),
                                     landingTotalWeight,
                                     landingTotalWeightExpected);

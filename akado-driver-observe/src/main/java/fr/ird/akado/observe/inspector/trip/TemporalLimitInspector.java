@@ -55,7 +55,7 @@ public class TemporalLimitInspector extends ObserveTripInspector {
         Date firstRouteDate = firstRoute.getDate();
         Date startDate = trip.getStartDate();
         if (!DateTimeUtils.dateEqual(startDate, firstRouteDate)) {
-            TripResult r = createResult(MessageDescriptions.E_1012_TRIP_START_DATE, trip,
+            TripResult r = createResult(MessageDescriptions.E1012_TRIP_START_DATE, trip,
                                         trip.getID(),
                                         DateUtils.formatDate(startDate),
                                         DateUtils.formatDate(firstRouteDate));
@@ -66,7 +66,7 @@ public class TemporalLimitInspector extends ObserveTripInspector {
         Date endDate = trip.getEndDate();
         Date lastRouteDate = lastRoute.getDate();
         if (!DateTimeUtils.dateEqual(endDate, lastRouteDate)) {
-            TripResult r = createResult(MessageDescriptions.E_1026_TRIP_END_DATE, trip,
+            TripResult r = createResult(MessageDescriptions.E1026_TRIP_END_DATE, trip,
                                         trip.getID(),
                                         DateUtils.formatDate(endDate),
                                         DateUtils.formatDate(lastRouteDate));

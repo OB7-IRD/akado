@@ -78,7 +78,7 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         if (equals(sumOfElementaryCatches , sumOfSampleWeightedWeight)) {
             return null;
         }
-        ActivityResult r = createResult(MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,
+        ActivityResult r = createResult(MessageDescriptions.E1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT, activity,
                                         activity.getID(getTrip(), getRoute()),
                                         sumOfElementaryCatches,
                                         sumOfSampleWeightedWeight);

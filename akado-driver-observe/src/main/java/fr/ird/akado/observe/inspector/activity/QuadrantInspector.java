@@ -36,7 +36,7 @@ public class QuadrantInspector extends ObserveActivityInspector {
             return null;
         }
         // on indian ocean, must be on quadrant 1 or 2
-        ActivityResult r = createResult(MessageDescriptions.E_1213_ACTIVITY_QUADRANT_INCONSISTENCY, activity,
+        ActivityResult r = createResult(MessageDescriptions.E1213_ACTIVITY_QUADRANT_INCONSISTENCY, activity,
                                         activity.getID(getTrip(), getRoute()),
                                         quadrant);
         return Results.of(r);

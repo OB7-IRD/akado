@@ -28,7 +28,7 @@ public class WeightInspector extends ObserveActivityInspector {
             return null;
         }
         // weights are different
-        ActivityResult r = createResult(MessageDescriptions.E_1210_ACTIVITY_TOTAL_CATCH_WEIGHT, activity,
+        ActivityResult r = createResult(MessageDescriptions.E1210_ACTIVITY_TOTAL_CATCH_WEIGHT, activity,
                                         activity.getID(getTrip(), getRoute()),
                                         totalWeight,
                                         totalCatchWeightExpected);

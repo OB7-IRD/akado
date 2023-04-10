@@ -51,7 +51,7 @@ public class OperationInspector extends ObserveActivityInspector {
 
             // can not have set count
             if (setCount != 0) {
-                ActivityResult r = createResult(MessageDescriptions.E_1220_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
+                ActivityResult r = createResult(MessageDescriptions.E1220_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
                                                 activity.getID(getTrip(), getRoute()),
                                                 activity.getVesselActivity().getCode(),
                                                 setCount);
@@ -60,7 +60,7 @@ public class OperationInspector extends ObserveActivityInspector {
 
             // can not have catch weight
             if (totalCatchWeightExpected > 0) {
-                ActivityResult r = createResult(MessageDescriptions.E_1222_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                ActivityResult r = createResult(MessageDescriptions.E1222_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
                                                 activity.getID(getTrip(), getRoute()),
                                                 activity.getVesselActivity().getCode(),
                                                 totalCatchWeightExpected);
@@ -72,7 +72,7 @@ public class OperationInspector extends ObserveActivityInspector {
         // on fishing operation
 
         if (setCount == 0) {
-            ActivityResult r = createResult(MessageDescriptions.E_1218_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
+            ActivityResult r = createResult(MessageDescriptions.E1218_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             activity.getVesselActivity().getCode());
             results.add(r);
@@ -80,7 +80,7 @@ public class OperationInspector extends ObserveActivityInspector {
         if (activity.getReasonForNoFishing() == null) {
             if (activity.getReasonForNullSet() == null) {
                 if (totalCatchWeightExpected == 0) {
-                    ActivityResult r = createResult(MessageDescriptions.E_1216_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
+                    ActivityResult r = createResult(MessageDescriptions.E1216_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT, activity,
                                                     activity.getID(getTrip(), getRoute()),
                                                     activity.getVesselActivity().getCode(),
                                                     totalCatchWeightExpected);
@@ -88,7 +88,7 @@ public class OperationInspector extends ObserveActivityInspector {
                 }
             } else {
                 if (totalCatchWeightExpected > 5) {
-                    ActivityResult r = createResult(MessageDescriptions.W_1215_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_CATCH_WEIGHT, activity,
+                    ActivityResult r = createResult(MessageDescriptions.W1215_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_CATCH_WEIGHT, activity,
                                                     activity.getID(getTrip(), getRoute()),
                                                     activity.getVesselActivity().getCode(),
                                                     totalCatchWeightExpected);
@@ -99,7 +99,7 @@ public class OperationInspector extends ObserveActivityInspector {
         }
         // reasonForNoFishing != null
         if (totalCatchWeightExpected > 0) {
-            ActivityResult r = createResult(MessageDescriptions.E_1225_ACTIVITY_FISHING_OPERATION_AND_REASON_FOR_NO_FISHING_INCONSISTENCY_CATCH_WEIGHT, activity,
+            ActivityResult r = createResult(MessageDescriptions.E1225_ACTIVITY_FISHING_OPERATION_AND_REASON_FOR_NO_FISHING_INCONSISTENCY_CATCH_WEIGHT, activity,
                                             activity.getTopiaId(),
                                             activity.getVesselActivity().getCode(),
                                             activity.getReasonForNoFishing().getCode(),

@@ -28,9 +28,9 @@ message.activity.trace.vms.no.match={0}> Activité[{1}] Aucune position VMS ne c
 
 | message                                                                                  | clef de traduction                                                    |
 |:-----------------------------------------------------------------------------------------|:----------------------------------------------------------------------|
-| MessageDescriptions.E_1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY                        | message.activity.fishing.context.null                                 |
-| MessageDescriptions.E_1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE | message.activity.fishing.context.inconsistency.artificial.school.type |
-| MessageDescriptions.E_1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE       | message.activity.fishing.context.inconsistency.free.school.type       |
+| MessageDescriptions.E1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY                        | message.activity.fishing.context.null                                 |
+| MessageDescriptions.E1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE | message.activity.fishing.context.inconsistency.artificial.school.type |
+| MessageDescriptions.E1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE       | message.activity.fishing.context.inconsistency.free.school.type       |
 
 ```properties
 message.activity.fishing.context.inconsistency.artificial.school.type={0}> Activité[{1}] Le champ «Type de banc» est {2} mais aucun système observé sur banc objet n''a été détecté.
@@ -41,12 +41,12 @@ message.activity.fishing.context.null={0}> Activité[{1}] Aucun système observ�
 
 | message                                                                                                    | clef de traduction                                                                      |
 |:-----------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------|
-| MessageDescriptions.E_1220_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT                     | message.activity.not.fishing.operation.inconsistency.with.set.count                     |
-| MessageDescriptions.E_1218_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT                         | message.activity.fishing.operation.inconsistency.with.set.count                         |
-| MessageDescriptions.E_1222_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT                  | message.activity.not.fishing.operation.inconsistency.with.catch.weight                  |
-| MessageDescriptions.E_1216_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT                      | message.activity.fishing.operation.inconsistency.with.catch.weight                      |
-| MessageDescriptions.W_1215_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_CATCH_WEIGHT                           | message.activity.fishing.operation.inconsistency.catch.weight                           |
-| MessageDescriptions.E_1225_ACTIVITY_FISHING_OPERATION_AND_REASON_FOR_NO_FISHING_INCONSISTENCY_CATCH_WEIGHT | message.activity.fishing.operation.and.reason.for.no.fishing.inconsistency.catch.weight |
+| MessageDescriptions.E1220_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT                     | message.activity.not.fishing.operation.inconsistency.with.set.count                     |
+| MessageDescriptions.E1218_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_SET_COUNT                         | message.activity.fishing.operation.inconsistency.with.set.count                         |
+| MessageDescriptions.E1222_ACTIVITY_NOT_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT                  | message.activity.not.fishing.operation.inconsistency.with.catch.weight                  |
+| MessageDescriptions.E1216_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_WITH_CATCH_WEIGHT                      | message.activity.fishing.operation.inconsistency.with.catch.weight                      |
+| MessageDescriptions.W1215_ACTIVITY_FISHING_OPERATION_INCONSISTENCY_CATCH_WEIGHT                           | message.activity.fishing.operation.inconsistency.catch.weight                           |
+| MessageDescriptions.E1225_ACTIVITY_FISHING_OPERATION_AND_REASON_FOR_NO_FISHING_INCONSISTENCY_CATCH_WEIGHT | message.activity.fishing.operation.and.reason.for.no.fishing.inconsistency.catch.weight |
 
 ```properties
 message.activity.not.fishing.operation.inconsistency.with.set.count={0}> Activité[{1}] L''opération n''est pas un coup de pêche ( «operation code» {2}) , mais la valeur du champs « setCount » n''est pas nulle ( valur : {3} )
@@ -60,9 +60,9 @@ message.activity.fishing.operation.and.reason.for.no.fishing.inconsistency.catch
 
 | message                                                   | clef de traduction                   |
 |:----------------------------------------------------------|:-------------------------------------|
-| MessageDescriptions.E_1214_ACTIVITY_POSITION_NOT_IN_OCEAN | message.activity.position.notinocean |
-| MessageDescriptions.W_1217_ACTIVITY_POSITION_WEIRD        | message.activity.position.weird      |
-| MessageDescriptions.E_1212_ACTIVITY_OCEAN_INCONSISTENCY   | message.activity.ocean               |
+| MessageDescriptions.E1214_ACTIVITY_POSITION_NOT_IN_OCEAN | message.activity.position.notinocean |
+| MessageDescriptions.W1217_ACTIVITY_POSITION_WEIRD        | message.activity.position.weird      |
+| MessageDescriptions.E1212_ACTIVITY_OCEAN_INCONSISTENCY   | message.activity.ocean               |
 
 ```properties
 message.activity.position.notinocean={0}> Activité[{1}] La position {2} localise l''activité dans le pays: «{3}».
@@ -73,7 +73,7 @@ message.activity.ocean={0}> Activité[{1}] La valeur obtenue pour le champ «oce
 
 | message                                                    | clef de traduction        |
 |:-----------------------------------------------------------|:--------------------------|
-| MessageDescriptions.E_1213_ACTIVITY_QUADRANT_INCONSISTENCY | message.activity.quadrant |
+| MessageDescriptions.E1213_ACTIVITY_QUADRANT_INCONSISTENCY | message.activity.quadrant |
 
 ```properties
 message.activity.quadrant={0}> Activité[{1}] La valeur obtenue pour le champ «quadrant» est {2} mais le champ «ocean code»  de la marée est l''«Océan Indien».
@@ -82,7 +82,7 @@ message.activity.quadrant={0}> Activité[{1}] La valeur obtenue pour le champ «
 
 | message                                                | clef de traduction                  |
 |:-------------------------------------------------------|:------------------------------------|
-| MessageDescriptions.E_1210_ACTIVITY_TOTAL_CATCH_WEIGHT | message.activity.totalcaptureweight |
+| MessageDescriptions.E1210_ACTIVITY_TOTAL_CATCH_WEIGHT | message.activity.totalcaptureweight |
 
 ```properties
 message.activity.totalcaptureweight={0}> Activité[{1}] La valeur obtenue pour le champ «total capture weight» est {2}  mais la valeur attendue, basée sur les captures élémentaires, est {3}.
@@ -91,7 +91,7 @@ message.activity.totalcaptureweight={0}> Activité[{1}] La valeur obtenue pour l
 
 | message                                                           | clef de traduction                           |
 |:------------------------------------------------------------------|:---------------------------------------------|
-| MessageDescriptions.W_1235_ACTIVITY_POSITION_IN_EEZ_INCONSISTENCY | message.activity.position.eez.inconsistency  |
+| MessageDescriptions.W1235_ACTIVITY_POSITION_IN_EEZ_INCONSISTENCY | message.activity.position.eez.inconsistency  |
 
 ```properties
 message.activity.position.eez.inconsistency={0}> Activité[{1}] La ZEE déclarée ({2}) semble incorrecte par rapport à la position déclarée ({3}), la ZEE déduite de la position est ({4}).
@@ -100,7 +100,7 @@ message.activity.position.eez.inconsistency={0}> Activité[{1}] La ZEE déclaré
 
 | message                                                         | clef de traduction                           |
 |:----------------------------------------------------------------|:---------------------------------------------|
-| MessageDescriptions.W_1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY | message.activity.operation.eez.inconsistency |
+| MessageDescriptions.W1232_ACTIVITY_OPERATION_EEZ_INCONSISTENCY | message.activity.operation.eez.inconsistency |
 
 ```properties
 message.activity.operation.eez.inconsistency={0}> Activité[{1}] L''activité est une opération de pêche ( «operation code» {2} ) mais la zone FPA n''est pas définie.
@@ -111,7 +111,7 @@ message.activity.operation.eez.inconsistency={0}> Activité[{1}] L''activité es
 
 | message                                                                 | clef de traduction                                   |
 |:------------------------------------------------------------------------|:-----------------------------------------------------|
-| MessageDescriptions.E_1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT | message.activity.catch.weight.sample.weighted.weight |
+| MessageDescriptions.E1233_ACTIVITY_CATCH_WEIGHT_SAMPLE_WEIGHTED_WEIGHT | message.activity.catch.weight.sample.weighted.weight |
 
 ```properties
 message.activity.catch.weight.sample.weighted.weight={0}> Activité[{1}] La somme des captures élementaires ({2}) et la ponderation des échantillons ({3}) sont différentes.
@@ -120,7 +120,7 @@ message.activity.catch.weight.sample.weighted.weight={0}> Activité[{1}] La somm
 
 | message                                                           | clef de traduction                      |
 |:------------------------------------------------------------------|:----------------------------------------|
-| MessageDescriptions.E_1231_ACTIVITY_POSITION_INCONSISTENCY | message.activity.position.inconsistency |
+| MessageDescriptions.E1231_ACTIVITY_POSITION_INCONSISTENCY | message.activity.position.inconsistency |
 
 ```properties
 message.activity.position.inconsistency={0}> Activité[{1}] L''activité ( «operation code» {2} ) n''a pas de coordinnées, ce qui est interdit sauf pour une opération sur objet flottant avec perte/fin de transmission ou fin d''utilisation de balise.

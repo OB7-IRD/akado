@@ -44,7 +44,7 @@ public class FishingTimeInspector extends ObserveTripInspector {
         int fishingTime = trip.getFishingTime();
         int fishingTimeExpected = trip.fishingTimeExpected();
         if (fishingTime != fishingTimeExpected) {
-            TripResult r = createResult(MessageDescriptions.E_1017_TRIP_FISHING_TIME, trip,
+            TripResult r = createResult(MessageDescriptions.E1017_TRIP_FISHING_TIME, trip,
                                         trip.getID(), fishingTime, fishingTimeExpected);
             r.setValueObtained(fishingTime);
             r.setValueExpected(fishingTimeExpected);

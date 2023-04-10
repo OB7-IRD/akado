@@ -42,13 +42,13 @@ public class TimeAtSeaInspector extends ObserveTripInspector {
         Trip trip = get();
         int timeAtSea = trip.getTimeAtSea();
         if (timeAtSea == 0) {
-            TripResult r = createResult(MessageDescriptions.E_1010_TRIP_NO_TIME_AT_SEA, trip,
+            TripResult r = createResult(MessageDescriptions.E1010_TRIP_NO_TIME_AT_SEA, trip,
                                         trip.getID());
             return Results.of(r);
         }
         int timeAtSeaExpected = trip.timeAtSeaExpected();
         if (timeAtSeaExpected != trip.getTimeAtSea()) {
-            TripResult r = createResult(MessageDescriptions.E_1011_TRIP_TIME_AT_SEA, trip,
+            TripResult r = createResult(MessageDescriptions.E1011_TRIP_TIME_AT_SEA, trip,
                                         trip.getID(), timeAtSea, timeAtSeaExpected);
             r.setValueObtained(timeAtSea);
             r.setValueExpected(timeAtSeaExpected);

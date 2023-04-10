@@ -34,7 +34,7 @@ public class FishingContextInspector extends ObserveActivityInspector {
         Activity a = get();
         Set<ObservedSystem> observedSystem = a.getObservedSystem();
         if (observedSystem.isEmpty()) {
-            ActivityResult r = createResult(MessageDescriptions.E_1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, a,
+            ActivityResult r = createResult(MessageDescriptions.E1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, a,
                                             a.getID(getTrip(), getRoute()));
             return Results.of(r);
         }
@@ -46,7 +46,7 @@ public class FishingContextInspector extends ObserveActivityInspector {
 
             Set<String> requiredFadObservedSystem = observedSystem.stream().filter(os -> os.getSchoolType().isArtificial()).map(ObservedSystem::getCode).collect(Collectors.toSet());
             if (requiredFadObservedSystem.isEmpty()) {
-                ActivityResult r = createResult(MessageDescriptions.E_1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, a,
+                ActivityResult r = createResult(MessageDescriptions.E1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, a,
                                                 a.getID(getTrip(), getRoute()),
                                                 schoolType.getLabel2());
                 return Results.of(r);
@@ -56,7 +56,7 @@ public class FishingContextInspector extends ObserveActivityInspector {
         if (schoolType.isFree()) {
             Set<String> forbiddenFadObservedSystem = observedSystem.stream().filter(os -> os.getSchoolType().isArtificial()).map(ObservedSystem::getCode).collect(Collectors.toSet());
             if (!forbiddenFadObservedSystem.isEmpty()) {
-                ActivityResult r = createResult(MessageDescriptions.E_1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, a,
+                ActivityResult r = createResult(MessageDescriptions.E1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, a,
                                                 a.getID(getTrip(), getRoute()),
                                                 schoolType.getLabel2());
                 return Results.of(r);

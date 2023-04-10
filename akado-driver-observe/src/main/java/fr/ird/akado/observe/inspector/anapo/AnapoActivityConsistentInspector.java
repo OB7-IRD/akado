@@ -151,7 +151,7 @@ public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListIn
                 activity.setDate(posVMS.getDate().toDate());
 
                 Anapo anapo = new Anapo(activity, posVMS.getCfrId());
-                AnapoResult r = createResult(MessageDescriptions.I_0003_VESSEL_IS_NOT_IN_DATABASE, anapo,
+                AnapoResult r = createResult(MessageDescriptions.I0003_VESSEL_IS_NOT_IN_DATABASE, anapo,
                                              posVMS.getVesselId(),
                                              "VMS : " + posVMS.getDate().toString(DateTimeUtils.DATE_FORMATTER)
                 );
@@ -168,7 +168,7 @@ public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListIn
                 Anapo anapo = new Anapo(a, posVMS.getCfrId());
                 anapo.setPosVMS(posVMS);
 
-                AnapoResult r = createResult(MessageDescriptions.E_1228_ANAPO_NO_ACTIVITY, anapo,
+                AnapoResult r = createResult(MessageDescriptions.E1228_ANAPO_NO_ACTIVITY, anapo,
                                              a.getID(),
                                              posVMS.getDate());
                 results.add(r);

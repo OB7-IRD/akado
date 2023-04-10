@@ -44,13 +44,13 @@ public class WeightingInspector extends ObserveSampleInspector {
         if (AAProperties.isWarningInspectorEnabled()) {
             if (trip.getVessel().isPurseSeine()) {
                 if (weight > 100) {
-                    SampleResult r = createResult(MessageDescriptions.W_1320_SAMPLE_WEIGHTING_SUP_100, sample,
+                    SampleResult r = createResult(MessageDescriptions.W1320_SAMPLE_WEIGHTING_SUP_100, sample,
                                                   sample.getID(getTrip()),
                                                   weight);
                     results.add(r);
                 }
                 if (weightedWeight < weight && !((weightedWeight / weight) >= 0.95)) {
-                    SampleResult r = createResult(MessageDescriptions.W_1322_SAMPLE_WEIGHTING_RATIO, sample,
+                    SampleResult r = createResult(MessageDescriptions.W1322_SAMPLE_WEIGHTING_RATIO, sample,
                                                   sample.getID(getTrip()),
                                                   weightedWeight,
                                                   weight,
@@ -63,7 +63,7 @@ public class WeightingInspector extends ObserveSampleInspector {
         if (trip.getVessel().isBaitBoat()) {
             if (!sample.getSampleType().isAtLandingFreshFishBaitBoat()) {
                 if (Math.abs(weightedWeight - weight) > 1) {
-                    SampleResult r = createResult(MessageDescriptions.E_1327_SAMPLE_WEIGHTING_BB_WEIGHT, sample,
+                    SampleResult r = createResult(MessageDescriptions.E1327_SAMPLE_WEIGHTING_BB_WEIGHT, sample,
                                                   sample.getID(getTrip()),
                                                   weightedWeight,
                                                   weight);
@@ -79,7 +79,7 @@ public class WeightingInspector extends ObserveSampleInspector {
                     }
                 }
                 if (Math.abs(weightedWeight - lc) > 1) {
-                    SampleResult r = createResult(MessageDescriptions.E_1326_SAMPLE_WEIGHTING_BB_LC, sample,
+                    SampleResult r = createResult(MessageDescriptions.E1326_SAMPLE_WEIGHTING_BB_LC, sample,
                                                   sample.getID(getTrip()),
                                                   weightedWeight,
                                                   lc);

@@ -75,7 +75,7 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
         for (Route route : trip.getLogbookRoute()) {
             Date routeDate = route.getDate();
             if (route.getActivity().isEmpty()) {
-                TripResult r = createResult(MessageDescriptions.E_1014_TRIP_ROUTE_NO_ACTIVITY, trip,
+                TripResult r = createResult(MessageDescriptions.E1014_TRIP_ROUTE_NO_ACTIVITY, trip,
                                             trip.getID(),
                                             DateUtils.formatDate(routeDate));
                 results.add(r);
@@ -86,7 +86,7 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
                 continue;
             }
             if (!DateTimeUtils.dateIsTheNextDay(lastRoute.getDate(), routeDate)) {
-                TripResult r = createResult(MessageDescriptions.E_1013_TRIP_RECOVERY_TIME, trip,
+                TripResult r = createResult(MessageDescriptions.E1013_TRIP_RECOVERY_TIME, trip,
                                             trip.getID(),
                                             DateUtils.formatDate(lastRoute.getDate()),
                                             DateUtils.formatDate(routeDate));

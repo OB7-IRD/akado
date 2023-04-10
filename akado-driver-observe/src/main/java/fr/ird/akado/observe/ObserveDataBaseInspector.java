@@ -164,7 +164,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         r.setLastDateOfActivity(convertDate(ObserveService.getService().getDaoSupplier().getPsLogbookRouteDao().lastDate()));
         r.setSampleCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookSampleDao().count());
         r.setWellCount((int) ObserveService.getService().getDaoSupplier().getPsLogbookWellDao().count());
-        InfoResult info = new InfoResult(r, MessageDescriptions.I_0001_DATABASE_INFO);
+        InfoResult info = new InfoResult(r, MessageDescriptions.I0001_DATABASE_INFO);
 
         List<Object> infos = new ArrayList<>();
         infos.add(r.getTripCount());
@@ -189,7 +189,7 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
     public void validate() throws Exception {
         Version observeVersion = ObserveService.getService().getDaoSupplier().getVersionDao().getVersionNumber();
         if (!observeVersion.equals(ObserveVersion.VERSION_OBSERVE_COMPATIBILITY)) {
-            ObserveMessage message = new ObserveMessage(MessageDescriptions.E_0002_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, ObserveVersion.VERSION_OBSERVE_COMPATIBILITY));
+            ObserveMessage message = new ObserveMessage(MessageDescriptions.E0002_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, ObserveVersion.VERSION_OBSERVE_COMPATIBILITY));
             throw new AkadoException(message.getContent());
         }
         List<Trip> tripList = getTripsToValidate();

@@ -85,7 +85,7 @@ public class AnapoInspector extends ObserveAnapoActivityInspector {
         List<PosVMS> positions = dao.findAllPositions(activity.getVessel().getCodeAsInt(), activity.getDate());
         if (positions.isEmpty()) {
             Anapo anapo = new Anapo(activity);
-            AnapoResult r = createResult(MessageDescriptions.I_1221_ACTIVITY_NO_TRACE_VMS, anapo,
+            AnapoResult r = createResult(MessageDescriptions.I1221_ACTIVITY_NO_TRACE_VMS, anapo,
                                          activity.getID());
             return Results.of(r);
         }
@@ -94,7 +94,7 @@ public class AnapoInspector extends ObserveAnapoActivityInspector {
         if (positions.size() < NB_POSITIONS_VMS_MIN) {
             Anapo anapo = new Anapo(activity);
             anapo.setVmsPositionCount(positions.size());
-            AnapoResult r = createResult(MessageDescriptions.I_1224_INCONSISTENCY_VMS_POSITION_COUNT, anapo,
+            AnapoResult r = createResult(MessageDescriptions.I1224_INCONSISTENCY_VMS_POSITION_COUNT, anapo,
                                          activity.getID(),
                                          anapo.getVMSPositionCount()
             );
@@ -125,7 +125,7 @@ public class AnapoInspector extends ObserveAnapoActivityInspector {
             Anapo anapo = new Anapo(activity);
             anapo.setVmsPositionCount(positions.size());
             anapo.setPositions(m);
-            AnapoResult r = createResult(MessageDescriptions.W_1223_ACTIVITY_TRACE_VMS_CL2, anapo,
+            AnapoResult r = createResult(MessageDescriptions.W1223_ACTIVITY_TRACE_VMS_CL2, anapo,
                                          activity.getID(),
                                          "[" + 0 + "-" + THRESHOLD_CLASS_TWO + "]",
                                          m.size());
@@ -137,7 +137,7 @@ public class AnapoInspector extends ObserveAnapoActivityInspector {
         anapo.setVmsPositionCount(positions.size());
         anapo.setPositions(scores);
 
-        AnapoResult r = createResult(MessageDescriptions.E_1227_ACTIVITY_TRACE_VMS_NO_MATCH, anapo,
+        AnapoResult r = createResult(MessageDescriptions.E1227_ACTIVITY_TRACE_VMS_NO_MATCH, anapo,
                                      activity.getID());
         results.add(r);
         return results;
