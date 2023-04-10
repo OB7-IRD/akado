@@ -94,7 +94,7 @@ message.activity.totalcaptureweight={0}> Activité[{1}] La valeur obtenue pour l
 | MessageDescriptions.W_1235_ACTIVITY_POSITION_IN_EEZ_INCONSISTENCY | message.activity.position.eez.inconsistency  |
 
 ```properties
-message.activity.position.eez.inconsistency={0}> Activité[{1}] La ZEE ({2}) semble incorrecte par rapport à la position déclarée ({3}).
+message.activity.position.eez.inconsistency={0}> Activité[{1}] La ZEE déclarée ({2}) semble incorrecte par rapport à la position déclarée ({3}), la ZEE déduite de la position est ({4}).
 ```
 # fr.ird.akado.observe.inspector.activity.EEZInspector
 

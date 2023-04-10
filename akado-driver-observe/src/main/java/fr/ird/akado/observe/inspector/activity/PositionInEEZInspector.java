@@ -24,8 +24,6 @@ import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
@@ -38,16 +36,10 @@ import java.util.Objects;
 @AutoService(ObserveActivityInspector.class)
 public class PositionInEEZInspector extends ObserveActivityInspector {
 
-    private static final Logger log = LogManager.getLogger(PositionInEEZInspector.class);
-
-    public static boolean activityPositionAndEEZInconsistent(Activity a) {
-        String eezCountry = Objects.requireNonNull(a.getFpaZone()).getCountry().getIso3Code();
-        Float latitude = Objects.requireNonNull(a.getLatitude());
-        Float longitude = Objects.requireNonNull(a.getLongitude());
-        String eezFromPosition = GISHandler.getService().getEEZ(longitude, latitude);
-        log.debug("eezCountry " + eezCountry);
-        log.debug("eezFromPosition " + eezFromPosition);
-        return !Objects.equals(eezCountry, eezFromPosition);
+    public static String computedEEZFromPosition(Activity activity) {
+        Float latitude = Objects.requireNonNull(activity.getLatitude());
+        Float longitude = Objects.requireNonNull(activity.getLongitude());
+        return GISHandler.getService().getEEZ(longitude, latitude);
     }
 
     public PositionInEEZInspector() {
@@ -63,11 +55,14 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
         if (activity.withoutCoordinate() || activity.withoutFpaZone()) {
             return null;
         }
-        if (activityPositionAndEEZInconsistent(activity)) {
+        String eezFromPosition = computedEEZFromPosition(activity);
+        String eezCountry = Objects.requireNonNull(activity.getFpaZone()).getCountry().getIso3Code();
+        if (!Objects.equals(eezCountry, eezFromPosition)) {
             ActivityResult r = createResult(MessageDescriptions.W_1234_ACTIVITY_POSITION_EEZ_INCONSISTENCY, activity,
                                             activity.getID(getTrip(), getRoute()),
                                             activity.getFpaZone().getCountry().getIso3Code(),
-                                            activity.getLongitude() + " " + activity.getLatitude());
+                                            activity.getLongitude() + " " + activity.getLatitude(),
+                                            eezFromPosition);
             return Results.of(r);
         }
         return null;
