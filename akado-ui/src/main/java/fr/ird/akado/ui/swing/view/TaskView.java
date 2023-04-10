@@ -26,6 +26,7 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.core.common.AkadoMessages;
 import fr.ird.akado.core.common.MessageListener;
+import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.ui.swing.view.p.InfoBar;
 import fr.ird.akado.ui.swing.view.p.ToolsBar;
@@ -204,8 +205,14 @@ public class TaskView extends JPanel implements ActionListener {
             } catch (Exception e) {
                 log.error("Could not close inspector", e);
             } finally {
-                toolbar.setEnabled(true);
-                inspector.getAkadoMessages().removeMessageListener(messageListener);
+                try {
+                    GISHandler.getService().close();
+                } catch (Exception e) {
+                    log.error("Could not close GIS database", e);
+                } finally {
+                    toolbar.setEnabled(true);
+                    inspector.getAkadoMessages().removeMessageListener(messageListener);
+                }
             }
             timer.stop();
             Toolkit.getDefaultToolkit().beep();
