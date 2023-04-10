@@ -92,6 +92,7 @@ public class RecoveryTimeInspector extends ObserveTripInspector {
                                             DateUtils.formatDate(routeDate));
                 results.add(r);
             }
+            lastRoute = route;
         }
         return results;
     }
