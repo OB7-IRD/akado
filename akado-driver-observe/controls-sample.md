@@ -115,5 +115,5 @@ message.sample.ldlf.species.forbidden={0}> Echantillon[{1}] L''espèce avec le c
 | MessageDescriptions.E_1335_SAMPLE_DISTRIBUTION_M10_P10 | message.sample.distribution.m10.p10 |
 
 ```properties
-message.sample.distribution.m10.p10={0}> Echantillon[{1}] Les valeurs de répartition -10/+10 sont incohérentes avec celle de la cuve {2}.
+message.sample.distribution.m10.p10={0}> Echantillon[{1}] Les valeurs de répartition -10/+10 (valeurs : {2}/{3}) sont incohérentes avec celles de la cuve {4} (valeurs : {5}/{6}).
 ```
