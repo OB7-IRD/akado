@@ -195,12 +195,22 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         List<Trip> tripList = getTripsToValidate();
         List<ObserveDataBaseInspectorTask<?>> tasks = new ArrayList<>();
         if (AAProperties.isAkadoInspectorEnabled()) {
-            tasks.add(new TripTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
-            tasks.add(new ActivityTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
-            tasks.add(new WellTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
-            tasks.add(new SampleTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+            if (AAProperties.isTripInspectorEnabled()) {
+                tasks.add(new TripTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+            }
+            if (AAProperties.isActivityInspectorEnabled()) {
+                tasks.add(new ActivityTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+            }
+            if (AAProperties.isWellInspectorEnabled()) {
+                tasks.add(new WellTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+            }
+            if (AAProperties.isSampleInspectorEnabled()) {
+                tasks.add(new SampleTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+            }
         }
-        tasks.add(new AnapoTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+        if (AAProperties.isAnapoInspectorEnabled()) {
+            tasks.add(new AnapoTask(exportDirectoryPath, tripList, getInspectors(), getResults()));
+        }
 //        ExecutorService exec = Executors.newFixedThreadPool(AAProperties.NB_PROC);
         for (ObserveDataBaseInspectorTask<?> task : tasks) {
             task.run();
