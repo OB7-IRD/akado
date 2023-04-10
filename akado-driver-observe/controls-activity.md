@@ -33,9 +33,9 @@ message.activity.trace.vms.no.match={0}> Activité[{1}] Aucune position VMS ne c
 | MessageDescriptions.E_1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE       | message.activity.fishing.context.inconsistency.free.school.type       |
 
 ```properties
-message.activity.fishing.context.inconsistency.artificial.school.type={0}> Activité[{1}] Le champ «school type code» est {2} mais aucun système observé sur banc objet d�tecté.
-message.activity.fishing.context.inconsistency.free.school.type={0}> Activité[{1}] Le champ «school type code» est {2} mais au moins un système observé sur banc objet d�tecté.
-message.activity.fishing.context.null={0}> Activité[{1}] Le type de banc est «{2}» mais le contexte de pêche est vide.
+message.activity.fishing.context.inconsistency.artificial.school.type={0}> Activité[{1}] Le champ «Type de banc» est {2} mais aucun système observé sur banc objet n''a été détecté.
+message.activity.fishing.context.inconsistency.free.school.type={0}> Activité[{1}] Le champ «Type de banc» est {2} mais au moins un système observé sur banc objet a été détecté.
+message.activity.fishing.context.null={0}> Activité[{1}] Aucun système observé n'est renseigné.
 ```
 # fr.ird.akado.observe.inspector.activity.OperationInspector
 

@@ -32,25 +32,23 @@ public class FishingContextInspector extends ObserveActivityInspector {
     public Results execute() throws Exception {
 
         Activity a = get();
+        Set<ObservedSystem> observedSystem = a.getObservedSystem();
+        if (observedSystem.isEmpty()) {
+            ActivityResult r = createResult(MessageDescriptions.E_1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, a,
+                                            a.getID(getTrip(), getRoute()));
+            return Results.of(r);
+        }
         if (a.withoutSchoolType()) {
             return null;
         }
         SchoolType schoolType = a.getSchoolType();
-
-        Set<ObservedSystem> observedSystem = a.getObservedSystem();
-
         if (schoolType.isArtificial()) {
-            if (observedSystem.isEmpty()) {
-                ActivityResult r = createResult(MessageDescriptions.E_1219_ACTIVITY_FISHING_CONTEXT_NULL_OR_EMPTY, a,
-                                                a.getID(getTrip(), getRoute()),
-                                                schoolType.getCode());
-                return Results.of(r);
-            }
+
             Set<String> requiredFadObservedSystem = observedSystem.stream().filter(os -> os.getSchoolType().isArtificial()).map(ObservedSystem::getCode).collect(Collectors.toSet());
             if (requiredFadObservedSystem.isEmpty()) {
                 ActivityResult r = createResult(MessageDescriptions.E_1240_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_ARTIFICIAL_SCHOOL_TYPE, a,
                                                 a.getID(getTrip(), getRoute()),
-                                                schoolType.getCode());
+                                                schoolType.getLabel2());
                 return Results.of(r);
             }
             return null;
@@ -60,7 +58,7 @@ public class FishingContextInspector extends ObserveActivityInspector {
             if (!forbiddenFadObservedSystem.isEmpty()) {
                 ActivityResult r = createResult(MessageDescriptions.E_1241_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_FREE_SCHOOL_TYPE, a,
                                                 a.getID(getTrip(), getRoute()),
-                                                schoolType.getCode());
+                                                schoolType.getLabel2());
                 return Results.of(r);
             }
         }
