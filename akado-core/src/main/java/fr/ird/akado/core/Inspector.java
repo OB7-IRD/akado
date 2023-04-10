@@ -22,14 +22,19 @@ import fr.ird.akado.core.common.AbstractResults;
  * Décrit une régle de métier à appliquer sur le type générique passé en
  * paramètre de la classe.
  *
- * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  * @param <T> the type of inspection
- * @since 2.0
+ * @author Julien Lebranchu <julien.lebranchu@ird.fr>
  * @date 21 mai 2014
+ * @since 2.0
  */
 public abstract class Inspector<T> {
 
     public static double EPSILON = 0.01;
+
+    public static boolean equals(double a, double b) {
+        return Math.abs(a - b) <= EPSILON;
+    }
+
     protected String name;
     protected String description;
     private T t;
