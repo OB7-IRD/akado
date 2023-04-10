@@ -178,7 +178,6 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
         info.setMessageParameters(infos);
         getAkadoMessages().add(info.getMessage());
         log.info(r);
-        log.info(r.toString());
     }
 
     @Override
