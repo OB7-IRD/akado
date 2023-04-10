@@ -20,6 +20,7 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.common.JDBCUtilities;
 import io.ultreia.java4all.lang.Objects2;
+import io.ultreia.java4all.util.TimeLog;
 import io.ultreia.java4all.util.sql.SqlQuery;
 import org.apache.logging.log4j.LogManager;
 import org.h2gis.functions.factory.H2GISFunctions;
@@ -46,6 +47,7 @@ import java.util.List;
 @SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
 public class GISHandler {
 
+    private static final TimeLog TIMELOG = new TimeLog(GISHandler.class, 500, 1000);
     static {
         Objects2.forName("org.h2.Driver");
     }
@@ -65,6 +67,16 @@ public class GISHandler {
     }
 
     private String harbourShapePath;
+
+    public void close() throws SQLException {
+        if (connection!=null && !connection.isClosed()) {
+            try {
+                connection.close();
+            } finally {
+                connection=null;
+            }
+        }
+    }
 
     public void init(String directoryPath, String countryShapePath, String oceanShapePath, String harbourShapePath, String eezShapePath) throws AkadoException {
         if (directoryPath == null) {
@@ -111,7 +123,7 @@ public class GISHandler {
     }
 
     public void create() {
-
+        long t0 = TimeLog.getTime();
         log.debug("File: " + dbPath + ", File exits: " + exists());
         if (!exists()) {
             log.info("Create the GIS database at {}.", databaseFile());
@@ -126,6 +138,7 @@ public class GISHandler {
                 JDBCUtilities.printSQLException(ex);
             }
         }
+        TIMELOG.log(t0,"Create GIS database");
     }
 
     private void createZee(Connection connection) throws SQLException {
