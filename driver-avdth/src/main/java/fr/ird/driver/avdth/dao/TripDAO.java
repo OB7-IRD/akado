@@ -34,7 +34,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DAO permettant de faire des requêtes sur la table MAREE.
@@ -406,7 +408,8 @@ public class TripDAO extends AbstractDAO<Trip> {
         if (!vessels.isEmpty() && !vesselsForCountries.isEmpty()) {
             vessels.retainAll(vesselsForCountries);
         }
-        for (Vessel b : vessels) {
+        List<Vessel> ordered = vessels.stream().sorted(Comparator.comparing(Vessel::getCode)).collect(Collectors.toList());
+        for (Vessel b : ordered) {
 //            System.out.println(b);
             trips.addAll(findTrips(b, start, end));
         }

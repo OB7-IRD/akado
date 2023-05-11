@@ -24,10 +24,8 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created on 18/03/2023.
@@ -95,7 +93,8 @@ public class TripDao extends AbstractDataDao<Trip> {
         if (!vessels.isEmpty() && !vesselsForCountries.isEmpty()) {
             vessels.retainAll(vesselsForCountries);
         }
-        for (Vessel b : vessels) {
+        List<Vessel> ordered = vessels.stream().sorted(Comparator.comparingInt(v->v.getCode()==null?-1:Integer.parseInt(v.getCode()))).collect(Collectors.toList());
+        for (Vessel b : ordered) {
             result.addAll(findTrips(b, start, end));
         }
         log.info("{} trip(s) loaded (duration: {})", result.size(), Strings.convertTime(TimeLog.getTime() - t0));
