@@ -244,7 +244,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 List<Activity> activities = getActivitiesToValidate();
                 for (Activity a : activities) {
-                    log.info(a.getID());
+                    log.debug(a.getID());
 //            System.out.println(getClass().getName() + " ActivityInspector=" + a);
                     for (Inspector i : getInspectors()) {
                         if (ALL_ACTIVITY_INSPECTORS.contains(i)) {
@@ -281,7 +281,7 @@ public class AvdthInspector extends DataBaseInspector {
 
                 List<Trip> trips = getTripsToValidate();
                 for (Trip m : trips) {
-                    log.info(m.getID());
+                    log.debug(m.getID());
                     for (Inspector i : getInspectors()) {
                         if (ALL_TRIP_INSPECTORS.contains(i)) {
                             i.set(m);
@@ -353,7 +353,7 @@ public class AvdthInspector extends DataBaseInspector {
         public void run() {
             try {
                 for (Well e : getWellsToValidate()) {
-                    log.info(e.getID());
+                    log.debug(e.getID());
 //            System.out.println(getClass().getName() + " Well=" + e);
                     for (Inspector i : getInspectors()) {
                         if (ALL_WELL_INSPECTORS.contains(i)) {
@@ -380,7 +380,7 @@ public class AvdthInspector extends DataBaseInspector {
             try {
 
                 for (Sample e : getSamplesToValidate()) {
-                    log.info(e.getID());
+                    log.debug(e.getID());
                     for (Inspector i : getInspectors()) {
                         if (ALL_SAMPLE_INSPECTORS.contains(i)) {
                             i.set(e);
