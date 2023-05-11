@@ -5,3 +5,6 @@
 /target/
 /*/target/
 /logs/
+/akado-inputs
+/akado-inputs/*
+/RingOnRequest.lock
