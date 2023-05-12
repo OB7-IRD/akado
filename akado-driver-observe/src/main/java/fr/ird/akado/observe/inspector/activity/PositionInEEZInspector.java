@@ -58,11 +58,15 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
         String eezFromPosition = computedEEZFromPosition(activity);
         String eezCountry = Objects.requireNonNull(activity.getFpaZone()).getCountry().getIso3Code();
         if (!Objects.equals(eezCountry, eezFromPosition)) {
+            if (Objects.equals(eezFromPosition, "-") && Objects.equals("XIN", eezCountry)) {
+                // This is a normal case
+                return null;
+            }
             ActivityResult r = createResult(MessageDescriptions.W1234_ACTIVITY_POSITION_EEZ_INCONSISTENCY, activity,
-                                            activity.getID(getTrip(), getRoute()),
-                                            activity.getFpaZone().getCountry().getIso3Code(),
-                                            activity.getLongitude() + " " + activity.getLatitude(),
-                                            eezFromPosition);
+                    activity.getID(getTrip(), getRoute()),
+                    eezCountry,
+                    activity.getLongitude() + " " + activity.getLatitude(),
+                    eezFromPosition);
             return Results.of(r);
         }
         return null;
