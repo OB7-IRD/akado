@@ -43,10 +43,12 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
                 || species.isLTA() // avdth code 5
                 || species.isFRI() // avdth code 6
                 || species.isTUN() // avdth code 9
-                // FIXME See if we need this one (avdth code 9 should be TUN + TUS)
-//                || species.isTUS() // avdth code 40
+                || species.isTUS() // avdth code 40
                 || species.isKAW() // avdth code 10
-                || species.isLOT(); // avdth code 11
+                || species.isLOT() // avdth code 11
+                || species.isFRZ() // avdth code 18
+                || species.isBLT() // avdth code 17
+                ;
     }
 
     public WeightingSampleInspector() {

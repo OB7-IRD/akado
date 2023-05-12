@@ -98,6 +98,20 @@ public class Species extends I18nReferentialEntity {
         return "fr.ird.referential.common.Species#1433499265113#0.891799515346065".equals(getTopiaId());
     }
 
+    /**
+     * @return {@code true} if species is FRZ (avdth code 18)
+     */
+    public boolean isFRZ() {
+        return "fr.ird.referential.common.Species#1239832685477#0.5989181185528589".equals(getTopiaId());
+    }
+
+    /**
+     * @return {@code true} if species is BLT (avdth code 17)
+     */
+    public boolean isBLT() {
+        return "fr.ird.referential.common.Species#1239832685476#0.36339915670317835".equals(getTopiaId());
+    }
+
     public String getFaoCode() {
         return faoCode;
     }
