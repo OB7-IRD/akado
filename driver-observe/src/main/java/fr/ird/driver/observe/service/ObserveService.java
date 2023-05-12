@@ -29,7 +29,7 @@ public class ObserveService {
     /**
      * H2 database url on server.
      */
-    public static final String H2_SERVER_URL = "jdbc:h2:tcp://127.0.1.1:9093/%s";
+    public static final String H2_SERVER_URL = "jdbc:h2:tcp://localhost:9093/%s";
     /**
      * H2 database url on file.
      */
