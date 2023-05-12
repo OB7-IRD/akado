@@ -93,6 +93,7 @@ public class AnapoTest extends TestCase {
     @Override
     public void tearDown() throws AvdthDriverException {
         AvdthService.getService().close();
+        AAProperties.ANAPO_INSPECTOR = AAProperties.DISABLE_VALUE;
     }
 
     public void test1() throws AvdthDriverException {
