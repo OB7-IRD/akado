@@ -417,7 +417,6 @@
               <origin>origin</origin>
             </gitFlowConfig>
             <verbose>true</verbose>
-            <installProject>true</installProject>
             <argLine>-DprocessAllModules</argLine>
           </configuration>
           <executions>
