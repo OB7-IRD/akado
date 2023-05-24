@@ -1,10 +1,11 @@
 /.idea
+/*/.idea
 /*/*.iml
 /*.iml
 /*/*~
-/target/
 /*/target/
 /logs/
+/target
 /akado-inputs
 /akado-inputs/*
 /RingOnRequest.lock
