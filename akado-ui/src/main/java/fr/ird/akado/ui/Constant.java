@@ -39,7 +39,7 @@ public interface Constant {
     /**
      * The author of the application.
      */
-    public final static String APPLICATION_AUTHOR = "Julien Lebranchu / IRD / Ob7";
+    public final static String APPLICATION_AUTHOR = "Julien Lebranchu / IRD / Ob7 - Tony Chemit / Ultreia.io";
     /**
      * The year of application creation.
      */
@@ -47,7 +47,7 @@ public interface Constant {
     /**
      * The version number of the application.
      */
-    public final static String APPLICATION_VERSION = "2.0.6";
+    public final static String APPLICATION_VERSION = "4.0.0";
     /**
      * Path of the splash screen image.
      */
