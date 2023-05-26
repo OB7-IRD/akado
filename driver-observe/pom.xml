@@ -23,6 +23,10 @@
     </dependency>
     <dependency>
       <groupId>io.ultreia.java4all</groupId>
+      <artifactId>java-lang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.ultreia.java4all</groupId>
       <artifactId>java-util</artifactId>
     </dependency>
     <dependency>
