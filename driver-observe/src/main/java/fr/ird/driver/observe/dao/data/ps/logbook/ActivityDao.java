@@ -15,6 +15,7 @@ import fr.ird.driver.observe.common.ObserveDriverException;
 import fr.ird.driver.observe.dao.DaoSupplier;
 import fr.ird.driver.observe.dao.data.AbstractDataDao;
 import fr.ird.driver.observe.dao.referential.ReferentialCache;
+import io.ultreia.java4all.util.Dates;
 import io.ultreia.java4all.util.sql.SqlQuery;
 
 import java.sql.PreparedStatement;
@@ -111,7 +112,7 @@ public class ActivityDao extends AbstractDataDao<Activity> {
                                                                      " INNER JOIN ps_common.Trip t ON t.topiaId = r.trip" +
                                                                      " WHERE t.vessel = ? AND r.date = ?");
             statement.setString(1, vesselId);
-            statement.setDate(2, new java.sql.Date(date.getTime()));
+            statement.setDate(2, new java.sql.Date(Dates.getDay(date).getTime()));
             return statement;
         }, rs -> rs.getLong(1));
         return count(query) > 0;
