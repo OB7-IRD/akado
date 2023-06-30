@@ -158,9 +158,13 @@ public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListIn
                 results.add(r);
                 continue;
             }
+            if (!countriesCode.contains(vessel.getFleetCountry().getCodeAsInt())) {
+                // fleet country not selected
+                continue;
+            }
             boolean existAnActivityFor = activityDAO.isExistAnActivityFor(vessel.getTopiaId(), posVMS.getDate().toDate());
             log.debug("isExistAnActivityFor : " + existAnActivityFor);
-            if (countriesCode.contains(vessel.getFleetCountry().getCodeAsInt()) && !existAnActivityFor) {
+            if (!existAnActivityFor) {
                 Activity a = new Activity();
                 a.setVessel(vessel);
                 a.setDate(posVMS.getDate().toDate());
