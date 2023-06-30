@@ -168,7 +168,7 @@ public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListIn
                 Anapo anapo = new Anapo(vessel);
                 anapo.setPosVMS(posVMS);
 
-                AnapoResult r = createResult(MessageDescriptions.E1228_ANAPO_NO_ACTIVITY, anapo,
+                AnapoResult r = createResult(MessageDescriptions.E1428_ANAPO_NO_ACTIVITY, anapo,
                                              a.getID(),
                                              posVMS.getDate());
                 results.add(r);

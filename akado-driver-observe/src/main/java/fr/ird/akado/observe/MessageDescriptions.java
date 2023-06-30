@@ -59,11 +59,11 @@ public enum MessageDescriptions implements MessageDescription {
     // Anapo
 
     I0003_VESSEL_IS_NOT_IN_DATABASE("avdth.vessel.not.in.db", false),
-    I1221_ACTIVITY_NO_TRACE_VMS("message.activity.no.trace.vms", false),
-    W1223_ACTIVITY_TRACE_VMS_CL2("message.activity.trace.vms.cl2", false),
-    I1224_INCONSISTENCY_VMS_POSITION_COUNT("message.trace.vms.inconsistent.position.count", false),
-    E1227_ACTIVITY_TRACE_VMS_NO_MATCH("message.activity.trace.vms.no.match", false),
-    E1228_ANAPO_NO_ACTIVITY("message.anapo.no.activity", false),
+    I1421_ACTIVITY_NO_TRACE_VMS("message.activity.no.trace.vms", false),
+    W1423_ACTIVITY_TRACE_VMS_CL2("message.activity.trace.vms.cl2", false),
+    I1424_INCONSISTENCY_VMS_POSITION_COUNT("message.trace.vms.inconsistent.position.count", false),
+    E1427_ACTIVITY_TRACE_VMS_NO_MATCH("message.activity.trace.vms.no.match", false),
+    E1428_ANAPO_NO_ACTIVITY("message.anapo.no.activity", false),
 
     // Sample messages
 

@@ -110,21 +110,21 @@ public class Constant {
     public static final String CODE_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_SCHOOL_TYPE = "1220";
     public static final String LABEL_ACTIVITY_FISHING_CONTEXT_INCONSISTENCY_SCHOOL_TYPE = "message.activity.fishing.context.inconsistency.school.type";
 
-    public static final String CODE_ACTIVITY_NO_TRACE_VMS = "1221";
+    public static final String CODE_ACTIVITY_NO_TRACE_VMS = "1421";
     public static final String LABEL_ACTIVITY_NO_TRACE_VMS = "message.activity.no.trace.vms";
-    public static final String CODE_ACTIVITY_TRACE_VMS_MATCH = "1222";
+    public static final String CODE_ACTIVITY_TRACE_VMS_MATCH = "1422";
     public static final String LABEL_ACTIVITY_TRACE_VMS_MATCH = "message.activity.trace.vms.match";
-    public static final String CODE_ACTIVITY_TRACE_VMS_CL2 = "1223";
+    public static final String CODE_ACTIVITY_TRACE_VMS_CL2 = "1423";
     public static final String LABEL_ACTIVITY_TRACE_VMS_CL2 = "message.activity.trace.vms.cl2";
-    public static final String CODE_INCONSISTENCY_VMS_POSITION_COUNT = "1224";
+    public static final String CODE_INCONSISTENCY_VMS_POSITION_COUNT = "1424";
     public static final String LABEL_INCONSISTENCY_VMS_POSITION_COUNT = "message.trace.vms.inconsistent.position.count";
-    public static final String CODE_ACTIVITY_TRACE_VMS_SCORE = "1225";
+    public static final String CODE_ACTIVITY_TRACE_VMS_SCORE = "1425";
     public static final String LABEL_ACTIVITY_TRACE_VMS_SCORE = "message.activity.trace.vms.score";
-    public static final String CODE_NO_ACTIVITY_TRACE_VMS = "1226";
+    public static final String CODE_NO_ACTIVITY_TRACE_VMS = "1426";
     public static final String LABEL_NO_ACTIVITY_TRACE_VMS = "message.no.activity.trace.vms";
-    public static final String CODE_ACTIVITY_TRACE_VMS_NO_MATCH = "1227";
+    public static final String CODE_ACTIVITY_TRACE_VMS_NO_MATCH = "1427";
     public static final String LABEL_ACTIVITY_TRACE_VMS_NO_MATCH = "message.activity.trace.vms.no.match";
-    public static final String CODE_ANAPO_NO_ACTIVITY = "1228";
+    public static final String CODE_ANAPO_NO_ACTIVITY = "1428";
     public static final String LABEL_ANAPO_NO_ACTIVITY = "message.anapo.no.activity";
 
     public static final String CODE_ACTIVITY_QUADRANT_LAT_INCONSISTENCY = "1229";
