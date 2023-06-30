@@ -64,9 +64,9 @@ public final class AkadoAvdthProperties extends IRDProperties {
     public static final String STANDARD_RELATIVE_CONFIG_PATH = "db";
 
     private AkadoAvdthProperties() {
-        PROJECT_NAME = "akado-avdth";
-        PROJECT_CONFIG_FILENAME = "akado-config.xml";
-        PROJECT_CONFIG_COMMENT = "AKaDo Avdth configuration's properties";
+        PROJECT_NAME = "akado";
+        PROJECT_CONFIG_FILENAME = "akado.xml";
+        PROJECT_CONFIG_COMMENT = "AKaDo configuration's properties";
         PROJECT_CONFIG_ABSOLUTE_PATH = AppConfig.getConfigDirectory(AppConfig.getRelativeConfigPath(PROJECT_NAME));
     }
 
