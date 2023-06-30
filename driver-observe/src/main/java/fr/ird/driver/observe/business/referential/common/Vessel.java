@@ -284,4 +284,8 @@ public class Vessel extends I18nReferentialEntity {
     public String getID() {
         return "" + getCode();
     }
+
+    public String getLongID() {
+        return getCode() + " - " + getLabel2();
+    }
 }
