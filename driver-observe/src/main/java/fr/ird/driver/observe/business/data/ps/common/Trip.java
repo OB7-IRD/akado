@@ -376,7 +376,7 @@ public class Trip extends DataEntity {
 
     public boolean withLogbookActivities() {
         for (Route route : getLogbookRoute()) {
-            if (route.getActivity().size() > 1) {
+            if (route.getActivity().size() > 0) {
                 return true;
             }
         }
