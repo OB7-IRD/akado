@@ -81,7 +81,6 @@ public class LandingConsistentInspector extends Inspector<Trip> {
                 parameters.add(catchesWeight);
                 parameters.add(capacityMax);
                 r.setMessageParameters(parameters);
-                results.add(r);
             }
         }
         return results;
