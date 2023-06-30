@@ -92,10 +92,25 @@ public class Species extends I18nReferentialEntity {
     }
 
     /**
+     * @return {@code true} if species is BLF (avdth code 12)
+     */
+    public boolean isBLF() {
+        return "fr.ird.referential.common.Species#1239832685477#0.2908846499255108".equals(getTopiaId());
+    }
+
+    /**
      * @return {@code true} if species is TUS (avdth code 40)
      */
     public boolean isTUS() {
         return "fr.ird.referential.common.Species#1433499265113#0.891799515346065".equals(getTopiaId());
+    }
+
+    /**
+     * FIXME Is this still exist in ObServe?
+     * @return {@code true} if species is RAV (avdth code 43)
+     */
+    public boolean isRAV() {
+        return "fr.ird.referential.common.Species#1464000000000#43".equals(getTopiaId());
     }
 
     /**
