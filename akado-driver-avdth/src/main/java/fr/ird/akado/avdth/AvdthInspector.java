@@ -330,7 +330,7 @@ public class AvdthInspector extends DataBaseInspector {
                     }
                 }
                 for (Inspector i : ALL_ANAPO_VMS_INSPECTORS) {
-                    if (AAProperties.ANAPO_DB_URL != null && !AAProperties.isAnapoInspectorEnabled()) {
+                    if (AAProperties.ANAPO_DB_URL != null && AAProperties.isAnapoInspectorEnabled()) {
                         i.set(getActivitiesToValidate());
                         this.getResults().addAll(i.execute());
                     }
