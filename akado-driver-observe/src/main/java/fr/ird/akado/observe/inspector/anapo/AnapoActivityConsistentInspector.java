@@ -173,7 +173,7 @@ public class AnapoActivityConsistentInspector extends ObserveAnapoActivityListIn
                 anapo.setPosVMS(posVMS);
 
                 AnapoResult r = createResult(MessageDescriptions.E1428_ANAPO_NO_ACTIVITY, anapo,
-                                             a.getID(),
+                                             vessel.getLongID(),
                                              posVMS.getDate());
                 results.add(r);
             }
