@@ -202,7 +202,7 @@ public class Constant {
 
     public static final String CODE_SAMPLE_SUBSAMPLE_FLAG = "1331";
     public static final String LABEL_SAMPLE_SUBSAMPLE_FLAG = "message.sample.subsample.flag";
-    public static final String CODE_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES = "1335";
+    public static final String CODE_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES = "1337";
     public static final String LABEL_SAMPLE_SUBSAMPLE_NO_SAMPLE_SPECIES = "message.sample.subsample.no.sample.species";
 
     public static final String CODE_SAMPLE_LDLF_P10 = "1332";
