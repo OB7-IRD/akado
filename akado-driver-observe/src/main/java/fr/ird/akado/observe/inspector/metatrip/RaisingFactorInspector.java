@@ -36,7 +36,6 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                 || species.isALB() // avdth code 4
                 || species.isTUN() // avdth code 9
                 || species.isLOT() // avdth code 11
-                // FIXME We do not know avdth code 42 ...|| species.is???() // avdth code 42
                 ;
     }
 
@@ -52,8 +51,13 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                 || species.isTUN() // avdth code 9
                 || species.isLOT() // avdth code 11
                 || species.isBLF() // avdth code 12
-                // FIXME We do not know avdth code 42 ...|| species.is???() // avdth code 42
-                || species.isRAV() // avdth code 43 FIXME Make sure this exists, did not find it in IRD referential
+                || species.isRAV() // avdth code 43 (is deprecated but still in usage in old AVDTH databases)
+                // See https://github.com/OB7-IRD/akado/issues/7
+                || species.isLTA() // replace RAV*
+                || species.isKAW() // replace RAV*
+                || species.isFRZ() // replace RAV*
+                || species.isBLT() // replace RAV*
+                || species.isFRI() // replace RAV*
                 ;
     }
 //    public static double RaisingFactor1WithLocalMarket(List<Trip> trips) {
