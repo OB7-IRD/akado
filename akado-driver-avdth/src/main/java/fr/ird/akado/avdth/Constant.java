@@ -49,8 +49,10 @@ public class Constant {
 
     public static final String CODE_TRIP_TIME_AT_SEA = "1011";
     public static final String LABEL_TRIP_TIME_AT_SEA = "message.trip.timeatsea";
-    public static final String CODE_TRIP_TEMPORAL_LIMIT = "1012";
-    public static final String LABEL_TRIP_TEMPORAL_LIMIT = "message.trip.temporallimit";
+    public static final String CODE_TRIP_START_DATE = "1012";
+    public static final String LABEL_TRIP_START_DATE = "message.trip.startDate";
+    public static final String CODE_TRIP_END_DATE = "1026";
+    public static final String LABEL_TRIP_END_DATE = "message.trip.endDate";
     public static final String CODE_TRIP_RECOVERY_TIME = "1013";
     public static final String LABEL_TRIP_RECOVERY_TIME = "message.trip.recoverytime";
     public static final String CODE_TRIP_LOCH = "1014";
