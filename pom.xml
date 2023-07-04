@@ -11,11 +11,11 @@
     <name>Observatoire des écosystèmes pélagiques tropicaux exploités, IRD</name>
     <url>https://www.ob7.ird.fr/</url>
   </organization>
-  <url>https://github.com/OB7-IRD/akado2</url>
+  <url>https://github.com/OB7-IRD/akado</url>
   <scm>
-    <connection>scm:git:git@github.com:OB7-IRD/akado2.git</connection>
-    <developerConnection>scm:ssh://git:git@github.com:OB7-IRD/akado2.git</developerConnection>
-    <url>https://github.com/OB7-IRD/akado2.git</url>
+    <connection>scm:git:git@github.com:OB7-IRD/akado.git</connection>
+    <developerConnection>scm:ssh://git:git@github.com:OB7-IRD/akado.git</developerConnection>
+    <url>https://github.com/OB7-IRD/akado.git</url>
   </scm>
   <licenses>
     <license>
