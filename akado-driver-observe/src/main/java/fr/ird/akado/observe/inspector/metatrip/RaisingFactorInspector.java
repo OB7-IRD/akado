@@ -133,7 +133,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                         || activity.containsFishingBaitsObservedSystem()) {
                     continue;
                 }
-                subTotalCatchesWeight += RaisingFactorInspector.catchesFilter(trip, activity);
+                subTotalCatchesWeight += catchesFilter(trip, activity);
             }
         }
         return subTotalCatchesWeight;
@@ -143,13 +143,13 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
         double catchesWeight = 0;
         if (trip.getVessel().getFleetCountry().isFrance()) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && isFrenchTargetSpecies(aCatch.getWeightCategory().getSpecies())) {
+                if (isFrenchTargetSpecies(aCatch.getSpecies())) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
         } else if (trip.getVessel().getFleetCountry().isSpain()) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && isSpainTargetSpecies(aCatch.getWeightCategory().getSpecies())) {
+                if (isSpainTargetSpecies(aCatch.getSpecies())) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
