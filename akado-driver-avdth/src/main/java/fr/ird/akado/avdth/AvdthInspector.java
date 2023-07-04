@@ -54,9 +54,6 @@ import org.joda.time.DateTime;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
 import static fr.ird.akado.core.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
@@ -243,6 +240,8 @@ public class AvdthInspector extends DataBaseInspector {
                 }
 
                 List<Activity> activities = getActivitiesToValidate();
+                log.info("Found {} activities to process", activities.size());
+                log.info("Activities processing...");
                 for (Activity a : activities) {
                     log.debug(a.getID());
 //            System.out.println(getClass().getName() + " ActivityInspector=" + a);
@@ -255,7 +254,7 @@ public class AvdthInspector extends DataBaseInspector {
                         }
                     }
                 }
-                log.info("Activities processing...");
+                log.info("Activities list processing...");
                 for (Inspector i : getInspectors()) {
                     if (ALL_ACTIVITIES_INSPECTORS.contains(i)) {
                         i.set(activities);
@@ -280,6 +279,8 @@ public class AvdthInspector extends DataBaseInspector {
             try {
 
                 List<Trip> trips = getTripsToValidate();
+                log.info("Found {} trips to process", trips.size());
+                log.info("Trip processing...");
                 for (Trip m : trips) {
                     log.debug(m.getID());
                     for (Inspector i : getInspectors()) {
@@ -320,7 +321,7 @@ public class AvdthInspector extends DataBaseInspector {
                     }
                 }
 
-                log.info("Anapo processing...");
+                log.info("Anapo (on activities) processing...");
                 for (Inspector i : ALL_ANAPO_INSPECTORS) {
                     if (AAProperties.ANAPO_DB_URL != null && AAProperties.isAnapoInspectorEnabled()) {
                         for (Activity activity : getActivitiesToValidate()) {
@@ -329,6 +330,7 @@ public class AvdthInspector extends DataBaseInspector {
                         }
                     }
                 }
+                log.info("Anapo (on activities list) processing...");
                 for (Inspector i : ALL_ANAPO_VMS_INSPECTORS) {
                     if (AAProperties.ANAPO_DB_URL != null && AAProperties.isAnapoInspectorEnabled()) {
                         i.set(getActivitiesToValidate());
@@ -352,7 +354,10 @@ public class AvdthInspector extends DataBaseInspector {
         @Override
         public void run() {
             try {
-                for (Well e : getWellsToValidate()) {
+                List<Well> wells = getWellsToValidate();
+                log.info("Found {} wells to process", wells.size());
+                log.info("Well processing...");
+                for (Well e : wells) {
                     log.debug(e.getID());
 //            System.out.println(getClass().getName() + " Well=" + e);
                     for (Inspector i : getInspectors()) {
@@ -379,7 +384,10 @@ public class AvdthInspector extends DataBaseInspector {
         public void run() {
             try {
 
-                for (Sample e : getSamplesToValidate()) {
+                List<Sample> samples = getSamplesToValidate();
+                log.info("Found {} samples to process", samples.size());
+                log.info("Sample processing...");
+                for (Sample e : samples) {
                     log.debug(e.getID());
                     for (Inspector i : getInspectors()) {
                         if (ALL_SAMPLE_INSPECTORS.contains(i)) {
@@ -403,22 +411,19 @@ public class AvdthInspector extends DataBaseInspector {
             AVDTHMessage message = new AVDTHMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, List.of(VERSION_AVDTH_COMPATIBILITY), Message.ERROR);
             throw new AkadoException(message.getContent());
         }
-        List tasks = new ArrayList<>();
-        if (AAProperties.AKADO_INSPECTOR.equals(AAProperties.ACTIVE_VALUE)) {
+        List< DataBaseInspectorTask> tasks = new ArrayList<>();
+        if (AAProperties.isAkadoInspectorEnabled()) {
             tasks.add(new TripTask(this.getResults()));
             tasks.add(new ActivityTask(this.getResults()));
             tasks.add(new WellTask(this.getResults()));
             tasks.add(new SampleTask(this.getResults()));
         }
         tasks.add(new AnapoTask(this.getResults()));
-        ExecutorService exec = Executors.newFixedThreadPool(AAProperties.NB_PROC);
 //        long start = System.currentTimeMillis();
-        for (Object task : tasks) {
-            exec.submit((Runnable) task);
+        for (DataBaseInspectorTask task : tasks) {
+            task.run();
         }
 
-        exec.shutdown();
-        exec.awaitTermination(120, TimeUnit.MINUTES);
 //        long stop = System.currentTimeMillis();
 
 //        System.out.println((stop - start) + " ms");
