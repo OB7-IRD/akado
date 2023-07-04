@@ -29,6 +29,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static fr.ird.akado.avdth.Constant.CODE_ACTIVITY_POSITION_EEZ_INCONSISTENCY;
 import static fr.ird.akado.avdth.Constant.LABEL_ACTIVITY_POSITION_EEZ_INCONSISTENCY;
@@ -49,6 +51,12 @@ public class PositionInEEZInspector extends Inspector<Activity> {
         this.description = "Check if the EEZ reported is consistent with the eez calculated from the position activity.";
     }
 
+    public static String computedEEZFromPosition(Activity activity) {
+        Double latitude = OTUtils.convertLatitude(activity.getQuadrant(), activity.getLatitude());
+        Double longitude = OTUtils.convertLongitude(activity.getQuadrant(), activity.getLongitude());
+        return GISHandler.getService().getEEZ(longitude, latitude);
+    }
+
     public static boolean activityPositionAndEEZInconsistent(Activity a) {
         if (a.getFpaZone() == null || a.getFpaZone().getCode() == 0 || a.getFpaZone().getCountry() == null) {
             return false;
@@ -60,6 +68,10 @@ public class PositionInEEZInspector extends Inspector<Activity> {
         String eezFromPosition = GISHandler.getService().getEEZ(longitude, latitude);
         log.debug("eezCountry " + eezCountry);
         log.debug("eezFromPosition " + eezFromPosition);
+        if (Objects.equals(eezFromPosition, "-") && Objects.equals("XIN", eezCountry)) {
+            // This is a normal case
+            return false;
+        }
         return (eezCountry != null && eezFromPosition != null && !eezCountry.equals(eezFromPosition));
 
     }
@@ -68,10 +80,19 @@ public class PositionInEEZInspector extends Inspector<Activity> {
     public Results execute() {
         Results results = new Results();
         Activity a = get();
+        if (a.getFpaZone() == null || a.getFpaZone().getCode() == 0 || a.getFpaZone().getCountry() == null) {
+            return results;
+        }
         ActivityResult r;
         if (AAProperties.isWarningInspectorEnabled()) {
 
-            if (activityPositionAndEEZInconsistent(a)) {
+            String eezFromPosition = computedEEZFromPosition(a);
+            String eezCountry = Objects.requireNonNull(a.getFpaZone()).getCountry().getCodeIso3();
+            if (!Objects.equals(eezCountry, eezFromPosition)) {
+                if (Objects.equals(eezFromPosition, "-") && Objects.equals("XIN", eezCountry)) {
+                    // This is a normal case
+                    return results;
+                }
                 r = new ActivityResult();
                 r.set(a);
                 r.setMessageType(Message.WARNING);
@@ -80,19 +101,17 @@ public class PositionInEEZInspector extends Inspector<Activity> {
 
                 r.setInconsistent(true);
 
-                ArrayList parameters = new ArrayList<>();
+                List<String> parameters = new ArrayList<>();
                 parameters.add(a.getID());
-                String eez = "-";
-                if (a.getFpaZone() != null && a.getFpaZone().getCountry() != null) {
-                    eez = "" + a.getFpaZone().getCountry().getCodeIso3();
-                }
+                String eez = a.getFpaZone().getCountry().getCodeIso3();
 
                 parameters.add(eez);
                 parameters.add(OTUtils.convertLongitude(a.getQuadrant(), a.getLongitude()) + " " + OTUtils.convertLatitude(a.getQuadrant(), a.getLatitude()));
+                parameters.add(eezFromPosition);
                 r.setMessageParameters(parameters);
                 results.add(r);
-
             }
+
         }
         return results;
     }
