@@ -28,7 +28,6 @@ import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.DataBaseInspectorTask;
 import fr.ird.akado.core.Inspector;
 import fr.ird.akado.core.common.AAProperties;
-import fr.ird.akado.core.common.AbstractResults;
 import fr.ird.akado.core.common.AkadoException;
 import fr.ird.akado.core.selector.TemporalSelector;
 import fr.ird.akado.core.spatial.GISHandler;
@@ -52,6 +51,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +64,9 @@ import static fr.ird.common.DateTimeUtils.DATE_FORMATTER;
 import static fr.ird.common.ListUtils.map;
 
 /**
- *
  * @author Julien Lebranchu <julien.lebranchu@ird.fr>
- * @since 2.0
  * @date 21 mai 2014
+ * @since 2.0
  */
 public class AvdthInspector extends DataBaseInspector {
     private static final Logger log = LogManager.getLogger(AvdthInspector.class);
@@ -112,7 +111,6 @@ public class AvdthInspector extends DataBaseInspector {
     Resume r = new Resume();
 
     /**
-     *
      * @param configuration jdbc configuration
      * @throws Exception if any error
      */
@@ -209,27 +207,14 @@ public class AvdthInspector extends DataBaseInspector {
 
     }
 
-    /**
-     * Write all results in the excel file.
-     */
-    private void writeResultsInFile() {
-        if (!AAProperties.isResultsEnabled()) {
-            return;
-        }
-        if (!getResults().isEmpty()) {
-            getResults().exportToXLS(exportDirectoryPath);
-            getResults().clear();
-        }
-    }
+    private class ActivityTask extends AvdthDataBaseInspectorTask {
 
-    private class ActivityTask extends DataBaseInspectorTask {
-
-        public ActivityTask(AbstractResults r) {
-            super(r);
+        public ActivityTask(String exportDirectoryPath, Results r) {
+            super(r, exportDirectoryPath);
         }
 
         @Override
-        public void run() {
+        public void inspect() {
             try {
                 if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
                     log.info("Vessel selection : " + AAProperties.VESSEL_SELECTED);
@@ -261,21 +246,27 @@ public class AvdthInspector extends DataBaseInspector {
                         this.getResults().addAll(i.execute());
                     }
                 }
-                writeResultsInFile();
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
         }
+
+
+        @Override
+        protected void writeResults(String directoryPath, Results results) throws IOException {
+            results.writeInActivitySheet(directoryPath);
+            results.writeLogs(directoryPath);
+        }
     }
 
-    private class TripTask extends DataBaseInspectorTask {
+    private class TripTask extends AvdthDataBaseInspectorTask {
 
-        public TripTask(AbstractResults r) {
-            super(r);
+        public TripTask(String exportDirectoryPath, Results r) {
+            super(r, exportDirectoryPath);
         }
 
         @Override
-        public void run() {
+        public void inspect() {
             try {
 
                 List<Trip> trips = getTripsToValidate();
@@ -297,21 +288,27 @@ public class AvdthInspector extends DataBaseInspector {
                         this.getResults().addAll(i.execute());
                     }
                 }
-                writeResultsInFile();
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
         }
+
+        @Override
+        protected void writeResults(String directoryPath, Results results) throws IOException {
+            results.writeInTripSheet(directoryPath);
+            results.writeInMetaTripSheet(directoryPath);
+            results.writeLogs(directoryPath);
+        }
     }
 
-    private class AnapoTask extends DataBaseInspectorTask {
+    private class AnapoTask extends AvdthDataBaseInspectorTask {
 
-        public AnapoTask(AbstractResults r) {
-            super(r);
+        public AnapoTask(String exportDirectoryPath, Results r) {
+            super(r, exportDirectoryPath);
         }
 
         @Override
-        public void run() {
+        public void inspect() {
             try {
                 if (AAProperties.VESSEL_SELECTED != null && !"".equals(AAProperties.VESSEL_SELECTED)) {
                     log.info("Vessel selection : " + AAProperties.VESSEL_SELECTED);
@@ -337,22 +334,26 @@ public class AvdthInspector extends DataBaseInspector {
                         this.getResults().addAll(i.execute());
                     }
                 }
-
-                writeResultsInFile();
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
         }
+
+        @Override
+        protected void writeResults(String directoryPath, Results results) throws IOException {
+            results.writeInAnapoSheet(directoryPath);
+            results.writeLogs(directoryPath);
+        }
     }
 
-    private class WellTask extends DataBaseInspectorTask {
+    private class WellTask extends AvdthDataBaseInspectorTask {
 
-        public WellTask(AbstractResults r) {
-            super(r);
+        public WellTask(String exportDirectoryPath, Results r) {
+            super(r, exportDirectoryPath);
         }
 
         @Override
-        public void run() {
+        public void inspect() {
             try {
                 List<Well> wells = getWellsToValidate();
                 log.info("Found {} wells to process", wells.size());
@@ -367,21 +368,26 @@ public class AvdthInspector extends DataBaseInspector {
                         }
                     }
                 }
-                writeResultsInFile();
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
         }
+
+        @Override
+        protected void writeResults(String directoryPath, Results results) throws IOException {
+            results.writeInWellSheet(directoryPath);
+            results.writeLogs(directoryPath);
+        }
     }
 
-    private class SampleTask extends DataBaseInspectorTask {
+    private class SampleTask extends AvdthDataBaseInspectorTask {
 
-        public SampleTask(AbstractResults r) {
-            super(r);
+        public SampleTask(String exportDirectoryPath, Results r) {
+            super(r, exportDirectoryPath);
         }
 
         @Override
-        public void run() {
+        public void inspect() {
             try {
 
                 List<Sample> samples = getSamplesToValidate();
@@ -393,14 +399,18 @@ public class AvdthInspector extends DataBaseInspector {
                         if (ALL_SAMPLE_INSPECTORS.contains(i)) {
                             i.set(e);
                             this.getResults().addAll(i.execute());
-
                         }
                     }
                 }
-                writeResultsInFile();
             } catch (Exception ex) {
                 log.error(ex.getMessage());
             }
+        }
+
+        @Override
+        protected void writeResults(String directoryPath, Results results) throws IOException {
+            results.writeInSampleSheet(directoryPath);
+            results.writeLogs(directoryPath);
         }
     }
 
@@ -411,14 +421,15 @@ public class AvdthInspector extends DataBaseInspector {
             AVDTHMessage message = new AVDTHMessage(Constant.CODE_DATABASE_NOT_COMPATIBLE, Constant.LABEL_DATABASE_NOT_COMPATIBLE, List.of(VERSION_AVDTH_COMPATIBILITY), Message.ERROR);
             throw new AkadoException(message.getContent());
         }
-        List< DataBaseInspectorTask> tasks = new ArrayList<>();
+        List<DataBaseInspectorTask> tasks = new ArrayList<>();
+        Results results = (Results) getResults();
         if (AAProperties.isAkadoInspectorEnabled()) {
-            tasks.add(new TripTask(this.getResults()));
-            tasks.add(new ActivityTask(this.getResults()));
-            tasks.add(new WellTask(this.getResults()));
-            tasks.add(new SampleTask(this.getResults()));
+            tasks.add(new TripTask(exportDirectoryPath, results));
+            tasks.add(new ActivityTask(exportDirectoryPath, results));
+            tasks.add(new WellTask(exportDirectoryPath, results));
+            tasks.add(new SampleTask(exportDirectoryPath, results));
         }
-        tasks.add(new AnapoTask(this.getResults()));
+        tasks.add(new AnapoTask(exportDirectoryPath, results));
 //        long start = System.currentTimeMillis();
         for (DataBaseInspectorTask task : tasks) {
             task.run();
@@ -449,7 +460,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }),
                 temporalSelector.getStart(),
                 temporalSelector.getEnd()
-        );
+                                                               );
     }
 
     private List<Sample> getSamplesToValidate() throws AvdthDriverException {
@@ -468,7 +479,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }),
                 temporalSelector.getStart(),
                 temporalSelector.getEnd()
-        );
+                                                                  );
     }
 
     private List<Well> getWellsToValidate() throws AvdthDriverException {
@@ -487,7 +498,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }),
                 temporalSelector.getStart(),
                 temporalSelector.getEnd()
-        );
+                                                              );
     }
 
     private List<Activity> getActivitiesToValidate() throws AvdthDriverException {
@@ -506,7 +517,7 @@ public class AvdthInspector extends DataBaseInspector {
                 }),
                 temporalSelector.getStart(),
                 temporalSelector.getEnd()
-        );
+                                                                        );
     }
 
     private final List<FlagSelector> flagSelectors;
@@ -530,7 +541,7 @@ public class AvdthInspector extends DataBaseInspector {
                     AAProperties.SHP_OCEAN_PATH,
                     AAProperties.SHP_HARBOUR_PATH,
                     AAProperties.SHP_EEZ_PATH
-            );
+                                        );
             GISHandler.getService().create();
         }
     }

@@ -61,7 +61,7 @@ public class Results extends AbstractResults<Result> {
     public static final boolean WB_USE_SHARED_STRINGS_TABLE = true;
     public static final int WB_ROW_ACCESS_WINDOW_SIZE = 200;
 
-    private void writeInActivitySheet(String filename) throws IOException {
+    public void writeInActivitySheet(String filename) throws IOException {
         Results results = getActivityResults();
         if (results.isEmpty()) {
             return;
@@ -74,7 +74,7 @@ public class Results extends AbstractResults<Result> {
         writeInSheet("activities", activities, template, SHEET_NAME_ACTIVITY, filename);
     }
 
-    private void writeInTripSheet(String filename) throws IOException {
+    public void writeInTripSheet(String filename) throws IOException {
         Results results = getTripResults();
         log.debug("TripResults size : " + results.size());
         if (results.isEmpty()) {
@@ -94,7 +94,7 @@ public class Results extends AbstractResults<Result> {
         writeInSheet("trips", trips, template, SHEET_NAME_TRIP, filename);
     }
 
-    private void writeInSampleSheet(String filename) throws IOException {
+    public void writeInSampleSheet(String filename) throws IOException {
         Results results = getSampleResults();
         if (results.isEmpty()) {
             return;
@@ -107,7 +107,7 @@ public class Results extends AbstractResults<Result> {
         writeInSheet("samples", samples, template, SHEET_NAME_SAMPLE, filename);
     }
 
-    private void writeInWellSheet(String filename) throws IOException {
+    public void writeInWellSheet(String filename) throws IOException {
         Results results = getWellResults();
         if (results.isEmpty()) {
             return;
@@ -120,7 +120,7 @@ public class Results extends AbstractResults<Result> {
         writeInSheet("wells", wdtos, template, SHEET_NAME_WELL, filename);
     }
 
-    private void writeInMetaTripSheet(String filename) throws IOException {
+    public void writeInMetaTripSheet(String filename) throws IOException {
         Results results = getMetaTripResults();
         if (results.isEmpty()) {
             return;
@@ -133,7 +133,7 @@ public class Results extends AbstractResults<Result> {
         writeInSheet("metatrips", mtdtos, template, SHEET_NAME_TRIP_EXTENDED, filename);
     }
 
-    private void writeInAnapoSheet(String filename) throws IOException {
+    public void writeInAnapoSheet(String filename) throws IOException {
         Results results = getAnapoResults();
         if (results.isEmpty()) {
             return;
@@ -244,7 +244,7 @@ public class Results extends AbstractResults<Result> {
         return results;
     }
 
-    private void writeLogs(String directoryPath) throws FileNotFoundException, IOException {
+    public void writeLogs(String directoryPath) throws FileNotFoundException, IOException {
         File file = new File(directoryPath + File.separator + "akado.log");
         if (!file.exists()) {
             file.createNewFile();
