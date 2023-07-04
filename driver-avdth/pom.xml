@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.ird.ob7</groupId>
-    <artifactId>akado-poc</artifactId>
+    <artifactId>akado-pom</artifactId>
     <version>4.0.0-RC-2-SNAPSHOT</version>
   </parent>
   <artifactId>driver-avdth</artifactId>
