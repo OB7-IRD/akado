@@ -7,9 +7,9 @@ import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.SampleResult;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
+import fr.ird.driver.observe.business.referential.common.Species;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created on 20/03/2023.
@@ -18,17 +18,6 @@ import java.util.Set;
  * @since 1.0.0
  */
 public abstract class ObserveSampleInspector extends ObserveInspector<Sample> implements WithTrip {
-    public static final Set<String> SPECIES_FOR_SAMPLE = Set.of(
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "0",
-            "10",
-            "11"
-    );
     private Trip trip;
 
     public static List<ObserveSampleInspector> loadInspectors() {
@@ -39,8 +28,17 @@ public abstract class ObserveSampleInspector extends ObserveInspector<Sample> im
         return filterInspectors(ObserveSampleInspector.class, inspectors);
     }
 
-    public static boolean specieMustBeSampled(String code) {
-        return SPECIES_FOR_SAMPLE.contains(code);
+    public static boolean specieMustBeSampled(Species species) {
+        return species.isYFT()
+                ||species.isSKJ()
+                ||species.isBET()
+                ||species.isALB()
+                ||species.isLTA()
+                ||species.isKAW()
+                ||species.isTUN()
+                ||species.isLOT()
+                ||species.isALB()
+                ;
     }
 
     @Override
