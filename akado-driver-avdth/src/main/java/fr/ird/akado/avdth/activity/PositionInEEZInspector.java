@@ -70,6 +70,7 @@ public class PositionInEEZInspector extends Inspector<Activity> {
         Activity a = get();
         ActivityResult r;
         if (AAProperties.isWarningInspectorEnabled()) {
+
             if (activityPositionAndEEZInconsistent(a)) {
                 r = new ActivityResult();
                 r.set(a);
@@ -86,8 +87,8 @@ public class PositionInEEZInspector extends Inspector<Activity> {
                     eez = "" + a.getFpaZone().getCountry().getCodeIso3();
                 }
 
-                parameters.add(OTUtils.convertLongitude(a.getQuadrant(), a.getLongitude()) + " " + OTUtils.convertLatitude(a.getQuadrant(), a.getLatitude()));
                 parameters.add(eez);
+                parameters.add(OTUtils.convertLongitude(a.getQuadrant(), a.getLongitude()) + " " + OTUtils.convertLatitude(a.getQuadrant(), a.getLatitude()));
                 r.setMessageParameters(parameters);
                 results.add(r);
 
