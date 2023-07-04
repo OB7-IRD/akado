@@ -45,7 +45,6 @@ import fr.ird.driver.avdth.common.exception.AvdthDriverException;
 import fr.ird.driver.avdth.dao.VersionDAO;
 import fr.ird.driver.avdth.service.AvdthService;
 import io.ultreia.java4all.util.sql.conf.JdbcConfiguration;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -120,7 +119,8 @@ public class AvdthInspector extends DataBaseInspector {
         // Test l'export des resultats au fil de l'eau
         String databasePath = url.substring(AAProperties.PROTOCOL_JDBC_ACCESS.length());
         String pathExport = new File(databasePath).getParent();
-        String dbName = FilenameUtils.removeExtension(new File(databasePath).getName());
+        String name = new File(databasePath).getName();
+        String dbName = name.substring(0, name.lastIndexOf('.'));
         DateTime currentDateTime = DateTime.now();
         if (AAProperties.isResultsEnabled()) {
             exportDirectoryPath = pathExport + File.separator + dbName + "_akado_result_" + currentDateTime.getYear() + currentDateTime.getMonthOfYear() + currentDateTime.getDayOfMonth() + "_" + currentDateTime.getHourOfDay() + currentDateTime.getMinuteOfHour();
