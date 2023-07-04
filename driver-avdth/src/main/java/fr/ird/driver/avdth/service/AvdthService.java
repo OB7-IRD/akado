@@ -35,6 +35,7 @@ import fr.ird.driver.avdth.dao.WellDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -65,7 +66,7 @@ public class AvdthService {
         this.user = user;
         this.password = password;
         try {
-            Class.forName(driver).newInstance();
+            Class.forName(driver).getDeclaredConstructor().newInstance();
             log.debug("AVDTH SERVICE : initialisation");
             log.debug("AVDTH SERVICE : " + url);
             p = new Properties();
@@ -75,7 +76,8 @@ public class AvdthService {
             p.setProperty("lockType", "ACCESS");
             connection = DriverManager.getConnection(this.url, p);
             log.debug("AVDTH SERVICE : end");
-        } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
+        } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException |
+                 NoSuchMethodException | InvocationTargetException ex) {
             throw new AvdthDriverException("The database connection has failed. See below for more information.\n\n\t«" + ex.getMessage() + "»", ex);
         }
     }

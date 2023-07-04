@@ -223,7 +223,7 @@ public class AppConfig {
     public static String getRelativeConfigPath(String projectName) {
         String appconfig = ".appconfig";
         String os = System.getProperty("os.name");
-        if (os.contains("Linux")) {
+        if (os.contains("Linux") || os.contains("Mac OS")) {
             appconfig = LINUX_CONFIG_FILE;
         }
         return appconfig + File.separator + projectName;

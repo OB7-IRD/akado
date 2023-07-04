@@ -43,6 +43,9 @@ public class AnapoTask extends ObserveDataBaseInspectorTask<Activity> {
         List<Activity> allActivities = new LinkedList<>();
         for (Trip trip : getTripList()) {
             for (Route route : trip.getLogbookRoute()) {
+                if (rejectDate(route.getDate())) {
+                    continue;
+                }
                 Set<Activity> toValidate = route.getActivity();
                 allActivities.addAll(toValidate);
                 for (Activity activity : toValidate) {

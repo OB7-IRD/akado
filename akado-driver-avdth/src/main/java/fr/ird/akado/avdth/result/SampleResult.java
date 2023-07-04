@@ -163,9 +163,9 @@ public class SampleResult extends Result<Sample> {
                     temporaryList.add(sampleDTO);
                 } else {
                     boolean sampleIsAdded = false;
-                    boolean hasErrorOnSampleSpeciesFrequency = false;
-                    String lengthClassCount = "-";
-                    String ssfSpeciesCode = "";
+                    boolean hasErrorOnSampleSpeciesFrequency;
+                    String lengthClassCount;
+                    String ssfSpeciesCode;
                     for (SampleSpeciesFrequency sampleSpeciesFrequency : ss.getSampleSpeciesFrequencys()) {
                         hasErrorOnSampleSpeciesFrequency = false;
                         lengthClassCount = sampleSpeciesFrequency.getLengthClass() + "(" + sampleSpeciesFrequency.getNumber() + ")";

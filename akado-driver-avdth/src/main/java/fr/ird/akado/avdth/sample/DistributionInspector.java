@@ -17,7 +17,6 @@
 package fr.ird.akado.avdth.sample;
 
 import fr.ird.akado.avdth.Constant;
-import static fr.ird.akado.avdth.Constant.LABEL_SAMPLE_DISTRIBUTION_M10_P10;
 import fr.ird.akado.avdth.result.Results;
 import fr.ird.akado.avdth.result.SampleResult;
 import fr.ird.akado.core.Inspector;
@@ -25,7 +24,11 @@ import fr.ird.common.message.Message;
 import fr.ird.driver.avdth.business.Sample;
 import fr.ird.driver.avdth.business.WeightCategoryWellPlan;
 import fr.ird.driver.avdth.business.WellPlan;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import static fr.ird.akado.avdth.Constant.LABEL_SAMPLE_DISTRIBUTION_M10_P10;
 
 /**
  * Compare la somme des +10/-10 saisie dans les plans de cuve avec celle saisie
@@ -35,22 +38,36 @@ import java.util.ArrayList;
  */
 public class DistributionInspector extends Inspector<Sample> {
 
-    public static boolean distributionIsInconsistent(Sample s) {
+    public static double wellM10Weight(Sample sample) {
         double m10Weight = 0d;
-        double p10Weight = 0d;
-        for (WellPlan wp : s.getWell().getWellPlans()) {
+        for (WellPlan wp : sample.getWell().getWellPlans()) {
             if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.M10) {
                 m10Weight += wp.getWeight();
             }
-            if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.UNKNOWN 
+            if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.UNKNOWN
                     && wp.getSpecies().getCode() == 2) {
                 m10Weight += wp.getWeight();
             }
+        }
+        return m10Weight;
+    }
+
+    public static double wellP10Weight(Sample sample) {
+        double p10Weight = 0d;
+        for (WellPlan wp : sample.getWell().getWellPlans()) {
             if (wp.getWeightCategory().getCode() == WeightCategoryWellPlan.P10) {
                 p10Weight += wp.getWeight();
             }
         }
-        return m10Weight != s.getMinus10Weight() || p10Weight != s.getPlus10Weight();
+        return p10Weight;
+    }
+
+    public static boolean distributionIsInconsistent(Sample sample) {
+        double wellM10Weight = wellM10Weight(sample);
+        double wellP10Weight = wellP10Weight(sample);
+        double smallsWeight = sample.getMinus10Weight();
+        double bigsWeight = sample.getPlus10Weight();
+        return !equals(wellM10Weight, smallsWeight) || !equals(wellP10Weight, bigsWeight);
     }
 
     @Override
@@ -58,22 +75,29 @@ public class DistributionInspector extends Inspector<Sample> {
         Results results = new Results();
 
         Sample s = get();
-        SampleResult r;
-
         if (s.getWell() == null) {
             return results;
         }
 
-        if (distributionIsInconsistent(s)) {
-            r = new SampleResult();
+        double wellM10Weight = wellM10Weight(s);
+        double wellP10Weight = wellP10Weight(s);
+        double smallsWeight = s.getMinus10Weight();
+        double bigsWeight = s.getPlus10Weight();
+
+        if (!equals(wellM10Weight, smallsWeight) || !equals(wellP10Weight, bigsWeight)) {
+            SampleResult r = new SampleResult();
             r.set(s);
             r.setMessageType(Message.ERROR);
             r.setMessageCode(Constant.CODE_SAMPLE_DISTRIBUTION_M10_P10);
             r.setMessageLabel(LABEL_SAMPLE_DISTRIBUTION_M10_P10);
 
-            ArrayList parameters = new ArrayList<>();
+            List<String> parameters = new ArrayList<>();
             parameters.add(s.getID());
+            parameters.add(String.valueOf(smallsWeight));
+            parameters.add(String.valueOf(bigsWeight));
             parameters.add(s.getWell().getID());
+            parameters.add(String.valueOf(wellM10Weight));
+            parameters.add(String.valueOf(wellP10Weight));
             r.setMessageParameters(parameters);
             r.setInconsistent(true);
 

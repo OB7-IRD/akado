@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.ird.ob7</groupId>
-    <artifactId>akado-poc</artifactId>
-    <version>4.0.0-RC-1</version>
+    <artifactId>akado-pom</artifactId>
+    <version>4.0.0-RC-2</version>
   </parent>
   <artifactId>driver-observe</artifactId>
   <packaging>jar</packaging>
@@ -20,6 +20,10 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>ird-common</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ultreia.java4all</groupId>
+      <artifactId>java-lang</artifactId>
     </dependency>
     <dependency>
       <groupId>io.ultreia.java4all</groupId>

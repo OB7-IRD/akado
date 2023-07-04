@@ -12,6 +12,7 @@ import fr.ird.driver.observe.business.data.ps.common.Trip;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Catch;
 import fr.ird.driver.observe.business.data.ps.logbook.Route;
+import fr.ird.driver.observe.business.referential.common.Species;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,39 @@ import java.util.Objects;
 @AutoService(ObserveTripListInspector.class)
 public class RaisingFactorInspector extends ObserveTripListInspector {
 
-    //FIXME Replace this by a method on Species (based on topiaId, not code)
-    private static final String[] FRENCH_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "9", "11", "42"};
-    //FIXME Replace this by a method on Species (based on topiaId, not code)
-    private static final String[] SPAIN_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "5", "6", "9", "11", "12", "42", "43"};
+    // Replaced by method isFrenchTargetSpecies
+//    private static final String[] FRENCH_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "9", "11", "42"};
+    private static boolean isFrenchTargetSpecies(Species species) {
+        return species.isYFT() // avdth code 1
+                || species.isSKJ() // avdth code 2
+                || species.isBET() // avdth code 3
+                || species.isALB() // avdth code 4
+                || species.isTUN() // avdth code 9
+                || species.isLOT() // avdth code 11
+                ;
+    }
+
+    // Replaced by method isSpainTargetSpecies
+//    private static final String[] SPAIN_TARGET_SPECIES = new String[]{"1", "2", "3", "4", "5", "6", "9", "11", "12", "42", "43"};
+    private static boolean isSpainTargetSpecies(Species species) {
+        return species.isYFT() // avdth code 1
+                || species.isSKJ() // avdth code 2
+                || species.isBET() // avdth code 3
+                || species.isALB() // avdth code 4
+                || species.isALB() // avdth code 5
+                || species.isALB() // avdth code 6
+                || species.isTUN() // avdth code 9
+                || species.isLOT() // avdth code 11
+                || species.isBLF() // avdth code 12
+                || species.isRAV() // avdth code 43 (is deprecated but still in usage in old AVDTH databases)
+                // See https://github.com/OB7-IRD/akado/issues/7
+                || species.isLTA() // replace RAV*
+                || species.isKAW() // replace RAV*
+                || species.isFRZ() // replace RAV*
+                || species.isBLT() // replace RAV*
+                || species.isFRI() // replace RAV*
+                ;
+    }
 //    public static double RaisingFactor1WithLocalMarket(List<Trip> trips) {
 //
 //        double totalCatchesWeight = 0;
@@ -103,7 +133,7 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
                         || activity.containsFishingBaitsObservedSystem()) {
                     continue;
                 }
-                subTotalCatchesWeight += RaisingFactorInspector.catchesFilter(trip, activity);
+                subTotalCatchesWeight += catchesFilter(trip, activity);
             }
         }
         return subTotalCatchesWeight;
@@ -113,13 +143,13 @@ public class RaisingFactorInspector extends ObserveTripListInspector {
         double catchesWeight = 0;
         if (trip.getVessel().getFleetCountry().isFrance()) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), FRENCH_TARGET_SPECIES)) {
+                if (isFrenchTargetSpecies(aCatch.getSpecies())) {
                     catchesWeight += aCatch.getWeight();
                 }
             }
         } else if (trip.getVessel().getFleetCountry().isSpain()) {
             for (Catch aCatch : activity.getCatches()) {
-                if (aCatch.getWeightCategory() != null && aCatch.getWeightCategory().getSpecies() != null && in(aCatch.getWeightCategory().getSpecies().getCode(), SPAIN_TARGET_SPECIES)) {
+                if (isSpainTargetSpecies(aCatch.getSpecies())) {
                     catchesWeight += aCatch.getWeight();
                 }
             }

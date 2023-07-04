@@ -16,14 +16,12 @@
  */
 package fr.ird.akado.core.common;
 
-import fr.ird.akado.core.common.export.DBExport;
 import fr.ird.akado.core.common.export.XLSExport;
 import fr.ird.akado.core.common.export.XMLExport;
+
+import javax.swing.event.EventListenerList;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import javax.swing.event.EventListenerList;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * Représente une liste de résultat. Chaque module d'analyse pourra y ajouter sa
@@ -34,7 +32,7 @@ import org.springframework.data.repository.CrudRepository;
  * @since 2.0
  * @date 9 juil. 2014
  */
-public abstract class AbstractResults<T> extends ArrayList<T> implements XLSExport, XMLExport, DBExport {
+public abstract class AbstractResults<T> extends ArrayList<T> implements XLSExport, XMLExport {
 
     // un seul objet pour tous les types d'écouteurs
     private final EventListenerList listeners = new EventListenerList();
@@ -79,15 +77,6 @@ public abstract class AbstractResults<T> extends ArrayList<T> implements XLSExpo
 
     @Override
     public void exportToXML(String filename) {
-    }
-
-    @Override
-    public void exportToDB(CrudRepository repository) {
-    }
-
-    @Override
-    public List extract(Class classz) {
-        return null;
     }
 
 }

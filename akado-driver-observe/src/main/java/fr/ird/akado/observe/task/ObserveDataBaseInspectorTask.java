@@ -2,6 +2,8 @@ package fr.ird.akado.observe.task;
 
 import fr.ird.akado.core.DataBaseInspectorTask;
 import fr.ird.akado.core.common.AAProperties;
+import fr.ird.akado.core.selector.TemporalSelector;
+import fr.ird.akado.observe.ObserveDataBaseInspector;
 import fr.ird.akado.observe.inspector.ObserveInspector;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
@@ -11,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -120,5 +123,28 @@ public abstract class ObserveDataBaseInspectorTask<T> extends DataBaseInspectorT
     @Override
     public Results getResults() {
         return (Results) super.getResults();
+    }
+
+    protected boolean rejectDate(Date date) {
+        TemporalSelector temporalSelector = ObserveDataBaseInspector.getTemporalSelector();
+        if (temporalSelector == null) {
+            // no temporal selector, no reject
+            return false;
+        }
+        if (temporalSelector.getStart() != null) {
+            // check if date is after or equals to this one
+            if (date.before(temporalSelector.getStart().toDate())) {
+                // date is before, skip it
+                return true;
+            }
+        }
+        if (temporalSelector.getEnd() != null) {
+            // check if date is before or equals to this one
+            if (date.after(temporalSelector.getEnd().toDate())) {
+                // date is after, skip it
+                return true;
+            }
+        }
+        return false;
     }
 }

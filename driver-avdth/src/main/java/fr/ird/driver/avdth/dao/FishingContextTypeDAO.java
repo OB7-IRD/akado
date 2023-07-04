@@ -92,7 +92,7 @@ public class FishingContextTypeDAO extends AbstractDAO<FishingContextType> {
             statement.setString(1, "%" + contextFishing + "%");
             ResultSet rs = statement.executeQuery();
             fishingContextTypes = new ArrayList<>();
-            FishingContextType contextType = null;
+            FishingContextType contextType;
             while (rs.next()) {
                 contextType = factory(rs);
                 fishingContextTypes.add(contextType);

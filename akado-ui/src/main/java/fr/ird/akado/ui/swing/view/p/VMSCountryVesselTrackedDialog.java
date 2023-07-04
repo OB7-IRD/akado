@@ -126,8 +126,7 @@ public class VMSCountryVesselTrackedDialog extends JDialog
                  * we're going to change the JOptionPane's
                  * value property.
                  */
-                optionPane.setValue(new Integer(
-                        JOptionPane.CLOSED_OPTION));
+                optionPane.setValue(JOptionPane.CLOSED_OPTION);
             }
         });
 
@@ -171,7 +170,7 @@ public class VMSCountryVesselTrackedDialog extends JDialog
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
-        String typedTextC1 = null;
+        String typedTextC1;
 
         if (isVisible()
                 && (e.getSource() == optionPane)
@@ -208,7 +207,6 @@ public class VMSCountryVesselTrackedDialog extends JDialog
                             + "Please enter a list of vessel code like '1|41'.",
                             "Try again",
                             JOptionPane.ERROR_MESSAGE);
-                    typedTextC1 = null;
                     textFieldC1.requestFocusInWindow();
 
                 }

@@ -180,7 +180,7 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                 int subSampleNumber = ss.getSubSampleNumber();
                 String speciesCode = "";
                 Species species = ss.getSpecies();
-                if (!ObserveSampleInspector.specieMustBeSampled(species.getCode())) {
+                if (!ObserveSampleInspector.specieMustBeSampled(species)) {
                     speciesCode += "??";
                     hasErrorOnSampleSpecies = true;
                 }
@@ -199,14 +199,14 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                     temporaryList.add(sampleDTO);
                 } else {
                     boolean sampleIsAdded = false;
-                    boolean hasErrorOnSampleSpeciesFrequency = false;
-                    String lengthClassCount = "-";
-                    String ssfSpeciesCode = "";
+                    boolean hasErrorOnSampleSpeciesFrequency;
+                    String lengthClassCount;
+                    String ssfSpeciesCode;
                     for (SampleSpeciesMeasure sampleSpeciesFrequency : ss.getSampleSpeciesMeasure()) {
                         hasErrorOnSampleSpeciesFrequency = false;
                         lengthClassCount = sampleSpeciesFrequency.getSizeClass() + "(" + sampleSpeciesFrequency.getCount() + ")";
                         ssfSpeciesCode = "";
-                        if (!ObserveSampleInspector.specieMustBeSampled(species.getCode())) {
+                        if (!ObserveSampleInspector.specieMustBeSampled(species)) {
                             ssfSpeciesCode += "?";
                             hasErrorOnSampleSpeciesFrequency = true;
                         }

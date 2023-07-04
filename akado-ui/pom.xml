@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.ird.ob7</groupId>
-    <artifactId>akado-poc</artifactId>
-    <version>4.0.0-RC-1</version>
+    <artifactId>akado-pom</artifactId>
+    <version>4.0.0-RC-2</version>
   </parent>
   <artifactId>akado-ui</artifactId>
   <name>AKaDo :: UI</name>
@@ -27,6 +27,11 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>driver-observe</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>ird-common</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -35,16 +40,20 @@
       <artifactId>LGoodDatePicker</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>io.ultreia.java4all</groupId>
       <artifactId>java-util</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.argparse4j</groupId>
-      <artifactId>argparse4j</artifactId>
+      <groupId>io.ultreia.java4all</groupId>
+      <artifactId>java-lang</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

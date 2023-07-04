@@ -68,7 +68,7 @@ public class PosVMSDAOTest extends TestCase {
     }
 
     public void testActivityDAOFindActivitiesFRA() {
-        List<PosVMS> positions = new ArrayList<>();
+        List<PosVMS> positions;
 
         PosVMSDAO dao = new PosVMSDAO();
 

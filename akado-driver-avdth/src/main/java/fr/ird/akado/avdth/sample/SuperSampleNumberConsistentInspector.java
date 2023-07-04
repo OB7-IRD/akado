@@ -110,7 +110,7 @@ public class SuperSampleNumberConsistentInspector extends Inspector<Sample> {
                 results.add(r);
             }
 
-            int count = 0;
+            int count;
             for (SampleSpecies ss : s.getSampleSpecies()) {
                 count = count(s.getSampleSpecies());
 //                System.out.println("Count " + count);

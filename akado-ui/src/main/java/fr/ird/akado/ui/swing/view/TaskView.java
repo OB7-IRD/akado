@@ -55,8 +55,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -79,13 +78,12 @@ public class TaskView extends JPanel implements ActionListener {
     private final DatePicker dpEndDate;
     private final TaskController vtc;
     private final ToolsBar toolbar;
-    final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     final JLabel elapsedLabel = new JLabel("", SwingUtilities.CENTER);
     private Task task;
     private long ref = 0;
     Timer timer = new javax.swing.Timer(1000, e -> {
-        Date currentDate = new Date(System.currentTimeMillis() - ref);
-        String formattedDate = timeFormat.format(currentDate);
+        Duration duration = Duration.ofMillis(System.currentTimeMillis() - ref);
+        String formattedDate = String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart());
         elapsedLabel.setText(UIManager.getString("ui.swing.elapsed.time", new Locale(AAProperties.L10N)) + " = " + formattedDate);
     });
 

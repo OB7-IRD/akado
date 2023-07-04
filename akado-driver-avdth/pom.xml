@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>fr.ird.ob7</groupId>
-    <artifactId>akado-poc</artifactId>
-    <version>4.0.0-RC-1</version>
+    <artifactId>akado-pom</artifactId>
+    <version>4.0.0-RC-2</version>
   </parent>
   <artifactId>akado-driver-avdth</artifactId>
   <name>AKaDo :: AVDTH Driver</name>
@@ -31,8 +31,12 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>io.ultreia.java4all</groupId>
@@ -45,10 +49,7 @@
     <dependency>
       <groupId>org.jxls</groupId>
       <artifactId>jxls-poi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

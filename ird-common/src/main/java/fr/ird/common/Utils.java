@@ -19,6 +19,7 @@ package fr.ird.common;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -38,7 +39,7 @@ import java.util.jar.JarFile;
 public class Utils {
 
     /**
-     * Round a double value whith <em>places</em> decimals.
+     * Round a double value with <em>places</em> decimals.
      *
      * @param value the value to round
      * @param places the number decimals
@@ -50,7 +51,7 @@ public class Utils {
         }
 
         BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
 

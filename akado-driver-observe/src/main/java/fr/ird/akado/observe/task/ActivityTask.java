@@ -34,6 +34,9 @@ public class ActivityTask extends ObserveDataBaseInspectorTask<Activity> {
         for (Trip trip : getTripList()) {
             getInspectors().forEach(i -> i.setTrip(trip));
             for (Route route : trip.getLogbookRoute()) {
+                if (rejectDate(route.getDate())) {
+                    continue;
+                }
                 getInspectors().forEach(i -> i.setRoute(route));
                 Set<Activity> toValidate = route.getActivity();
                 onData(toValidate);

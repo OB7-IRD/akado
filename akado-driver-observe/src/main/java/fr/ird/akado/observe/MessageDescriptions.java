@@ -59,11 +59,11 @@ public enum MessageDescriptions implements MessageDescription {
     // Anapo
 
     I0003_VESSEL_IS_NOT_IN_DATABASE("avdth.vessel.not.in.db", false),
-    I1221_ACTIVITY_NO_TRACE_VMS("message.activity.no.trace.vms", false),
-    W1223_ACTIVITY_TRACE_VMS_CL2("message.activity.trace.vms.cl2", false),
-    I1224_INCONSISTENCY_VMS_POSITION_COUNT("message.trace.vms.inconsistent.position.count", false),
-    E1227_ACTIVITY_TRACE_VMS_NO_MATCH("message.activity.trace.vms.no.match", false),
-    E1228_ANAPO_NO_ACTIVITY("message.anapo.no.activity", false),
+    I1421_ACTIVITY_NO_TRACE_VMS("message.activity.no.trace.vms", false),
+    W1423_ACTIVITY_TRACE_VMS_CL2("message.activity.trace.vms.cl2", false),
+    I1424_INCONSISTENCY_VMS_POSITION_COUNT("message.trace.vms.inconsistent.position.count", false),
+    E1427_ACTIVITY_TRACE_VMS_NO_MATCH("message.activity.trace.vms.no.match", false),
+    E1428_ANAPO_NO_ACTIVITY("message.anapo.no.activity", false),
 
     // Sample messages
 
@@ -76,13 +76,17 @@ public enum MessageDescriptions implements MessageDescription {
     E1323_SAMPLE_MEASURE_COUNT("message.sample.measure.count", true),
     E1326_SAMPLE_WEIGHTING_BB_LC("message.sample.weighting.bb.lc", true),
     E1327_SAMPLE_WEIGHTING_BB_WEIGHT("message.sample.weighting.bb.weight", true),
-    W1329_SAMPLE_LENGTH_CLASS("message.sample.length.class", true),
     W1330_SAMPLE_LITTLE_INF_THRESHOLD("message.sample.little.threshold", true),
     W1332_SAMPLE_LDLF_P10("message.sample.ldlf.p10", true),
     W1333_SAMPLE_LDLF_M10("message.sample.ldlf.m10", true),
     E1334_SAMPLE_LDLF_SPECIES_FORBIDDEN("message.sample.ldlf.species.forbidden", true),
     E1335_SAMPLE_DISTRIBUTION_M10_P10("message.sample.distribution.m10.p10", true),
     W1337_SAMPLE_BIG_INF_THRESHOLD("message.sample.big.threshold", true),
+
+    E1338_SAMPLE_LENGTH_CLASS_UNDEFINED("message.sample.length.class.bound.not.found", true),
+    E1339_SAMPLE_LENGTH_CLASS("message.sample.length.class.error", true),
+    W1340_SAMPLE_LENGTH_CLASS("message.sample.length.class.warning", true),
+
 ;
     private final MessageDescription messageDescription;
 

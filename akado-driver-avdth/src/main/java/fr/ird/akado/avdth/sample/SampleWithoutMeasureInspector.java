@@ -55,7 +55,7 @@ public class SampleWithoutMeasureInspector extends Inspector<Sample> {
         SampleResult r;
         if (!s.getSampleSpecies().isEmpty()) {
 
-            ArrayList parameters = null;
+            ArrayList parameters;
             for (SampleSpecies sampleSpecies : s.getSampleSpecies()) {
                 if (sampleSpecies.getSampleSpeciesFrequencys().isEmpty()) {
                     r = new SampleResult();

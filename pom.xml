@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.ird.ob7</groupId>
-  <artifactId>akado-poc</artifactId>
-  <version>4.0.0-RC-1</version>
+  <artifactId>akado-pom</artifactId>
+  <version>4.0.0-RC-2</version>
   <packaging>pom</packaging>
   <name>AKaDo</name>
   <description>AKaDo</description>
@@ -11,11 +11,11 @@
     <name>Observatoire des écosystèmes pélagiques tropicaux exploités, IRD</name>
     <url>https://www.ob7.ird.fr/</url>
   </organization>
-  <url>https://github.com/OB7-IRD/akado2</url>
+  <url>https://github.com/OB7-IRD/akado</url>
   <scm>
-    <connection>scm:git:git@github.com:OB7-IRD/akado2.git</connection>
-    <developerConnection>scm:ssh://git:git@github.com:OB7-IRD/akado2.git</developerConnection>
-    <url>https://github.com/OB7-IRD/akado2.git</url>
+    <connection>scm:git:git@github.com:OB7-IRD/akado.git</connection>
+    <developerConnection>scm:ssh://git:git@github.com:OB7-IRD/akado.git</developerConnection>
+    <url>https://github.com/OB7-IRD/akado.git</url>
   </scm>
   <licenses>
     <license>
@@ -71,8 +71,9 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <java.version>11</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     <izpack.version>5.1.3</izpack.version>
@@ -109,14 +110,24 @@
         <type>jar</type>
       </dependency>
       <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.12.0</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>1.23.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.2</version>
       </dependency>
       <dependency>
         <groupId>io.ultreia.java4all</groupId>
         <artifactId>java-util</artifactId>
         <version>${lib.version.java4all.java-util}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.ultreia.java4all</groupId>
+        <artifactId>java-lang</artifactId>
+        <version>${lib.version.java4all.java-lang}</version>
       </dependency>
       <dependency>
         <groupId>joda-time</groupId>
@@ -128,13 +139,6 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${lib.version.junit}</version>
-      </dependency>
-      <dependency>
-        <groupId>net.sourceforge.argparse4j</groupId>
-        <artifactId>argparse4j</artifactId>
-        <!--        <version>0.4.1</version>-->
-        <version>0.9.0</version>
-        <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
@@ -155,11 +159,6 @@
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-slf4j2-impl</artifactId>
         <version>${lib.version.log4j2}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20230227</version>
       </dependency>
       <dependency>
         <groupId>org.jxls</groupId>
@@ -217,17 +216,6 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>2.0.7</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-commons</artifactId>
-        <version>1.13.23.RELEASE</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.google.auto.service</groupId>
@@ -328,6 +316,12 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
+          <configuration>
+            <compilerArgs>
+              <arg>-Xlint:unchecked</arg>
+              <arg>-Xlint:deprecation</arg>
+            </compilerArgs>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -481,6 +475,11 @@
           <artifactId>maven-surefire-report-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -501,6 +500,100 @@
     </extensions>
   </build>
   <profiles>
+    <profile>
+      <id>release-quality-profile</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>extra-enforcer-rules</artifactId>
+                <version>1.3</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>check-project</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <phase>validate</phase>
+                <configuration>
+                  <rules>
+                    <requireProperty>
+                      <property>java.version</property>
+                      <message>"java.version property must be specified."</message>
+                      <regex>.+$</regex>
+                      <regexMessage>"java.version property can not be empty."</regexMessage>
+                    </requireProperty>
+                    <requireMavenVersion>
+                      <version>[3.6.3,)</version>
+                    </requireMavenVersion>
+                    <dependencyConvergence />
+                    <bannedDependencies>
+                      <excludes>
+                        <exclude>org.codehaus.plexus:plexus-component-api</exclude>
+                      </excludes>
+                      <message>The new containers are not supported. You
+                        probably added a dependency that is missing the
+                        exclusions.
+                      </message>
+                    </bannedDependencies>
+                    <enforceBytecodeVersion>
+                      <maxJdkVersion>${java.version}</maxJdkVersion>
+                    </enforceBytecodeVersion>
+                    <banDuplicateClasses>
+                      <findAllDuplicates>true</findAllDuplicates>
+                    </banDuplicateClasses>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>analyze-dependencies</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <defaultGoal>process-classes</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <inherited>true</inherited>
+            <executions>
+              <execution>
+                <id>analyze</id>
+                <goals>
+                  <goal>analyze-only</goal>
+                </goals>
+                <phase>process-classes</phase>
+                <configuration>
+                  <verbose>true</verbose>
+                  <failOnWarning>true</failOnWarning>
+                  <ignoreNonCompile>true</ignoreNonCompile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>release-sign-artifacts</id>
       <activation>

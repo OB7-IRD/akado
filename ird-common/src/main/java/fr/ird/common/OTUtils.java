@@ -62,7 +62,7 @@ public class OTUtils {
         double nCoord = Math.abs(coord);
         String deg = "" + (int) Math.floor(nCoord);
         String min = "" + Math.round((nCoord * 60) % 60);
-        String orientation = "?";
+        String orientation;
         if (isLatitude) {
             if (coord < 0) {
                 orientation = "S";

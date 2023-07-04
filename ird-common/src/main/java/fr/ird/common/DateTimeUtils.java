@@ -16,12 +16,6 @@
  */
 package fr.ird.common;
 
-import java.sql.Time;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
@@ -31,6 +25,13 @@ import org.joda.time.LocalTime;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Miscellaneous methods to manipulate the date and the time object.
@@ -140,7 +141,7 @@ public class DateTimeUtils {
      * @return true of false
      */
     public static boolean dateAfter(DateTime date, DateTime referenceDate) {
-        if (referenceDate == null || referenceDate == null) {
+        if (date == null || referenceDate == null) {
             return false;
         }
 
@@ -304,8 +305,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * Convert {@link DateTime} to {@link java.sql.Date} . Alias for
-     * {@link  convertFullDate()}.
+     * Convert {@link DateTime} to {@link java.sql.Date}.
      *
      * @param date the date
      * @return the date converted
@@ -364,20 +364,6 @@ public class DateTimeUtils {
         return Days.daysBetween(debut, fin).getDays();
     }
 
-    /**
-     * Methode temporaire, demander au CERIT de faire la modification de la
-     * valeur retournée par get***DatiDt() de RTP, DEP...
-     *
-     * @param date
-     * @param time
-     * @return
-     */
-    public static DateTime createDateTime(Date date, String time) {
-        String[] timesArray = time.split(":");
-        date.setHours(Integer.valueOf(timesArray[0]));
-        date.setMinutes(Integer.valueOf(timesArray[1]));
-        return new DateTime(date);
-    }
     public static final Pattern pDateTime = Pattern.compile("^(?<date>[0-9]{4}-[0-9]{2}-[0-9]{2}) (?<time>[0-9]{2}:[0-9]{2}:.*)$");
     public static final Pattern pTime = Pattern.compile("^(?<time>[0-9]{2}:[0-9]{2}:.*)$");
 
@@ -403,11 +389,11 @@ public class DateTimeUtils {
         }
 
         String[] timesArray = time.split(":");
-        int hour = Integer.valueOf(timesArray[0]);
-        int minute = Integer.valueOf(timesArray[1]);
+        int hour = Integer.parseInt(timesArray[0]);
+        int minute = Integer.parseInt(timesArray[1]);
         int second = 0;
         if (timesArray.length > 2) {
-            second = Math.round(Float.valueOf(timesArray[2]));
+            second = Math.round(Float.parseFloat(timesArray[2]));
 
         }
         final DateTimeZone dtz = DateTimeZone.forID("UTC");

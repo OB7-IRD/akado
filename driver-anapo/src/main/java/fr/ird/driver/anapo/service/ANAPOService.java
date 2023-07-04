@@ -24,6 +24,7 @@ import fr.ird.driver.anapo.dao.PosVMSDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -55,14 +56,15 @@ public class ANAPOService {
         this.password = password;
 
         try {
-            Class.forName(driver).newInstance();
+            Class.forName(driver).getDeclaredConstructor().newInstance();
             // Connexion à la base
             log.debug("ANAPO SERVICE : initialisation");
             log.debug("ANAPO SERVICE : " + url);
             connection = DriverManager.getConnection(this.url, this.user, this.password);
             log.debug("ANAPO SERVICE : end");
 
-        } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
+        } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException |
+                 NoSuchMethodException | InvocationTargetException ex) {
             throw new ANAPODriverException("ANAPO: The database connection has failed. See below for more information.\n\n\t«" + ex.getMessage() + "»", ex);
         }
     }

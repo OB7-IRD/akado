@@ -20,8 +20,8 @@ public class LogSplitter {
 
     }
 
-    private static void runForFile(String source) throws IOException {
-        Path sourcePath = Path.of(source + ".log");
+    private static void runForFile(Path source) throws IOException {
+        Path sourcePath = source.resolve( "akado.log");
         Path targetPath = sourcePath.getParent().resolve("byCodes");
         if (Files.notExists(targetPath)) {
             Files.createDirectory(targetPath);
@@ -38,9 +38,9 @@ public class LogSplitter {
             byCodesProperties.store(writer, null);
         }
 
-        split("> Marée", sourceLines, Path.of(source + "-M.log"));
-        split("> Activité", sourceLines, Path.of(source + "-A.log"));
-        split("> Echantillon", sourceLines, Path.of(source + "-E.log"));
+        split("> Marée", sourceLines, source.resolve( "akado-M.log"));
+        split("> Activité", sourceLines, source.resolve( "akado-A.log"));
+        split("> Echantillon", sourceLines, source.resolve( "akado-E.log"));
     }
 
     private static void split(String pattern, List<String> sourceLines, Path target) throws IOException {
