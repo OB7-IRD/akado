@@ -13,7 +13,7 @@
         </authors>
         <url>https://github.com/OB7-IRD/akado2</url>
         <uninstaller name="Uninstaller.jar" write="yes"/>
-        <javaversion>16</javaversion>
+        <javaversion>11</javaversion>
         <requiresjdk>false</requiresjdk>
         <writeinstallationinformation>no</writeinstallationinformation>
         <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
