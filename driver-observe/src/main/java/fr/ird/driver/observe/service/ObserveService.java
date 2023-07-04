@@ -10,13 +10,13 @@ import io.ultreia.java4all.util.sql.conf.JdbcConfigurationBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -122,17 +122,19 @@ public class ObserveService {
     }
 
     public static Path createH2DatabaseFromBackupPath(Path backupFile) {
-        String dbPathName = String.format("%1$s-%2$tY_%2$tm_%2$td__%2$tH-%2$tM-%2$tS", removeExtension(backupFile.toFile().getName()), new Date());
+        String dbPathName = String.format("%1$s", removeExtension(backupFile.toFile().getName()));
         return backupFile.getParent().resolve(dbPathName);
     }
 
     public static JdbcConfiguration createH2DatabaseFromBackup(Path dbPath, Path backupFile) {
         JdbcConfiguration configuration = createH2DatabaseConfiguration(dbPath);
-        ObserveService service = getService();
-        try {
-            service.loadH2Database(backupFile, configuration);
-        } finally {
-            service.close();
+        if (Files.notExists(dbPath.resolve("observe.mv.db"))) {
+            ObserveService service = getService();
+            try {
+                service.loadH2Database(backupFile, configuration);
+            } finally {
+                service.close();
+            }
         }
         return configuration;
     }
