@@ -112,8 +112,8 @@ public abstract class AbstractTripDaoTest {
 
         String vesselId = Ids.get(Vessel.class);
         List<Vessel> vessel = List.of(service().getReferentialCache().get(Vessel.class, vesselId));
-        Date start = null;
-        Date end = null;
+        Date start;
+        Date end;
         TripDao dao = service().getDaoSupplier().getPsCommonTripDao();
         List<Trip> actual = dao.findTrips(vessel, null, null, null);
         Assert.assertNotNull(actual);

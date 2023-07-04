@@ -50,8 +50,8 @@ public class QuadrantInspector extends Inspector<Activity> {
     public Results execute() {
         Results results = new Results();
         Activity activite = get();
-        ActivityResult r = null;
-        ArrayList parameters = null;
+        ActivityResult r;
+        ArrayList parameters;
 //        System.out.println(description + " " + activite);
         if (activite.getLatitude() == 0 && !(activite.getQuadrant() == 1 || activite.getQuadrant() == 4)) {
             //System.out.println(activite.getCodeOcean());

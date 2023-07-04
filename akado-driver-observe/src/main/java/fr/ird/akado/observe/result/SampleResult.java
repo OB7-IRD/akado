@@ -199,9 +199,9 @@ public class SampleResult extends Result<Sample> implements WithTrip {
                     temporaryList.add(sampleDTO);
                 } else {
                     boolean sampleIsAdded = false;
-                    boolean hasErrorOnSampleSpeciesFrequency = false;
-                    String lengthClassCount = "-";
-                    String ssfSpeciesCode = "";
+                    boolean hasErrorOnSampleSpeciesFrequency;
+                    String lengthClassCount;
+                    String ssfSpeciesCode;
                     for (SampleSpeciesMeasure sampleSpeciesFrequency : ss.getSampleSpeciesMeasure()) {
                         hasErrorOnSampleSpeciesFrequency = false;
                         lengthClassCount = sampleSpeciesFrequency.getSizeClass() + "(" + sampleSpeciesFrequency.getCount() + ")";

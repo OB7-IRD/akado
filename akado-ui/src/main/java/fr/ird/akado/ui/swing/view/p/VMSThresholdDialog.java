@@ -144,8 +144,7 @@ public class VMSThresholdDialog extends JDialog
                  * we're going to change the JOptionPane's
                  * value property.
                  */
-                optionPane.setValue(new Integer(
-                        JOptionPane.CLOSED_OPTION));
+                optionPane.setValue(JOptionPane.CLOSED_OPTION);
             }
         });
 
@@ -219,8 +218,8 @@ public class VMSThresholdDialog extends JDialog
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
-        String typedTextC1 = null;
-        String typedTextC2 = null;
+        String typedTextC1;
+        String typedTextC2;
 
         if (isVisible()
                 && (e.getSource() == optionPane)
@@ -267,7 +266,6 @@ public class VMSThresholdDialog extends JDialog
                                 + "Please enter a integer or a double.",
                                 "Try again",
                                 JOptionPane.ERROR_MESSAGE);
-                        typedTextC1 = null;
                         textFieldC1.requestFocusInWindow();
                     }
                     if (!Pattern.matches(fpRegex, typedTextC2)) {
@@ -280,7 +278,6 @@ public class VMSThresholdDialog extends JDialog
                                 + "Please enter a integer or a double.",
                                 "Try again",
                                 JOptionPane.ERROR_MESSAGE);
-                        typedTextC2 = null;
                         textFieldC2.requestFocusInWindow();
                     }
 

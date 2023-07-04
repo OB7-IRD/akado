@@ -56,8 +56,8 @@ public class PositionActivityConsistentInspector extends Inspector<Sample> {
         Sample s = get();
         Trip trip = (new TripDAO()).findTripByVesselIdAndDate(s.getVessel(), s.getLandingDate());
 
-        ArrayList parameters = null;
-        SampleResult r = null;
+        ArrayList parameters;
+        SampleResult r;
         if (TripDAO.exist(trip)) {
             for (SampleWell sw : s.getSampleWells()) {
 

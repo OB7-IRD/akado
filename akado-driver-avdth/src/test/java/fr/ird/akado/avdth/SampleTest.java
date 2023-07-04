@@ -343,9 +343,8 @@ public class SampleTest extends TestCase {
         assertTrue(SuperSampleNumberConsistentInspector.checkIfHasOnlyOneSubSampling(sample));
         assertFalse(SuperSampleNumberConsistentInspector.checkIfHasManySubSampling(sample));
 
-        SuperSampleNumberConsistentInspector inspector = new SuperSampleNumberConsistentInspector();
         Results results = new Results();
-        inspector = new SuperSampleNumberConsistentInspector();
+        SuperSampleNumberConsistentInspector inspector = new SuperSampleNumberConsistentInspector();
         inspector.set(sample);
         results.addAll(inspector.execute());
         for (int i = 0; i < results.size(); i++) {

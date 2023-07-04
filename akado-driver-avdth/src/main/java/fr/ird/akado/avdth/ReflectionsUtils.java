@@ -87,7 +87,7 @@ public class ReflectionsUtils {
         final Enumeration<JarEntry> entries = jarFile.entries();
         String name;
 
-        for (JarEntry jarEntry = null; entries.hasMoreElements()
+        for (JarEntry jarEntry; entries.hasMoreElements()
                 && ((jarEntry = entries.nextElement()) != null);) {
             name = jarEntry.getName();
 
@@ -125,7 +125,7 @@ public class ReflectionsUtils {
                     .replace('.', '/'));
             URLConnection connection;
 
-            for (URL url = null; resources.hasMoreElements()
+            for (URL url; resources.hasMoreElements()
                     && ((url = resources.nextElement()) != null);) {
                 try {
                     connection = url.openConnection();

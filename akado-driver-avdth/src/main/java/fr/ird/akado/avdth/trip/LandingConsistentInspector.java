@@ -51,7 +51,7 @@ public class LandingConsistentInspector extends Inspector<Trip> {
         TripResult r;
         float capacityMax = trip.getVessel().getCapacity() * COEFF_M3_TO_TON;
         double catchesWeight = trip.getTotalLandingWeight() + trip.getLocalMarketWeight();
-        ArrayList parameters = null;
+        ArrayList parameters;
         if (trip.getVessel().isPurseSeine()) {
             if (capacityMax == 0) {
                 r = new TripResult();

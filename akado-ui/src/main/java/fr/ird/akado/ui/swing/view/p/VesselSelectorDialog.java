@@ -125,8 +125,7 @@ public class VesselSelectorDialog extends JDialog
                  * we're going to change the JOptionPane's
                  * value property.
                  */
-                optionPane.setValue(new Integer(
-                        JOptionPane.CLOSED_OPTION));
+                optionPane.setValue(JOptionPane.CLOSED_OPTION);
             }
         });
 
@@ -170,7 +169,7 @@ public class VesselSelectorDialog extends JDialog
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
-        String typedTextC1 = null;
+        String typedTextC1;
 
         if (isVisible()
                 && (e.getSource() == optionPane)
@@ -211,7 +210,6 @@ public class VesselSelectorDialog extends JDialog
                             + "Please enter a list of vessel code like '25|407' or '0' for all vessels.",
                             "Try again",
                             JOptionPane.ERROR_MESSAGE);
-                    typedTextC1 = null;
                     textFieldC1.requestFocusInWindow();
 
                 }

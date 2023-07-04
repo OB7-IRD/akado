@@ -82,7 +82,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
         List<Activity> activities = get();
         log.debug("Size of activities " + activities.size());
 
-        Activity lastActivity = null;
+        Activity lastActivity;
 
         if (activities.isEmpty()) {
             return results;
@@ -95,7 +95,7 @@ public class AnapoActivityConsistentInspector extends Inspector<List<Activity>> 
         Anapo anapo;
 
         PosVMSDAO pvmsdao = new PosVMSDAO();
-        List<PosVMS> positions = null;
+        List<PosVMS> positions;
         DateTime date = lastActivity.getDate();
 
         if (vesselsCode.isEmpty()) {

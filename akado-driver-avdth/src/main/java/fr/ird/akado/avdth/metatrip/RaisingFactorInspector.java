@@ -117,8 +117,8 @@ public class RaisingFactorInspector extends Inspector<List<Trip>> {
 
         if (AAProperties.isWarningInspectorEnabled()) {
 
-            ArrayList parameters = null;
-            double rf1 = 0d;
+            ArrayList parameters;
+            double rf1;
 //        double rf1WithLocalMarket = 0d;
 
             List<Trip> allTrips = get();

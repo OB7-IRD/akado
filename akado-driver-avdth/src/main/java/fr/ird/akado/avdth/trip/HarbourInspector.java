@@ -74,7 +74,7 @@ public class HarbourInspector extends Inspector<Trip> {
     }
 
     public static boolean harbourAreIdentical(Trip current) {
-        Trip previous = null;
+        Trip previous;
         try {
             previous = (new TripDAO()).findPreviousTrip(current.getVessel(), current.getLandingDate());
             if (previous == null) {

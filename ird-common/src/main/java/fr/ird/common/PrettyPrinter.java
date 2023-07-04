@@ -39,9 +39,9 @@ public final class PrettyPrinter {
         }
         final PrettyPrinter printer = new PrettyPrinter(System.out);
         String[][] resultsArray2D = null;
-        String[] array = null;
+        String[] array;
         int i = 0;
-        int pos = 0;
+        int pos;
         for (Map<String, Object> result : results) {
             if (i == 0) {//Rempli le tableau avec les entetes
                 resultsArray2D = new String[results.size() + 1][result.entrySet().size() + 1];
