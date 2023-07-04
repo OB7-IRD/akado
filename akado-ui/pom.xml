@@ -48,20 +48,12 @@
       <artifactId>log4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.ultreia.java4all</groupId>
       <artifactId>java-util</artifactId>
     </dependency>
     <dependency>
       <groupId>io.ultreia.java4all</groupId>
       <artifactId>java-lang</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.argparse4j</groupId>
-      <artifactId>argparse4j</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
