@@ -150,23 +150,4 @@ public class Message {
 
     }
 
-    /**
-     * Displays the message with the parameters in the selected language.
-     *
-     * @param locale the message's language to display
-     * @return the String message
-     */
-    public String displayMessage(Locale locale) {
-        return this.displayMessage("Message", locale);
-    }
-
-    /**
-     * Displays the message with the parameters in the selected language.
-     *
-     * @return the String message
-     */
-    public String displayMessage() {
-        return this.displayMessage("Message", Locale.getDefault());
-    }
-
 }
