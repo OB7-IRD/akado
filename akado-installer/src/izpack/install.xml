@@ -10,6 +10,7 @@
             <author email="julien.lebranchu@ird.fr" name="Julien Lebranchu"/>
             <author email="laurent.floch@ird.fr" name="Laurent Floch"/>
             <author email="pascal.cauquil@ird.fr" name="Pascal Cauquil"/>
+            <author email="tchemit@ultreia.io" name="Tony Chemit"/>
         </authors>
         <url>https://github.com/OB7-IRD/akado</url>
         <uninstaller name="Uninstaller.jar" write="yes"/>
