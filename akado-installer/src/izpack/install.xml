@@ -5,24 +5,21 @@
 
     <info>
         <appname>AKaDo</appname>
-        <appversion>2.0.6</appversion>
+        <appversion>4.0.0</appversion>
         <authors>
             <author email="julien.lebranchu@ird.fr" name="Julien Lebranchu"/>
             <author email="laurent.floch@ird.fr" name="Laurent Floch"/>
             <author email="pascal.cauquil@ird.fr" name="Pascal Cauquil"/>
+            <author email="tchemit@ultreia.io" name="Tony Chemit"/>
         </authors>
-        <url>https://github.com/OB7-IRD/akado2</url>
+        <url>https://github.com/OB7-IRD/akado</url>
         <uninstaller name="Uninstaller.jar" write="yes"/>
-        <javaversion>16</javaversion>
+        <javaversion>11</javaversion>
         <requiresjdk>false</requiresjdk>
         <writeinstallationinformation>no</writeinstallationinformation>
         <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
     </info>
     <guiprefs width="800" height="600" resizable="no">
-        <laf name="looks">
-            <os family="windows"/>
-            <param name="variant" value="windows"/>
-        </laf>
         <laf name="kunststoff">
             <os family="unix"/>
         </laf>

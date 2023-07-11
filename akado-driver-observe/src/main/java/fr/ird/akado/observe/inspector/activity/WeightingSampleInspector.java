@@ -2,6 +2,7 @@ package fr.ird.akado.observe.inspector.activity;
 
 import com.google.auto.service.AutoService;
 import fr.ird.akado.observe.MessageDescriptions;
+import fr.ird.akado.observe.inspector.sample.ObserveSampleInspector;
 import fr.ird.akado.observe.result.ActivityResult;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.common.Trip;
@@ -9,7 +10,6 @@ import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 import fr.ird.driver.observe.business.data.ps.logbook.Catch;
 import fr.ird.driver.observe.business.data.ps.logbook.Sample;
 import fr.ird.driver.observe.business.data.ps.logbook.SampleActivity;
-import fr.ird.driver.observe.business.referential.common.Species;
 
 import java.util.Objects;
 
@@ -35,22 +35,6 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
         return sumOfSampleWeightedWeight;
     }
 
-    public static boolean specieMustBeSampled(Species species) {
-        return species.isYFT() // avdth code 1
-                || species.isSKJ() // avdth code 2
-                || species.isBET() // avdth code 3
-                || species.isALB() // avdth code 4
-                || species.isLTA() // avdth code 5
-                || species.isFRI() // avdth code 6
-                || species.isTUN() // avdth code 9
-                || species.isTUS() // avdth code 40
-                || species.isKAW() // avdth code 10
-                || species.isLOT() // avdth code 11
-                || species.isFRZ() // avdth code 18
-                || species.isBLT() // avdth code 17
-                ;
-    }
-
     public WeightingSampleInspector() {
         this.description = "Check consistency between elementary catches weight and sample activity weighted weight.";
     }
@@ -72,7 +56,7 @@ public class WeightingSampleInspector extends ObserveActivityInspector {
                 // reject discard catches
                 continue;
             }
-            if (specieMustBeSampled(aCatch.getSpecies())) {
+            if (ObserveSampleInspector.specieMustBeSampled(aCatch.getSpecies())) {
                 sumOfElementaryCatches += catchWeight;
             }
         }

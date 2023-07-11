@@ -45,19 +45,19 @@ public class LengthClassInspector extends ObserveSampleInspector {
         }
     }
 
-    public static final LengthClassBound ALB_FL = new LengthClassBound(15, 30, 100, 120);
-    public static final LengthClassBound BET_FL = new LengthClassBound(15, 20, 100, 190);
+    public static final LengthClassBound ALB_FL = new LengthClassBound(15, 30, 80, 120);
+    public static final LengthClassBound BET_FL = new LengthClassBound(15, 20, 80, 190);
     public static final LengthClassBound FRI_FL = new LengthClassBound(15, 20, 80, 90);
     public static final LengthClassBound FRZ_FL = new LengthClassBound(15, 30, 45, 50);
     public static final LengthClassBound KAW_FL = new LengthClassBound(15, 22, 80, 90);
     public static final LengthClassBound LTA_FL = new LengthClassBound(15, 25, 75, 90);
-    public static final LengthClassBound SKJ_FL = new LengthClassBound(15, 18, 100, 110);
-    public static final LengthClassBound YFT_FL = new LengthClassBound(15, 18, 100, 200);
+    public static final LengthClassBound SKJ_FL = new LengthClassBound(15, 18, 80, 110);
+    public static final LengthClassBound YFT_FL = new LengthClassBound(15, 18, 80, 200);
     public static final LengthClassBound ALB_PD1 = new LengthClassBound(15, 20, 45, 50);
     public static final LengthClassBound BET_PD1 = new LengthClassBound(10, 15, 60, 65);
     public static final LengthClassBound SKJ_PD1 = new LengthClassBound(15, 20, 30, 35);
     public static final LengthClassBound YFT_PD1 = new LengthClassBound(8, 10, 60, 70);
-    public static final LengthClassBound OTHER_LF = new LengthClassBound(5, 10, 100, 400);
+    public static final LengthClassBound OTHER_LF = new LengthClassBound(5, 10, 80, 400);
     public static final LengthClassBound OTHER_PD1 = new LengthClassBound(5, 10, 70, 100);
     public static final int LENGTH_CLASS_YFT = 90;
     public static final int LENGTH_CLASS_BET = 90;

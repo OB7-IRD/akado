@@ -29,15 +29,18 @@ public abstract class ObserveSampleInspector extends ObserveInspector<Sample> im
     }
 
     public static boolean specieMustBeSampled(Species species) {
-        return species.isYFT()
-                ||species.isSKJ()
-                ||species.isBET()
-                ||species.isALB()
-                ||species.isLTA()
-                ||species.isKAW()
-                ||species.isTUN()
-                ||species.isLOT()
-                ||species.isALB()
+        return species.isYFT() // avdth code 1
+                || species.isSKJ() // avdth code 2
+                || species.isBET() // avdth code 3
+                || species.isALB() // avdth code 4
+                || species.isLTA() // avdth code 5
+                || species.isFRI() // avdth code 6
+                || species.isTUN() // avdth code 9
+                || species.isTUS() // avdth code 40
+                || species.isKAW() // avdth code 10
+                || species.isLOT() // avdth code 11
+                || species.isFRZ() // avdth code 18
+                || species.isBLT() // avdth code 17
                 ;
     }
 

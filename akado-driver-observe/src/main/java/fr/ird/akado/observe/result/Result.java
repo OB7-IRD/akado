@@ -16,11 +16,14 @@
  */
 package fr.ird.akado.observe.result;
 
+import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.common.AbstractResult;
 import fr.ird.akado.core.common.MessageDescription;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 /**
  * Définit la classe de résultat d'une analyse d'Akado pour ObServe.
@@ -44,5 +47,12 @@ public abstract class Result<T> extends AbstractResult<T> {
     @Override
     protected ObserveMessage createMessage(String messageCode, String messageLabel, List<?> list, String messageType) {
         return new ObserveMessage(messageCode, messageLabel, list, messageType);
+    }
+
+    public static String translate(String i18nKey) {
+        Locale locale = Locale.forLanguageTag(AAProperties.L10N);
+        ResourceBundle messages
+                = ResourceBundle.getBundle(ObserveMessage.AKADO_OBSERVE_BUNDLE_PROPERTIES, locale);
+        return messages.getString(i18nKey);
     }
 }
