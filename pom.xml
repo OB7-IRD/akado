@@ -79,7 +79,7 @@
     <izpack.version>5.1.3</izpack.version>
     <plugin.version.nexusStaging>1.6.13</plugin.version.nexusStaging>
     <!--    <lib.version.h2>2.1.214</lib.version.h2>-->
-    <lib.version.h2>1.4.196</lib.version.h2>
+    <lib.version.h2>2.2.220</lib.version.h2>
     <lib.version.junit>4.13.2</lib.version.junit>
     <lib.version.java4all.java-lang>2.0.5</lib.version.java4all.java-lang>
     <lib.version.java4all.java-util>1.1.7</lib.version.java4all.java-util>
