@@ -20,10 +20,6 @@
         <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
     </info>
     <guiprefs width="800" height="600" resizable="no">
-        <laf name="looks">
-            <os family="windows"/>
-            <param name="variant" value="windows"/>
-        </laf>
         <laf name="kunststoff">
             <os family="unix"/>
         </laf>
