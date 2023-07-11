@@ -16,8 +16,8 @@ Ce document décrit tous les controles implantés pour les marées dans ce modul
 
 # fr.ird.akado.observe.inspector.trip.ActivityInspector
 
-| message                                                 | clef de traduction              |
-|:--------------------------------------------------------|:--------------------------------|
+| message                                                | clef de traduction              |
+|:-------------------------------------------------------|:--------------------------------|
 | MessageDescriptions.E1018_TRIP_NO_ACTIVITY             | message.trip.noactivities       |
 | MessageDescriptions.E1024_TRIP_HAS_ACTIVITY_NO_LOGBOOK | message.trip.activity.nologbook |
 
@@ -28,8 +28,8 @@ message.trip.activity.nologbook={0}> Marée[{1}] Il y a au moins une route dans 
 
 # fr.ird.akado.observe.inspector.trip.FishingTimeInspector
 
-| message                                      | clef de traduction       |
-|:---------------------------------------------|:-------------------------|
+| message                                     | clef de traduction       |
+|:--------------------------------------------|:-------------------------|
 | MessageDescriptions.E1017_TRIP_FISHING_TIME | message.trip.fishingtime |
 
 ```properties
@@ -38,9 +38,9 @@ message.trip.fishingtime={0}> Marée[{1}] Le «Temps de pêche» sur la marée {
 
 # fr.ird.akado.observe.inspector.trip.TimeAtSeaInspector
 
-| message                                        | clef de traduction        |
-|:-----------------------------------------------|:--------------------------|
-| MessageDescriptions.E1011_TRIP_TIME_AT_SEA    | message.trip.timeatsea    |
+| message                                    | clef de traduction     |
+|:-------------------------------------------|:-----------------------|
+| MessageDescriptions.E1011_TRIP_TIME_AT_SEA | message.trip.timeatsea |
 
 ```properties
 message.trip.timeatsea={0}> Marée[{1}] La valeur obtenue pour le champ «time at sea» est {2}, mais la valeur attendue est {3}.
@@ -49,8 +49,8 @@ message.trip.no.timeatsea=={0}> Marée[{1}] La valeur obtenue pour le champ «ti
 
 # fr.ird.akado.observe.inspector.trip.LandingConsistentInspector
 
-| message                                           | clef de traduction             |
-|:--------------------------------------------------|:-------------------------------|
+| message                                          | clef de traduction             |
+|:-------------------------------------------------|:-------------------------------|
 | MessageDescriptions.W1002_VESSEL_NO_CAPACITY     | message.vessel.nocapacity      |
 | MessageDescriptions.E1022_TRIP_CAPACITY_OVERRIDE | message.trip.capacity.override |
 
@@ -62,8 +62,8 @@ message.trip.capacity.override={0}> Marée[{1}] Le poids total des captures est 
 # fr.ird.akado.observe.inspector.trip.LandingTotalWeightInspector
 
 
-| message                                              | clef de traduction              |
-|:-----------------------------------------------------|:--------------------------------|
+| message                                             | clef de traduction              |
+|:----------------------------------------------------|:--------------------------------|
 | MessageDescriptions.E1016_TRIP_LANDING_TOTAL_WEIGHT | message.trip.landingtotalweight |
 
 ```properties
@@ -72,8 +72,8 @@ message.trip.landingtotalweight={0}> Marée[{1}] La valeur obtenue pour le champ
 
 # fr.ird.akado.observe.inspector.trip.RecoveryTimeInspector
 
-| message                                           | clef de traduction             |
-|:--------------------------------------------------|:-------------------------------|
+| message                                          | clef de traduction             |
+|:-------------------------------------------------|:-------------------------------|
 | MessageDescriptions.E1014_TRIP_ROUTE_NO_ACTIVITY | message.trip.route.no.activity |
 | MessageDescriptions.E1013_TRIP_RECOVERY_TIME     | message.trip.recoverytime      |
 
@@ -84,8 +84,8 @@ message.trip.recoverytime={0}> Marée[{1}] Il manque au moins une route entre {2
 
 # fr.ird.akado.observe.inspector.trip.TemporalLimitInspector
 
-| message                                        | clef de traduction     |
-|:-----------------------------------------------|:-----------------------|
+| message                                       | clef de traduction     |
+|:----------------------------------------------|:-----------------------|
 | MessageDescriptions.E1012_TRIP_TEMPORAL_LIMIT | message.trip.startDate |
 | MessageDescriptions.E1012_TRIP_TEMPORAL_LIMIT | message.trip.endDate   |
 
@@ -96,8 +96,8 @@ message.trip.endDate={0}> Marée[{1}] La date de débarquement saisie est {2} ma
 
 # fr.ird.akado.observe.inspector.trip.HarbourInspector
 
-| message                                               | clef de traduction             |
-|:------------------------------------------------------|:-------------------------------|
+| message                                              | clef de traduction             |
+|:-----------------------------------------------------|:-------------------------------|
 | MessageDescriptions.E1023_TRIP_HAS_DIFFERENT_HARBOUR | message.trip.different.harbour |
 
 ```properties
@@ -106,8 +106,8 @@ message.trip.different.harbour={0}> Marée[{1}] Le port de départ de la marée 
 
 # fr.ird.akado.observe.inspector.metatrip.RaisingFactorInspector
 
-| message                                        | clef de traduction   |
-|:-----------------------------------------------|:---------------------|
+| message                                       | clef de traduction   |
+|:----------------------------------------------|:---------------------|
 | MessageDescriptions.W1020_TRIP_RAISING_FACTOR | message.trip.rf1     |
 | MessageDescriptions.E1025_TRIP_NO_CATCH       | message.trip.nocatch |
 
