@@ -22,6 +22,7 @@ import fr.ird.akado.core.common.AAProperties;
 import fr.ird.akado.core.spatial.GISHandler;
 import fr.ird.akado.observe.MessageDescriptions;
 import fr.ird.akado.observe.result.ActivityResult;
+import fr.ird.akado.observe.result.Result;
 import fr.ird.akado.observe.result.Results;
 import fr.ird.driver.observe.business.data.ps.logbook.Activity;
 
@@ -61,6 +62,10 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
             if (Objects.equals(eezFromPosition, "-") && Objects.equals("XIN", eezCountry)) {
                 // This is a normal case
                 return null;
+            }
+            if (Objects.equals(eezFromPosition, "-")) {
+                // See https://github.com/OB7-IRD/akado/issues/24
+                eezFromPosition = Result.translate("zee.not.found");
             }
             ActivityResult r = createResult(MessageDescriptions.W1234_ACTIVITY_POSITION_EEZ_INCONSISTENCY, activity,
                     activity.getID(getTrip(), getRoute()),
