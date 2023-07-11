@@ -40,7 +40,6 @@ message.trip.fishingtime={0}> Marée[{1}] Le «Temps de pêche» sur la marée {
 
 | message                                        | clef de traduction        |
 |:-----------------------------------------------|:--------------------------|
-| MessageDescriptions.E1010_TRIP_NO_TIME_AT_SEA | message.trip.no.timeatsea |
 | MessageDescriptions.E1011_TRIP_TIME_AT_SEA    | message.trip.timeatsea    |
 
 ```properties

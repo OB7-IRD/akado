@@ -20,7 +20,6 @@ public enum MessageDescriptions implements MessageDescription {
     // Trip messages
 
     W1002_VESSEL_NO_CAPACITY("message.vessel.nocapacity", false),
-    E1010_TRIP_NO_TIME_AT_SEA("message.trip.no.timeatsea", false),
     E1011_TRIP_TIME_AT_SEA("message.trip.timeatsea", false),
     E1012_TRIP_START_DATE("message.trip.startDate", false),
     E1013_TRIP_RECOVERY_TIME("message.trip.recoverytime", true),
