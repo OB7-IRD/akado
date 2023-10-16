@@ -28,7 +28,23 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static fr.ird.akado.core.common.AAProperties.*;
+import static fr.ird.akado.core.common.AAProperties.ACTIVE_VALUE;
+import static fr.ird.akado.core.common.AAProperties.DATE_FORMAT_XLS;
+import static fr.ird.akado.core.common.AAProperties.KEY_ACTIVITY_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.KEY_DATE_FORMAT_XLS;
+import static fr.ird.akado.core.common.AAProperties.KEY_POSITION_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.KEY_SAMPLE_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_COUNTRIES_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_HARBOUR_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_SHP_OCEAN_PATH;
+import static fr.ird.akado.core.common.AAProperties.KEY_STANDARD_DIRECTORY;
+import static fr.ird.akado.core.common.AAProperties.KEY_TRIP_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.KEY_WARNING_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.KEY_WELL_INSPECTOR;
+import static fr.ird.akado.core.common.AAProperties.SHP_COUNTRIES_PATH;
+import static fr.ird.akado.core.common.AAProperties.SHP_HARBOUR_PATH;
+import static fr.ird.akado.core.common.AAProperties.SHP_OCEAN_PATH;
+import static fr.ird.akado.core.common.AAProperties.STANDARD_DIRECTORY;
 
 /**
  * The AkadoAvdthProperties class represents a persistent set of properties.
@@ -122,6 +138,9 @@ public final class AkadoAvdthProperties extends IRDProperties {
             OBSERVE_JDBC_URL = p.getProperty(KEY_OBSERVE_JDBC_URL, "");
             OBSERVE_JDBC_LOGIN = p.getProperty(KEY_OBSERVE_JDBC_LOGIN, "");
             OBSERVE_JDBC_PASSWORD = p.getProperty(KEY_OBSERVE_JDBC_PASSWORD, "");
+            AAProperties.OBSERVE_MODEL_MIN_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, "9.2");
+            AAProperties.OBSERVE_MODEL_MAX_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, "9.2");
+
 
         } catch (Exception e) {
 
@@ -149,6 +168,8 @@ public final class AkadoAvdthProperties extends IRDProperties {
         p.setProperty(KEY_OBSERVE_JDBC_URL, "");
         p.setProperty(KEY_OBSERVE_JDBC_LOGIN, "sa");
         p.setProperty(KEY_OBSERVE_JDBC_PASSWORD, "sa");
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, "9.2");
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, "9.2");
         p.setProperty(AAProperties.KEY_ANAPO_DB_PATH, "");
         p.setProperty(AAProperties.KEY_L10N, "fr");
         p.setProperty(AAProperties.KEY_THRESHOLD_CLASS_ONE, "10");
@@ -217,6 +238,8 @@ public final class AkadoAvdthProperties extends IRDProperties {
         p.setProperty(KEY_OBSERVE_JDBC_LOGIN, OBSERVE_JDBC_LOGIN);
         p.setProperty(KEY_OBSERVE_JDBC_PASSWORD, OBSERVE_JDBC_PASSWORD);
         p.setProperty(KEY_JDBC_ACCESS_DRIVER, JDBC_ACCESS_DRIVER);
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, AAProperties.OBSERVE_MODEL_MIN_VERSION);
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, AAProperties.OBSERVE_MODEL_MAX_VERSION);
 
         p.setProperty(AAProperties.KEY_AKADO_INSPECTOR, AAProperties.AKADO_INSPECTOR);
         p.setProperty(AAProperties.KEY_ANAPO_INSPECTOR, AAProperties.ANAPO_INSPECTOR);

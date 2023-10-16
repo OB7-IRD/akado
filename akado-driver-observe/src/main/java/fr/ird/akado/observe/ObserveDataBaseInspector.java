@@ -188,8 +188,10 @@ public class ObserveDataBaseInspector extends DataBaseInspector {
     @Override
     public void validate() throws Exception {
         Version observeVersion = ObserveService.getService().getDaoSupplier().getVersionDao().getVersionNumber();
-        if (!observeVersion.equals(ObserveVersion.VERSION_OBSERVE_COMPATIBILITY)) {
-            ObserveMessage message = new ObserveMessage(MessageDescriptions.E0002_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, ObserveVersion.VERSION_OBSERVE_COMPATIBILITY));
+        Version obsverseModelMinVersion = AAProperties.getObsverseModelMinVersion();
+        Version obsverseModelMaxVersion = AAProperties.getObsverseModelMaxVersion();
+        if (observeVersion.before(obsverseModelMinVersion) || observeVersion.after(obsverseModelMaxVersion)  ) {
+            ObserveMessage message = new ObserveMessage(MessageDescriptions.E0002_DATABASE_NOT_COMPATIBLE, List.of(observeVersion, obsverseModelMinVersion,obsverseModelMaxVersion));
             throw new AkadoException(message.getContent());
         }
         List<Trip> tripList = getTripsToValidate();
