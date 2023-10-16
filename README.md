@@ -2,12 +2,12 @@
 
 ### Ajouter driver hxtt
 
-mvn install:install-file -Dfile=XXX/Access_JDBC42.jar -DgroupId=com.hxtt.sql.access -DartifactId=accessjdbc4 -Dversion=5.2 -Dpackaging=jar 
+mvn install:install-file -Dfile=accessjdbc4.2-5.2.jar -DgroupId=com.hxtt.sql.access -DartifactId=accessjdbc4.2 -Dversion=5.2 -Dpackaging=jar 
 
 ### Récupérer les dépots depuis github
 
 ```bash
-git clone git@github.com:OB7-IRD/akado2.git
+git clone git@github.com:OB7-IRD/akado.git
 ```
 
 ### Lancer ce pom
