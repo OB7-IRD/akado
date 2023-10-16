@@ -50,12 +50,14 @@ public class ActivityDao extends AbstractDataDao<Activity> {
             /* 22 */ " vesselActivity,\n" +
             /* 23 */ " wind,\n" +
             /* 24 */ " schoolType,\n" +
-            /* 25 */ " fpaZone,\n" +
+            /* 25 */ " currentFpaZone,\n" +
             /* 26 */ " dataQuality,\n" +
             /* 27 */ " informationSource,\n" +
             /* 28 */ " reasonForNoFishing,\n" +
             /* 29 */ " setSuccessStatus,\n" +
-            /* 30 */ " reasonForNullSet\n" +
+            /* 30 */ " reasonForNullSet,\n" +
+            /* 31 */ " previousFpaZone,\n" +
+            /* 32 */ " nextFpaZone\n" +
             " FROM ps_logbook.Activity main WHERE ";
 
     private static final String BY_PARENT = "main.route = ? ORDER BY main.number";
@@ -92,12 +94,14 @@ public class ActivityDao extends AbstractDataDao<Activity> {
         result.setVesselActivity(referentialCache.lazyReferential(VesselActivity.class, rs.getString(22)));
         result.setWind(referentialCache.lazyReferential(Wind.class, rs.getString(23)));
         result.setSchoolType(referentialCache.lazyReferential(SchoolType.class, rs.getString(24)));
-        result.setFpaZone(referentialCache.lazyReferential(FpaZone.class, rs.getString(25)));
+        result.setCurrentFpaZone(referentialCache.lazyReferential(FpaZone.class, rs.getString(25)));
         result.setDataQuality(referentialCache.lazyReferential(DataQuality.class, rs.getString(26)));
         result.setInformationSource(referentialCache.lazyReferential(InformationSource.class, rs.getString(27)));
         result.setReasonForNoFishing(referentialCache.lazyReferential(ReasonForNoFishing.class, rs.getString(28)));
         result.setSetSuccessStatus(referentialCache.lazyReferential(SetSuccessStatus.class, rs.getString(29)));
         result.setReasonForNullSet(referentialCache.lazyReferential(ReasonForNullSet.class, rs.getString(30)));
+        result.setPreviousFpaZone(referentialCache.lazyReferential(FpaZone.class, rs.getString(31)));
+        result.setNextFpaZone(referentialCache.lazyReferential(FpaZone.class, rs.getString(32)));
         DaoSupplier daoSupplier = daoSupplier();
         String activityId = result.getTopiaId();
         result.setCatches(daoSupplier.getPsLogbookCatchDao().lazyListByParentId(activityId));

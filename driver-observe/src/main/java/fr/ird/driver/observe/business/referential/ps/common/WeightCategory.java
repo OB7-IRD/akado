@@ -17,9 +17,9 @@ public class WeightCategory extends I18nReferentialEntity {
     private Float minWeight;
     private Float maxWeight;
     private Float meanWeight;
-    private boolean allowLanding;
-    private boolean allowLogbook;
-    private boolean allowWellPlan;
+    private boolean landing;
+    private boolean logbook;
+    private boolean wellPlan;
     private Supplier<Species> species = () -> null;
 
     public Species getSpecies() {
@@ -55,27 +55,27 @@ public class WeightCategory extends I18nReferentialEntity {
     }
 
     public boolean isAllowLanding() {
-        return allowLanding;
+        return landing;
     }
 
     public void setAllowLanding(boolean allowLanding) {
-        this.allowLanding = allowLanding;
+        this.landing = allowLanding;
     }
 
     public boolean isAllowLogbook() {
-        return allowLogbook;
+        return logbook;
     }
 
     public void setAllowLogbook(boolean allowLogbook) {
-        this.allowLogbook = allowLogbook;
+        this.logbook = allowLogbook;
     }
 
     public boolean isAllowWellPlan() {
-        return allowWellPlan;
+        return wellPlan;
     }
 
     public void setAllowWellPlan(boolean allowWellPlan) {
-        this.allowWellPlan = allowWellPlan;
+        this.wellPlan = allowWellPlan;
     }
 
 }

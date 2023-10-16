@@ -57,7 +57,7 @@ public class PositionInEEZInspector extends ObserveActivityInspector {
             return null;
         }
         String eezFromPosition = computedEEZFromPosition(activity);
-        String eezCountry = Objects.requireNonNull(activity.getFpaZone()).getCountry().getIso3Code();
+        String eezCountry = Objects.requireNonNull(activity.getCurrentFpaZone()).getCountry().getIso3Code();
         if (!Objects.equals(eezCountry, eezFromPosition)) {
             if (Objects.equals(eezFromPosition, "-") && Objects.equals("XIN", eezCountry)) {
                 // This is a normal case

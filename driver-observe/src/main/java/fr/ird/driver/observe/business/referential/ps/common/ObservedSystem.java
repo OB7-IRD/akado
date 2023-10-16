@@ -13,8 +13,8 @@ import java.util.function.Supplier;
  */
 public class ObservedSystem extends I18nReferentialEntity {
 
-    private boolean allowObservation;
-    private boolean allowLogbook;
+    private boolean observation;
+    private boolean logbook;
     private Supplier<SchoolType> schoolType = () -> null;
 
     public SchoolType getSchoolType() {
@@ -25,20 +25,20 @@ public class ObservedSystem extends I18nReferentialEntity {
         this.schoolType = Objects.requireNonNull(schoolType);
     }
 
-    public boolean isAllowObservation() {
-        return allowObservation;
+    public boolean isObservation() {
+        return observation;
     }
 
-    public void setAllowObservation(boolean allowObservation) {
-        this.allowObservation = allowObservation;
+    public void setObservation(boolean allowObservation) {
+        this.observation = allowObservation;
     }
 
-    public boolean isAllowLogbook() {
-        return allowLogbook;
+    public boolean isLogbook() {
+        return logbook;
     }
 
-    public void setAllowLogbook(boolean allowLogbook) {
-        this.allowLogbook = allowLogbook;
+    public void setLogbook(boolean allowLogbook) {
+        this.logbook = allowLogbook;
     }
 
     /**

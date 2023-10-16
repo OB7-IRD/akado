@@ -53,7 +53,9 @@ public class Activity extends DataEntity {
     private Supplier<VesselActivity> vesselActivity = () -> null;
     private Supplier<Wind> wind = () -> null;
     private Supplier<SchoolType> schoolType = () -> null;
-    private Supplier<FpaZone> fpaZone = () -> null;
+    private Supplier<FpaZone> previousFpaZone = () -> null;
+    private Supplier<FpaZone> nextFpaZone = () -> null;
+    private Supplier<FpaZone> currentFpaZone = () -> null;
     private Supplier<DataQuality> dataQuality = () -> null;
     private Supplier<InformationSource> informationSource = () -> null;
     private Supplier<ReasonForNoFishing> reasonForNoFishing = () -> null;
@@ -245,12 +247,26 @@ public class Activity extends DataEntity {
         this.schoolType = Objects.requireNonNull(schoolType);
     }
 
-    public FpaZone getFpaZone() {
-        return fpaZone.get();
+    public FpaZone getPreviousFpaZone() {
+        return previousFpaZone.get();
     }
 
-    public void setFpaZone(Supplier<FpaZone> fpaZone) {
-        this.fpaZone = Objects.requireNonNull(fpaZone);
+    public FpaZone getNextFpaZone() {
+        return nextFpaZone.get();
+    }
+
+    public FpaZone getCurrentFpaZone() {
+        return currentFpaZone.get();
+    }
+
+    public void setCurrentFpaZone(Supplier<FpaZone> fpaZone) {
+        this.currentFpaZone = Objects.requireNonNull(fpaZone);
+    }
+    public void setNextFpaZone(Supplier<FpaZone> fpaZone) {
+        this.previousFpaZone = Objects.requireNonNull(fpaZone);
+    }
+    public void setPreviousFpaZone(Supplier<FpaZone> fpaZone) {
+        this.previousFpaZone = Objects.requireNonNull(fpaZone);
     }
 
     public DataQuality getDataQuality() {
@@ -349,7 +365,7 @@ public class Activity extends DataEntity {
     }
 
     public boolean withoutFpaZone() {
-        return getFpaZone() == null;
+        return getCurrentFpaZone() == null;
     }
 
     public boolean withoutTime() {
