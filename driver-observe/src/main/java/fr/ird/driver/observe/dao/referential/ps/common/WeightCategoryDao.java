@@ -20,9 +20,9 @@ public class WeightCategoryDao extends AbstractI18nReferentialDao<WeightCategory
             /* 18 */ " minWeight,\n" +
             /* 19 */ " maxWeight,\n" +
             /* 20 */ " meanWeight,\n" +
-            /* 21 */ " allowLanding,\n" +
-            /* 22 */ " allowLogbook,\n" +
-            /* 23 */ " allowWellPlan,\n" +
+            /* 21 */ " landing,\n" +
+            /* 22 */ " logbook,\n" +
+            /* 23 */ " wellPlan,\n" +
             /* 24 */ " species\n" +
             " FROM ps_common.WeightCategory";
 

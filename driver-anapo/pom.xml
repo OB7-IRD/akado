@@ -4,7 +4,7 @@
   <parent>
     <groupId>fr.ird.ob7</groupId>
     <artifactId>akado-pom</artifactId>
-    <version>4.0.0-RC-3</version>
+    <version>4.0.0-RC-4</version>
   </parent>
   <artifactId>driver-anapo</artifactId>
   <packaging>jar</packaging>

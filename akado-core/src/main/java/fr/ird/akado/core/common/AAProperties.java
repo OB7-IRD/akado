@@ -16,6 +16,8 @@
  */
 package fr.ird.akado.core.common;
 
+import io.ultreia.java4all.util.Version;
+
 import java.util.Objects;
 
 /**
@@ -28,6 +30,8 @@ import java.util.Objects;
  */
 public class AAProperties {
 
+    public static final String KEY_OBSERVE_MODEL_MIN_VERSION = "observe_model_min_version";
+    public static final String KEY_OBSERVE_MODEL_MAX_VERSION = "observe_model_max_version";
     public static String PROTOCOL_JDBC_ACCESS;
 
     public static final String KEY_STANDARD_DIRECTORY = "standard_directory";
@@ -88,6 +92,8 @@ public class AAProperties {
     public static String RESULTS_OUTPUT = ACTIVE_VALUE;
     public static int NB_PROC = 1;
     public static String AKADO_INSPECTOR;
+    public static String OBSERVE_MODEL_MIN_VERSION;
+    public static String OBSERVE_MODEL_MAX_VERSION;
 
     public static boolean isAkadoInspectorEnabled() {
         return Objects.equals(AKADO_INSPECTOR, ACTIVE_VALUE);
@@ -123,6 +129,13 @@ public class AAProperties {
 
     public static boolean isResultsEnabled() {
         return Objects.equals(RESULTS_OUTPUT, ACTIVE_VALUE);
+    }
+
+    public static Version getObsverseModelMinVersion() {
+        return Version.valueOf(OBSERVE_MODEL_MIN_VERSION);
+    }
+    public static Version getObsverseModelMaxVersion() {
+        return Version.valueOf(OBSERVE_MODEL_MAX_VERSION);
     }
 
 }

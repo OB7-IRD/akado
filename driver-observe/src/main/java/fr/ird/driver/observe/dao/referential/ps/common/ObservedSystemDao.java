@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 public class ObservedSystemDao extends AbstractI18nReferentialDao<ObservedSystem> {
 
     private static final String QUERY = I18N_REFERENTIAL_ENTITY_QUERY + ",\n" +
-            /* 18 */ " allowObservation,\n" +
-            /* 19 */ " allowLogbook,\n" +
+            /* 18 */ " observation,\n" +
+            /* 19 */ " logbook,\n" +
             /* 20 */ " schoolType\n" +
             " FROM ps_common.ObservedSystem";
     private boolean allowObservation;
@@ -33,8 +33,8 @@ public class ObservedSystemDao extends AbstractI18nReferentialDao<ObservedSystem
     @Override
     protected void fill(ObservedSystem result, ResultSet rs) throws SQLException, ObserveDriverException {
         super.fill(result, rs);
-        result.setAllowObservation(rs.getBoolean(18));
-        result.setAllowLogbook(rs.getBoolean(19));
+        result.setObservation(rs.getBoolean(18));
+        result.setLogbook(rs.getBoolean(19));
         result.setSchoolType(referentialCache().lazyReferential(SchoolType.class, rs.getString(20)));
     }
 }
