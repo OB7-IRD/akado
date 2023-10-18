@@ -21,7 +21,7 @@ public abstract class AbstractVersionDaoTest {
     public void testVersion() {
         Version versionNumber = service().getDaoSupplier().getVersionDao().getVersionNumber();
         Assert.assertNotNull(versionNumber);
-        Assert.assertEquals(ObserveVersion.VERSION_OBSERVE_COMPATIBILITY, versionNumber);
+        Assert.assertEquals(Version.valueOf(ObserveVersion.OBSERVE_MODEL_MAX_VERSION), versionNumber);
     }
 
     @Test(expected = ObserveDriverException.class)

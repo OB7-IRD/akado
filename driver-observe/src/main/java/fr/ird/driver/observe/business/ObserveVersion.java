@@ -11,10 +11,8 @@ import java.util.Date;
  * @since 1.0.0
  */
 public class ObserveVersion {
-    /**
-     * The only ObServe database version we are using.
-     */
-    public static final Version VERSION_OBSERVE_COMPATIBILITY = Version.create("9.1").build();
+    public static final String OBSERVE_MODEL_MIN_VERSION = "9.2";
+    public static final String OBSERVE_MODEL_MAX_VERSION = "9.2";
     private final Version version;
     private final Date date;
 

@@ -20,6 +20,7 @@ import fr.ird.akado.core.DataBaseInspector;
 import fr.ird.akado.core.common.AAProperties;
 import fr.ird.common.configuration.AppConfig;
 import fr.ird.common.configuration.IRDProperties;
+import fr.ird.driver.observe.business.ObserveVersion;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
@@ -138,8 +139,8 @@ public final class AkadoAvdthProperties extends IRDProperties {
             OBSERVE_JDBC_URL = p.getProperty(KEY_OBSERVE_JDBC_URL, "");
             OBSERVE_JDBC_LOGIN = p.getProperty(KEY_OBSERVE_JDBC_LOGIN, "");
             OBSERVE_JDBC_PASSWORD = p.getProperty(KEY_OBSERVE_JDBC_PASSWORD, "");
-            AAProperties.OBSERVE_MODEL_MIN_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, "9.2");
-            AAProperties.OBSERVE_MODEL_MAX_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, "9.2");
+            AAProperties.OBSERVE_MODEL_MIN_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, ObserveVersion.OBSERVE_MODEL_MIN_VERSION);
+            AAProperties.OBSERVE_MODEL_MAX_VERSION = p.getProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, ObserveVersion.OBSERVE_MODEL_MAX_VERSION);
 
 
         } catch (Exception e) {
@@ -168,8 +169,8 @@ public final class AkadoAvdthProperties extends IRDProperties {
         p.setProperty(KEY_OBSERVE_JDBC_URL, "");
         p.setProperty(KEY_OBSERVE_JDBC_LOGIN, "sa");
         p.setProperty(KEY_OBSERVE_JDBC_PASSWORD, "sa");
-        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, "9.2");
-        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, "9.2");
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MIN_VERSION, ObserveVersion.OBSERVE_MODEL_MIN_VERSION);
+        p.setProperty(AAProperties.KEY_OBSERVE_MODEL_MAX_VERSION, ObserveVersion.OBSERVE_MODEL_MAX_VERSION);
         p.setProperty(AAProperties.KEY_ANAPO_DB_PATH, "");
         p.setProperty(AAProperties.KEY_L10N, "fr");
         p.setProperty(AAProperties.KEY_THRESHOLD_CLASS_ONE, "10");
