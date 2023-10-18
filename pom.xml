@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.ird.ob7</groupId>
   <artifactId>akado-pom</artifactId>
-  <version>4.0.0-RC-4</version>
+  <version>4.0.0</version>
   <packaging>pom</packaging>
   <name>AKaDo</name>
   <description>AKaDo</description>
@@ -112,7 +112,7 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-compress</artifactId>
-        <version>1.23.0</version>
+        <version>1.24.0</version>
       </dependency>
       <dependency>
         <groupId>commons-collections</groupId>
