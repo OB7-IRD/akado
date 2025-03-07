@@ -28,7 +28,6 @@ public class Vessel extends I18nReferentialEntity {
     private String iccatId;
     private String iotcId;
     private String nationalId;
-    private String comId;
     private String tuviId;
     private String imoId;
     private String radioCallSignId;
@@ -167,14 +166,6 @@ public class Vessel extends I18nReferentialEntity {
 
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
-    }
-
-    public String getComId() {
-        return comId;
-    }
-
-    public void setComId(String comId) {
-        this.comId = comId;
     }
 
     public String getTuviId() {
