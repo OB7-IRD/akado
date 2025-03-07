@@ -33,20 +33,19 @@ public class VesselDao extends AbstractI18nReferentialDao<Vessel> {
             /* 28 */ " iccatId,\n" +
             /* 29 */ " iotcId,\n" +
             /* 30 */ " nationalId,\n" +
-            /* 31 */ " comId,\n" +
-            /* 32 */ " tuviId,\n" +
-            /* 33 */ " imoId,\n" +
-            /* 34 */ " radioCallSignId,\n" +
-            /* 35 */ " lloydId,\n" +
-            /* 36 */ " cfrId,\n" +
-            /* 37 */ " wellRegex,\n" +
-            /* 38 */ " startDate,\n" +
-            /* 39 */ " endDate,\n" +
-            /* 40 */ " vesselSizeCategory,\n" +
-            /* 41 */ " vesselType,\n" +
-            /* 42 */ " flagCountry,\n" +
-            /* 43 */ " fleetCountry,\n" +
-            /* 44 */ " shipOwner\n" +
+            /* 31 */ " tuviId,\n" +
+            /* 32 */ " imoId,\n" +
+            /* 33 */ " radioCallSignId,\n" +
+            /* 34 */ " lloydId,\n" +
+            /* 35 */ " cfrId,\n" +
+            /* 36 */ " wellRegex,\n" +
+            /* 37 */ " startDate,\n" +
+            /* 38 */ " endDate,\n" +
+            /* 39 */ " vesselSizeCategory,\n" +
+            /* 40 */ " vesselType,\n" +
+            /* 41 */ " flagCountry,\n" +
+            /* 42 */ " fleetCountry,\n" +
+            /* 43 */ " shipOwner\n" +
             " FROM common.Vessel";
 
     public VesselDao() {
@@ -69,20 +68,19 @@ public class VesselDao extends AbstractI18nReferentialDao<Vessel> {
         result.setIccatId(rs.getString(28));
         result.setIotcId(rs.getString(29));
         result.setNationalId(rs.getString(30));
-        result.setComId(rs.getString(31));
-        result.setTuviId(rs.getString(32));
-        result.setImoId(rs.getString(33));
-        result.setRadioCallSignId(rs.getString(34));
-        result.setLloydId(rs.getString(35));
-        result.setCfrId(rs.getString(36));
-        result.setWellRegex(rs.getString(37));
-        result.setStartDate(rs.getDate(38));
-        result.setEndDate(rs.getDate(39));
+        result.setTuviId(rs.getString(31));
+        result.setImoId(rs.getString(32));
+        result.setRadioCallSignId(rs.getString(33));
+        result.setLloydId(rs.getString(34));
+        result.setCfrId(rs.getString(35));
+        result.setWellRegex(rs.getString(36));
+        result.setStartDate(rs.getDate(37));
+        result.setEndDate(rs.getDate(38));
         ReferentialCache referentialCache = referentialCache();
-        result.setVesselSizeCategory(referentialCache.lazyReferential(VesselSizeCategory.class, rs.getString(40)));
-        result.setVesselType(referentialCache.lazyReferential(VesselType.class, rs.getString(41)));
-        result.setFlagCountry(referentialCache.lazyReferential(Country.class, rs.getString(42)));
-        result.setFleetCountry(referentialCache.lazyReferential(Country.class, rs.getString(43)));
-        result.setShipOwner(referentialCache.lazyReferential(ShipOwner.class, rs.getString(44)));
+        result.setVesselSizeCategory(referentialCache.lazyReferential(VesselSizeCategory.class, rs.getString(39)));
+        result.setVesselType(referentialCache.lazyReferential(VesselType.class, rs.getString(40)));
+        result.setFlagCountry(referentialCache.lazyReferential(Country.class, rs.getString(41)));
+        result.setFleetCountry(referentialCache.lazyReferential(Country.class, rs.getString(42)));
+        result.setShipOwner(referentialCache.lazyReferential(ShipOwner.class, rs.getString(43)));
     }
 }
