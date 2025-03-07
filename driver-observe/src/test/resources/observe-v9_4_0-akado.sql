@@ -7983,7 +7983,7 @@ CREATE CACHED TABLE COMMON.VESSEL
 ALTER TABLE COMMON.VESSEL
     ADD CONSTRAINT COMMON.CONSTRAINT_9 PRIMARY KEY (TOPIAID);
 -- 1250 +/- SELECT COUNT(*) FROM COMMON.VESSEL;
-INSERT INTO common.vessel(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, keelCode, changeDate, yearService, length, capacity, powerCv, powerKW, searchMaximum, comment, source, iccatId, iotcId, nationalId, comId, tuviId, imoId, radioCallSignId, lloydId, cfrId, wellRegex, startDate, endDate, vesselSizeCategory, vesselType, flagCountry, fleetCountry, shipOwner) VALUES ('fr.ird.referential.common.Vessel#1239832679425#0.9136908731720471', '2009-04-15 00:00:00.611', 22, '2023-02-14 00:00:00.0', '483', NULL, NULL, false, 1, 'CAP BOJADOR', 'CAP BOJADOR', 'CAP BOJADOR', NULL, NULL, NULL, NULL, NULL, 419, NULL, 1990, 61, 1072, 3340, NULL, 12, 'Nouveau abidjan en 12/90 pour marée d_essai puis Seychelles.', NULL, 'ATEU0FRA00012', NULL, 'CC752550', NULL, NULL, '8908026', NULL, NULL, 'FRA000752550', '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675542#0.750774668545597', 'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', NULL);
+INSERT INTO common.vessel(topiaId, topiaCreateDate, topiaVersion, lastUpdateDate, code, uri, homeId, needComment, status, label1, label2, label3, label4, label5, label6, label7, label8, keelCode, changeDate, yearService, length, capacity, powerCv, powerKW, searchMaximum, comment, source, iccatId, iotcId, nationalId, tuviId, imoId, radioCallSignId, lloydId, cfrId, wellRegex, startDate, endDate, vesselSizeCategory, vesselType, flagCountry, fleetCountry, shipOwner) VALUES ('fr.ird.referential.common.Vessel#1239832679425#0.9136908731720471', '2009-04-15 00:00:00.611', 22, '2023-02-14 00:00:00.0', '483', NULL, NULL, false, 1, 'CAP BOJADOR', 'CAP BOJADOR', 'CAP BOJADOR', NULL, NULL, NULL, NULL, NULL, 419, NULL, 1990, 61, 1072, 3340, NULL, 12, 'Nouveau abidjan en 12/90 pour marée d_essai puis Seychelles.', NULL, 'ATEU0FRA00012', NULL, 'CC752550', NULL, '8908026', NULL, NULL, 'FRA000752550', '^(1A|([1-9]{1}[B;T]{1}|(1{1}[0-9]{1}[B;T]{1}))){1}$', NULL, NULL, 'fr.ird.referential.common.VesselSizeCategory#1239832675542#0.750774668545597', 'fr.ird.referential.common.VesselType#1239832675735#0.307197212385357', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', 'fr.ird.referential.common.Country#1239832675583#0.9493110781716075', NULL);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_FLAGCOUNTRY ON COMMON.VESSEL (FLAGCOUNTRY);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_FLEETCOUNTRY ON COMMON.VESSEL (FLEETCOUNTRY);
 CREATE INDEX COMMON.IDX_COMMON_VESSEL_LASTUPDATEDATE ON COMMON.VESSEL (LASTUPDATEDATE);
@@ -13665,6 +13665,8 @@ INSERT INTO COMMON.DATABASE_VERSION(VERSION, DATE)
 VALUES ('9.1', TIMESTAMP '2023-03-19 15:22:54.106');
 INSERT INTO COMMON.DATABASE_VERSION(VERSION, DATE)
 VALUES ('9.2', TIMESTAMP '2023-10-18 12:22:00.000');
+INSERT INTO COMMON.DATABASE_VERSION(VERSION, DATE)
+VALUES ('9.4', TIMESTAMP '2024-02-01 12:22:00.000');
 ALTER TABLE PS_OBSERVATION.SET
     ADD CONSTRAINT PS_OBSERVATION.UK_PS_OBSERVATION_SET_ACTIVITY UNIQUE (ACTIVITY);
 ALTER TABLE COMMON.LASTUPDATEDATE
