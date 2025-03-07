@@ -41,7 +41,7 @@ public class ObserveTestH2DatabaseResource extends ExternalResource {
         JdbcConfiguration configuration = ObserveService.createH2DatabaseConfiguration(databasePath.getParent());
         if (!exist) {
             log.info("Will create observe-test database at: {}", databasePath);
-            String sqlScript = Objects.requireNonNull(getClass().getClassLoader().getResource("observe-v9_2_0-akado.sql")).getFile();
+            String sqlScript = Objects.requireNonNull(getClass().getClassLoader().getResource("observe-v9_4_0-akado.sql")).getFile();
             log.info("Use script to create observe-test database: {}", sqlScript);
             service.loadH2Database(Path.of(sqlScript), configuration);
         } else {
