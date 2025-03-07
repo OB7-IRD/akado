@@ -11,8 +11,8 @@ import java.util.Date;
  * @since 1.0.0
  */
 public class ObserveVersion {
-    public static final String OBSERVE_MODEL_MIN_VERSION = "9.2";
-    public static final String OBSERVE_MODEL_MAX_VERSION = "9.2";
+    public static final String OBSERVE_MODEL_MIN_VERSION = "9.4";
+    public static final String OBSERVE_MODEL_MAX_VERSION = "9.4";
     private final Version version;
     private final Date date;
 
