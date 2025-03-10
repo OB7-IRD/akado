@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.ird.ob7</groupId>
   <artifactId>akado-pom</artifactId>
-  <version>4.0.3-SNAPSHOT</version>
+  <version>4.0.3</version>
   <packaging>pom</packaging>
   <name>AKaDo</name>
   <description>AKaDo</description>
